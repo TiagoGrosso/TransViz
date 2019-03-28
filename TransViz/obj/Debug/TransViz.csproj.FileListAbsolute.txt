@@ -1,0 +1,14 @@
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\TransViz.exe.config
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\TransViz.exe
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\TransViz.pdb
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.csprojAssemblyReference.cache
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.Properties.Resources.resources
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.csproj.GenerateResource.cache
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.csproj.CoreCompileInputs.cache
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.exe
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.pdb
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.ChartPage.resources
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\TransViz.exe.manifest
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\TransViz.application
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.exe.manifest
+C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.application

@@ -1,0 +1,653 @@
+﻿using Kitware.VTK;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Windows.Forms;
+using TransViz.Objects;
+
+namespace TransViz
+{
+				public partial class DataVizPage : Form
+				{
+
+								string folderPath;
+								private Dictionary<string, SortedSet<Arrival>> arrivalsByLine = new Dictionary<string, SortedSet<Arrival>>();
+
+								private SortedSet<Coordinate> coordinates = new SortedSet<Coordinate>(new ByCoordinate());
+
+								public DataVizPage()
+								{
+												this.InitializeComponent();
+
+												this.barChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0} %";
+								}
+
+								#region Data
+
+								private void LoadData()
+								{
+												this.AddLine("Red_routeAdhrence.csv", "Red");
+												this.AddLine("747_routeAdhrence.csv", "747");
+												this.AddLine("1_routeAdhrence.csv", "1");
+												this.AddLine("Green-B_routeAdhrence.csv", "Green-B");
+												this.AddLine("Green-C_routeAdhrence.csv", "Green-C");
+												this.AddLine("Green-D_routeAdhrence.csv", "Green-D");
+												this.AddLine("Green-E_routeAdhrence.csv", "Green-E");
+
+												this.AddLocation("vehicleLocation.csv");
+
+												circularChartLoaded = false;
+												gpsChartTabLoaded = false;
+
+								}
+
+								private void AddLocation(string fileName)
+								{
+												string[] lines = System.IO.File.ReadAllLines(this.folderPath + "\\" + fileName);
+
+												foreach (string line in lines)
+												{
+																string[] parts = line.Split(';');
+																if (parts.Length != 7)
+																				continue;
+
+																string route = parts[4];
+																int direction;
+
+																try
+																{
+																				direction = int.Parse(parts[5]);
+																}
+																catch
+																{
+																				continue;
+																}
+
+																if (!(route.Equals("Red") && direction == 1))
+																				continue;
+
+																DateTime time;
+																float latitude, longitude;
+																string vehicleID = parts[0];
+
+																try
+																{
+																				time = DateTime.Parse(parts[1]);
+																				latitude = float.Parse(parts[2], CultureInfo.InvariantCulture);
+																				longitude = float.Parse(parts[3], CultureInfo.InvariantCulture);
+
+																				coordinates.Add(new Coordinate(vehicleID, latitude, longitude, time));
+																}
+																catch
+																{
+																				continue;
+																}
+
+												}
+
+
+								}
+								private void AddLine(string fileName, string lineName)
+								{
+												string[] lines = System.IO.File.ReadAllLines(this.folderPath + "\\" + fileName);
+
+												SortedSet<Arrival> arrivals = new SortedSet<Arrival>(new ByArrival());
+
+												foreach (string line in lines)
+												{
+																string[] parts = line.Split(';');
+
+																if (parts.Length != 5)
+																				continue;
+
+																string scheduledString = parts[3];
+																string actualString = parts[4];
+
+																if (scheduledString == "undefined" || scheduledString == "null" || actualString == "undefined" || actualString == "null")
+																				continue;
+																try
+																{
+																				DateTime scheduled = DateTime.Parse(parts[3]);
+																				DateTime actual = DateTime.Parse(parts[4]);
+
+																				arrivals.Add(new Arrival(scheduled, actual));
+																}
+																catch
+																{
+																				continue;
+																}
+												}
+
+												this.arrivalsByLine.Add(lineName, arrivals);
+								}
+
+								private void ChooseFolder_Click(object sender, EventArgs e)
+								{
+												if (this.FilesFolder.ShowDialog() == DialogResult.OK)
+												{
+																//Get the path of specified file
+																this.folderPath = this.FilesFolder.SelectedPath;
+																this.LoadData();
+
+																this.DrawTab();
+
+												}
+								}
+
+
+								#endregion
+
+								#region Navigation
+
+								private void DrawTab()
+								{
+												switch (this.TabControl.SelectedIndex)
+												{
+																case Constants.BAR_CHART_TAB:
+																				this.DrawBarChartTab();
+																				break;
+																case Constants.CIRCULAR_CHART_TAB:
+																				this.DrawCircularChartTab();
+																				break;
+																case Constants.GPS_CHART_TAB:
+																				this.DrawGPSChartTab();
+																				break;
+																default:
+																				break;
+												}
+								}
+
+								private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+								{
+												this.DrawTab();
+								}
+
+								#endregion
+
+								#region Bar Chart
+
+								private void RefreshChart()
+								{
+												this.barChart.Series["On Time"].Points.Clear();
+												this.barChart.Series["Late"].Points.Clear();
+												this.barChart.Series["Early"].Points.Clear();
+
+												foreach (string line in this.arrivalsByLine.Keys)
+																this.RefreshLine(line);
+								}
+
+								private void RefreshLine(string line)
+								{
+												SortedSet<Arrival> arrivals = this.arrivalsByLine[line];
+
+												int earlyArrivals = 0;
+												int onTimeArrivals = 0;
+												int lateArrivals = 0;
+
+												foreach (Arrival arrival in arrivals)
+												{
+																int onTime = arrival.OnTime((int)this.EarlinessThresholdBarChart.Value, (int)this.LatenessThresholdBarChart.Value);
+
+																if (onTime == Constants.ARRIVED_EARLY)
+																				++earlyArrivals;
+																else if (onTime == Constants.ARRIVED_ONTIME)
+																				++onTimeArrivals;
+																else
+																				++lateArrivals;
+												}
+
+												int totalArrivals = earlyArrivals + onTimeArrivals + lateArrivals;
+
+												this.barChart.Series["On Time"].Points.AddXY(line, (double)onTimeArrivals / totalArrivals * 100);
+												this.barChart.Series["Late"].Points.AddXY(line, (double)lateArrivals / totalArrivals * 100);
+												this.barChart.Series["Early"].Points.AddXY(line, (double)earlyArrivals / totalArrivals * 100);
+
+								}
+
+								private void BarChartThresholdsChanged(object sender, EventArgs e)
+								{
+												this.RefreshChart();
+								}
+
+								private void DrawBarChartTab()
+								{
+												this.BarChartBottomFlow.Visible = true;
+												this.RefreshChart();
+								}
+
+								#endregion
+
+								#region Circular Chart
+
+								string circularChartSelectedLine;
+								bool circularChartLoaded = false;
+
+								private void DrawSelectedLineCircular()
+								{
+												if (!string.IsNullOrEmpty(this.circularChartSelectedLine))
+																this.DrawSectors(new DateTime(2019, 1, 14), 5, this.arrivalsByLine[this.circularChartSelectedLine]);
+												vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
+												RenderWindowCircularChart.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
+												this.RenderWindowCircularChart.Refresh();
+								}
+
+								private void DrawSectors(DateTime startDate, int numDays, SortedSet<Arrival> arrivals)
+								{
+												for (int day = 0; day < numDays; ++day)
+												{
+																DateTime nextDay = startDate.AddDays(1);
+
+																this.DrawSector(startDate, day, arrivals);
+
+																startDate = nextDay;
+												}
+
+								}
+
+								private void DrawSector(DateTime startDate, int day, SortedSet<Arrival> arrivals)
+								{
+												float minutesInterval = 24f * 60f / Constants.NUM_SECTORS;
+												float sectorAngle = 360f / Constants.NUM_SECTORS;
+
+												for (int i = 0; i < Constants.NUM_SECTORS; ++i)
+												{
+																DateTime nextSector = startDate.AddMinutes(minutesInterval);
+
+																float r, g, b;
+																r = b = g = 0.2f;
+
+																SortedSet<Arrival> arrivalsSubset = arrivals.GetViewBetween(new Arrival(startDate, startDate), new Arrival(nextSector, nextSector));
+																if (arrivalsSubset.Count != 0)
+																{
+																				float sectorValue = 0;
+
+																				foreach (Arrival arrival in arrivalsSubset)
+																								sectorValue += Math.Abs(arrival.OnTime((int)this.EarlinessThresholdCircularChart.Value, (int)this.LatenessThresholdCircularChart.Value));
+
+																				if (sectorValue == 0)
+																								g = 1;
+																				else
+																								r = 1;
+
+																}
+
+																this.CreateDiskSector(Constants.FIRST_INNER_RADIUS + (day * (Constants.DISK_RADIUS + Constants.DISK_SEPARATOR_RADIUS)), Constants.DISK_RADIUS, 270 + sectorAngle * i, sectorAngle, r, g, 0.2f);
+
+																startDate = nextSector;
+												}
+								}
+
+								private void CreateDiskSector(double innerRadius, double radius, double startAngle, double arcAngle, float r, float g, float b)
+								{
+												startAngle = 360 - startAngle;
+												arcAngle = 360 - arcAngle;
+
+												startAngle *= Constants.DEG_TO_RAD;
+												arcAngle *= Constants.DEG_TO_RAD;
+												double finalAngle = arcAngle + startAngle;
+
+												double clip1X = -Math.Cos(Math.PI / 2 + startAngle);
+												double clip1Y = -Math.Sin(Math.PI / 2 + startAngle);
+												double clip2X = Math.Cos(Math.PI / 2 + finalAngle);
+												double clip2Y = Math.Sin(Math.PI / 2 + finalAngle);
+
+												this.DiskSector(innerRadius, radius, clip1X, clip1Y, clip2X, clip2Y, r, g, b);
+								}
+
+								private void DiskSector(double innerRadius, double radius, double clip1X, double clip1Y, double clip2X, double clip2Y, float r, float g, float b)
+								{
+
+												vtkProperty arcColor = vtkProperty.New();
+												arcColor.SetColor(r, g, b);
+
+												vtkDiskSource outerDisk = vtkDiskSource.New();
+												outerDisk.SetCircumferentialResolution(50);
+												outerDisk.SetRadialResolution(50);
+												outerDisk.SetInnerRadius(innerRadius);
+												outerDisk.SetOuterRadius(innerRadius + radius);
+
+												// Define a clipping plane
+												vtkPlane clipPlane = vtkPlane.New();
+												clipPlane.SetNormal(clip1X, clip1Y, 0);
+												clipPlane.SetOrigin(0.0, 0.0, 0.0);
+
+												// Define a clipping plane
+												vtkPlane clipPlane2 = vtkPlane.New();
+												clipPlane2.SetNormal(clip2X, clip2Y, 0);
+												clipPlane2.SetOrigin(0, 0, 0);
+
+
+												vtkClipPolyData clipper = vtkClipPolyData.New();
+												clipper.SetInputConnection(outerDisk.GetOutputPort());
+												clipper.SetClipFunction(clipPlane);
+
+												vtkClipPolyData clipper2 = vtkClipPolyData.New();
+												clipper2.SetInputConnection(clipper.GetOutputPort());
+												clipper2.SetClipFunction(clipPlane2);
+
+												// Visualize
+												vtkPolyDataMapper mapper = vtkPolyDataMapper.New();
+												mapper.SetInputConnection(clipper2.GetOutputPort());
+
+
+												vtkActor actor = vtkActor.New();
+												actor.SetMapper(mapper);
+												actor.SetProperty(arcColor);
+
+												vtkRenderWindow renderWindow = this.RenderWindowCircularChart.RenderWindow;
+
+												vtkRenderer renderer = renderer = renderWindow.GetRenderers().GetFirstRenderer();
+												renderer.SetBackground(0.2, 0.3, 0.4);
+												renderer.AddActor(actor);
+								}
+
+								private void CircularChartLineChanged(object sender, EventArgs e)
+								{
+												RadioButton newSelected = (RadioButton)sender;
+												if (newSelected.Checked == true)
+												{
+																foreach (RadioButton radioButton in this.CircularChartCenterFlow.Controls)
+																{
+																				if (radioButton != newSelected)
+																								radioButton.Checked = false;
+																}
+																this.circularChartSelectedLine = newSelected.Name;
+																this.DrawSelectedLineCircular();
+												}
+								}
+
+								private void CircularChartThresholdsChanged(object sender, EventArgs e)
+								{
+												this.DrawSelectedLineCircular();
+								}
+
+								private void DrawCircularChartTab()
+								{
+												this.CircularChartBottomFlow.Visible = true;
+												this.CircularChartCenterFlow.Visible = true;
+
+												if (!this.circularChartLoaded)
+												{
+																bool selectedFirst = false;
+																foreach (string line in this.arrivalsByLine.Keys)
+																{
+																				RadioButton radioButton = new RadioButton
+																				{
+																								Name = line,
+																								Text = line,
+																								AutoSize = true,
+																								Parent = this.CircularChartCenterFlow
+																				};
+
+																				if (!selectedFirst)
+																				{
+																								radioButton.Checked = true;
+																								selectedFirst = true;
+																								this.circularChartSelectedLine = line;
+																				}
+																				radioButton.CheckedChanged += this.CircularChartLineChanged;
+
+																}
+
+																this.DrawSelectedLineCircular();
+																this.circularChartLoaded = true;
+												}
+								}
+
+								#endregion
+
+								#region GPS Chart
+
+								bool gpsChartTabLoaded = false;
+								bool playing = false;
+
+								DateTime startDate = new DateTime(2019, 1, 10);
+								float step = 2;
+
+								private List<vtkActor> DrawLineSectors()
+								{
+												DateTime endDate = startDate.AddMinutes(step);
+												SortedSet<Coordinate> subset = coordinates.GetViewBetween(new Coordinate(startDate), new Coordinate(endDate));
+
+												SortedSet<Coordinate> noDuplicates = new SortedSet<Coordinate>(new ByDist(Constants.RED_LINE_START));
+												foreach (Coordinate coord in subset)
+												{
+																bool insert = true;
+																foreach (Coordinate coord2 in noDuplicates)
+																				if (coord.VehicleID.Equals(coord2.VehicleID)){
+																								insert = false;
+																								break;
+																				}
+
+																if (insert)
+																				noDuplicates.Add(coord);
+												}
+
+												double routeLength = Coordinate.CalcDist(Constants.RED_LINE_START, Constants.RED_LINE_END);
+												double scale = Constants.TUBE_SIZE / routeLength;
+												float curX = Constants.TUBE_START_X;
+
+
+												float averageDist = Constants.TUBE_SIZE / noDuplicates.Count;
+												float maxAcceptableDist = averageDist * (1 + Constants.ACCEPTABLE_DIST_SKEW);
+												float minAcceptableDist = averageDist * (1 - Constants.ACCEPTABLE_DIST_SKEW);
+												float maxUnreasonableDist = averageDist * (1 + Constants.GRAVE_DIST_SKEW);
+												float minUnreasonableDist = averageDist * (1 - Constants.GRAVE_DIST_SKEW);
+
+												List<vtkActor> actors = new List<vtkActor>();
+
+												bool first = true;
+
+												foreach (Coordinate coord in noDuplicates)
+												{
+
+																double distToOrigin = Coordinate.CalcDist(Constants.RED_LINE_START, coord) * scale;
+																double size = Math.Abs(curX - (Constants.TUBE_START_X + distToOrigin));
+
+																Color color;
+
+
+																Console.WriteLine("Size: " + size + " | Max: " + maxUnreasonableDist + " | Min: " + minUnreasonableDist);
+
+																if (first)
+																{
+																				first = false;
+																				color = Color.GRAY;
+																}
+																else {
+																				if (size > maxUnreasonableDist || size < minUnreasonableDist)
+																								color = Color.RED;
+																				else if (size > maxAcceptableDist || size < minAcceptableDist)
+																								color = Color.YELLOW;
+																				else
+																								color = Color.GREEN;
+																}
+																actors.Add(DrawLineSector(curX, (float)size, color));
+																actors.Add(DrawIndicatorLine(curX));
+																curX = Constants.TUBE_START_X + (float)distToOrigin;
+												}
+												{
+																double size = (Constants.TUBE_START_X + Constants.TUBE_SIZE) - curX;
+
+																actors.Add(DrawLineSector(curX, (float)size, Color.GRAY));
+																actors.Add(DrawIndicatorLine(curX));
+
+																curX = (Constants.TUBE_START_X + Constants.TUBE_SIZE);
+																actors.Add(DrawIndicatorLine(curX));
+
+												}
+
+												return actors;
+								}
+
+								private vtkActor DrawIndicatorLine(float curX)
+								{
+												// Create a line.  
+												vtkLineSource lineSource = vtkLineSource.New();
+												// Create two points, P0 and P1
+												double[] p0 = new double[] { curX, - Constants.INDICATOR_LINE_OFFSET, 0.0 };
+												double[] p1 = new double[] { curX, Constants.INDICATOR_LINE_OFFSET, 0.0 };
+
+												lineSource.SetPoint1(p0[0], p0[1], p0[2]);
+												lineSource.SetPoint2(p1[0], p1[1], p1[2]);
+
+												// Visualize
+												vtkPolyDataMapper mapper = vtkPolyDataMapper.New();
+												mapper.SetInputConnection(lineSource.GetOutputPort());
+												vtkActor lineActor = vtkActor.New();
+												lineActor.SetMapper(mapper);
+												lineActor.GetProperty().SetColor(0, 0, 0);
+
+												return lineActor;
+								}
+
+								//private vtkActor DrawVehicleID(float curX, float ySign)
+								//{
+
+								//				// Create text
+								//				vtkVectorText textSource = new vtkVectorText();
+								//				textSource.SetText("Hello");
+								//				textSource.Update();
+
+								//				// Visualize
+								//				vtkPolyDataMapper mapper = vtkPolyDataMapper.New();
+								//				mapper.SetInputConnection(textSource.GetOutputPort());
+
+
+								//				vtkActor textActor = vtkActor.New();
+
+								//				textActor.SetScale(Constants.INDICATOR_TEXT_SIZE_X, Constants.INDICATOR_TEXT_SIZE_Y, 1);
+
+								//				double[] bounds = textActor.GetXRange();
+
+								//				Console.WriteLine(bounds[0]);
+								//				Console.WriteLine(bounds[1]);
+
+								//				double halfSize = (bounds[1] - bounds[0]) / 2d;
+
+								//				textActor.SetPosition(curX - halfSize, Constants.INDICATOR_LINE_OFFSET * ySign, 0);
+
+								//				textActor.SetMapper(mapper);
+								//				textActor.GetProperty().SetColor(1, 0, 0);
+
+								//				return textActor;
+								//}
+
+								private vtkActor DrawLineSector(float startX, float size, Color color)
+								{
+												// Create a line.  
+												vtkLineSource lineSource = vtkLineSource.New();
+												// Create two points, P0 and P1
+												double[] p0 = new double[] { startX, 0.0, 0.0 };
+												double[] p1 = new double[] { startX + size, 0.0, 0.0 };
+
+												lineSource.SetPoint1(p0[0], p0[1], p0[2]);
+												lineSource.SetPoint2(p1[0], p1[1], p1[2]);
+
+
+												vtkTubeFilter tube = new vtkTubeFilter();
+												tube.SetInputConnection(lineSource.GetOutputPort());
+												tube.SetRadius(0.1);
+												tube.SetNumberOfSides(50);
+												tube.Update();
+
+
+												// Visualize
+												vtkPolyDataMapper mapper = vtkPolyDataMapper.New();
+												mapper.SetInputConnection(tube.GetOutputPort());
+												vtkActor tubeActor = vtkActor.New();
+												tubeActor.SetMapper(mapper);
+												tubeActor.GetProperty().SetColor(color.r, color.g, color.b);
+
+												return tubeActor;
+								}
+
+								private void DrawSelectedLineGPS()
+								{
+												
+												vtkRenderWindow renderWindow = RenderWindowGPS.RenderWindow;
+												vtkRenderer renderer = renderWindow.GetRenderers().GetFirstRenderer();
+												renderer.SetBackground(0.2, 0.3, 0.4);
+
+												renderer.RemoveAllViewProps();
+
+												foreach(vtkActor actor in DrawLineSectors())
+																renderer.AddActor(actor);
+
+								}
+
+								private void DrawGPSChartTab()
+								{
+
+												if (!this.gpsChartTabLoaded)
+												{
+																DateLabel.Text = startDate.ToString("d");
+																TimeLabel.Text = startDate.ToString("t");
+																SetFrameTime();
+
+																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
+																RenderWindowGPS.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
+
+																this.DrawSelectedLineGPS();
+																RenderWindowGPS.Refresh();
+
+																this.gpsChartTabLoaded = true;
+												}
+
+								}
+
+								private void SetFrameTime()
+								{
+												StepLabel.Text = (IntervalSlider.Value / 1000f) + " seconds";
+												FrameTimer.Interval = IntervalSlider.Value;
+								}
+
+								private void DrawNextFrame(int sign)
+								{
+												startDate = startDate.AddMinutes(sign * step);
+												gpsChartTabLoaded = false;
+												DrawGPSChartTab();
+								}
+
+								private void NextFrame_Click(object sender, EventArgs e)
+								{
+												DrawNextFrame(1);
+								}
+
+								private void PreviousFrame_Click(object sender, EventArgs e)
+								{
+												DrawNextFrame(-1);
+								}
+
+								private void PlayPause_Click(object sender, EventArgs e)
+								{
+												playing = !playing;
+
+												if (playing)
+												{
+																PlayPause.Text = "Pause";
+																FrameTimer.Start();
+												}
+												else
+												{
+																PlayPause.Text = "Play";
+																FrameTimer.Stop();
+												}
+								}
+
+								private void FrameTimer_Tick(object sender, EventArgs e)
+								{
+												DrawNextFrame(1);
+								}
+
+								private void IntervalSlider_ValueChanged(object sender, EventArgs e)
+								{
+												SetFrameTime();
+								}
+				}
+
+				#endregion
+
+
+
+}

@@ -14,7 +14,7 @@ namespace TransViz {
 								{
 												Application.EnableVisualStyles();
 												Application.SetCompatibleTextRenderingDefault(false);
-												Application.Run(new ChartPage());
+												Application.Run(new DataVizPage());
 								}
 				}
 }

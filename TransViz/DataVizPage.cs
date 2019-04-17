@@ -11,8 +11,9 @@ namespace TransViz
 {
 				public partial class DataVizPage : Form
 				{
-
+								
 								string folderPath;
+
 
 								private List<string> lineNames = new List<string>()
 								{   "Red",

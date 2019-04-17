@@ -71,3 +71,17 @@ C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\msvcr90.dll
 C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.csproj.CopyComplete
 C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.VTKTest.resources
 C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.DataVizPage.resources
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\EntityFramework.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\GMap.NET.Core.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\GMap.NET.WindowsForms.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\GMap.NET.WindowsPresentation.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\System.Data.SQLite.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\EntityFramework.xml
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\System.Data.SQLite.xml
+C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\System.Data.SQLite.dll.config

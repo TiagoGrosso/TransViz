@@ -26,11 +26,11 @@
 								private void InitializeComponent()
 								{
 												this.components = new System.ComponentModel.Container();
-												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-												System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-												System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+												System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+												System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
 												this.barChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
 												this.PageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.LeftFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
@@ -68,6 +68,8 @@
 												this.FilesFolder = new System.Windows.Forms.FolderBrowserDialog();
 												this.FrameTimer = new System.Windows.Forms.Timer(this.components);
 												this.IntervalSlider = new System.Windows.Forms.TrackBar();
+												this.MapPage = new System.Windows.Forms.TabPage();
+												this.MainMap = new GMap.NET.WindowsForms.GMapControl();
 												((System.ComponentModel.ISupportInitialize)(this.barChart)).BeginInit();
 												this.PageTableLayout.SuspendLayout();
 												this.LeftFlowLayout.SuspendLayout();
@@ -87,36 +89,37 @@
 												this.GPSPageTableLayout.SuspendLayout();
 												this.ButtonControlsTableLayout.SuspendLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).BeginInit();
+												this.MapPage.SuspendLayout();
 												this.SuspendLayout();
 												// 
 												// barChart
 												// 
-												chartArea4.Name = "ChartArea1";
-												this.barChart.ChartAreas.Add(chartArea4);
+												chartArea2.Name = "ChartArea1";
+												this.barChart.ChartAreas.Add(chartArea2);
 												this.barChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												legend4.Name = "Legend1";
-												this.barChart.Legends.Add(legend4);
+												legend2.Name = "Legend1";
+												this.barChart.Legends.Add(legend2);
 												this.barChart.Location = new System.Drawing.Point(3, 3);
 												this.barChart.Name = "barChart";
-												series10.ChartArea = "ChartArea1";
-												series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series10.Color = System.Drawing.Color.Blue;
-												series10.IsXValueIndexed = true;
-												series10.Legend = "Legend1";
-												series10.Name = "On Time";
-												series11.ChartArea = "ChartArea1";
-												series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series11.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-												series11.Legend = "Legend1";
-												series11.Name = "Late";
-												series12.ChartArea = "ChartArea1";
-												series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series12.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-												series12.Legend = "Legend1";
-												series12.Name = "Early";
-												this.barChart.Series.Add(series10);
-												this.barChart.Series.Add(series11);
-												this.barChart.Series.Add(series12);
+												series4.ChartArea = "ChartArea1";
+												series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series4.Color = System.Drawing.Color.Blue;
+												series4.IsXValueIndexed = true;
+												series4.Legend = "Legend1";
+												series4.Name = "On Time";
+												series5.ChartArea = "ChartArea1";
+												series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series5.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+												series5.Legend = "Legend1";
+												series5.Name = "Late";
+												series6.ChartArea = "ChartArea1";
+												series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series6.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+												series6.Legend = "Legend1";
+												series6.Name = "Early";
+												this.barChart.Series.Add(series4);
+												this.barChart.Series.Add(series5);
+												this.barChart.Series.Add(series6);
 												this.barChart.Size = new System.Drawing.Size(756, 393);
 												this.barChart.TabIndex = 0;
 												this.barChart.Text = "chart1";
@@ -190,6 +193,7 @@
 												this.TabControl.Controls.Add(this.BarChartTab);
 												this.TabControl.Controls.Add(this.CircularChartTab);
 												this.TabControl.Controls.Add(this.GPSPage);
+												this.TabControl.Controls.Add(this.MapPage);
 												this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 												this.TabControl.Location = new System.Drawing.Point(3, 3);
 												this.TabControl.Name = "TabControl";
@@ -536,6 +540,43 @@
 												this.IntervalSlider.Value = 100;
 												this.IntervalSlider.ValueChanged += new System.EventHandler(this.IntervalSlider_ValueChanged);
 												// 
+												// MapPage
+												// 
+												this.MapPage.Controls.Add(this.MainMap);
+												this.MapPage.Location = new System.Drawing.Point(4, 22);
+												this.MapPage.Name = "MapPage";
+												this.MapPage.Size = new System.Drawing.Size(768, 505);
+												this.MapPage.TabIndex = 3;
+												this.MapPage.Text = "Map";
+												this.MapPage.UseVisualStyleBackColor = true;
+												// 
+												// MainMap
+												// 
+												this.MainMap.Bearing = 0F;
+												this.MainMap.CanDragMap = true;
+												this.MainMap.Dock = System.Windows.Forms.DockStyle.Fill;
+												this.MainMap.EmptyTileColor = System.Drawing.Color.Navy;
+												this.MainMap.GrayScaleMode = false;
+												this.MainMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+												this.MainMap.LevelsKeepInMemmory = 5;
+												this.MainMap.Location = new System.Drawing.Point(0, 0);
+												this.MainMap.MarkersEnabled = true;
+												this.MainMap.MaxZoom = 2;
+												this.MainMap.MinZoom = 2;
+												this.MainMap.MouseWheelZoomEnabled = true;
+												this.MainMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+												this.MainMap.Name = "MainMap";
+												this.MainMap.NegativeMode = false;
+												this.MainMap.PolygonsEnabled = true;
+												this.MainMap.RetryLoadTile = 0;
+												this.MainMap.RoutesEnabled = true;
+												this.MainMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+												this.MainMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+												this.MainMap.ShowTileGridLines = false;
+												this.MainMap.Size = new System.Drawing.Size(768, 505);
+												this.MainMap.TabIndex = 0;
+												this.MainMap.Zoom = 0D;
+												// 
 												// DataVizPage
 												// 
 												this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -568,6 +609,7 @@
 												this.ButtonControlsTableLayout.ResumeLayout(false);
 												this.ButtonControlsTableLayout.PerformLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).EndInit();
+												this.MapPage.ResumeLayout(false);
 												this.ResumeLayout(false);
 
 								}
@@ -611,6 +653,8 @@
 								private System.Windows.Forms.Label TimeLabel;
 								private System.Windows.Forms.Label DateLabel;
 								private System.Windows.Forms.TrackBar IntervalSlider;
+								private System.Windows.Forms.TabPage MapPage;
+								private GMap.NET.WindowsForms.GMapControl MainMap;
 				}
 }
 

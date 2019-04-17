@@ -1,4 +1,6 @@
-﻿using Kitware.VTK;
+﻿using GMap.NET;
+using GMap.NET.MapProviders;
+using Kitware.VTK;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,114 +13,154 @@ namespace TransViz
 				{
 
 								string folderPath;
-								private Dictionary<string, SortedSet<Arrival>> arrivalsByLine = new Dictionary<string, SortedSet<Arrival>>();
 
-								private SortedSet<Coordinate> coordinates = new SortedSet<Coordinate>(new ByCoordinate());
+								private List<string> lineNames = new List<string>()
+								{   "Red",
+												"747",
+												"1",
+												"Green-B",
+												"Green-C",
+												"Green-D",
+												"Green-E"
+								};
+								private Dictionary<string, Line> lines = new Dictionary<string, Line>();
 
 								public DataVizPage()
 								{
 												this.InitializeComponent();
 
 												this.barChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0} %";
+
+												InitializeMap();
+								}
+
+								private void InitializeMap()
+								{
+												try
+												{
+																System.Net.IPHostEntry e =
+																					System.Net.Dns.GetHostEntry("www.google.com");
+												}
+												catch
+												{
+																MainMap.Manager.Mode = AccessMode.CacheOnly;
+																MessageBox.Show("No internet connection avaible, going to CacheOnly mode.",
+																						"GMap.NET - Demo.WindowsForms", MessageBoxButtons.OK,
+																						MessageBoxIcon.Warning);
+												}
+
+												// config map
+												MainMap.MapProvider = GMapProviders.GoogleMap;
+												MainMap.Position = new PointLatLng(54.6961334816182, 25.2985095977783);
+												MainMap.MinZoom = 0;
+												MainMap.MaxZoom = 24;
+												MainMap.Zoom = 9;
 								}
 
 								#region Data
 
 								private void LoadData()
 								{
-												this.AddLine("Red_routeAdhrence.csv", "Red");
-												this.AddLine("747_routeAdhrence.csv", "747");
-												this.AddLine("1_routeAdhrence.csv", "1");
-												this.AddLine("Green-B_routeAdhrence.csv", "Green-B");
-												this.AddLine("Green-C_routeAdhrence.csv", "Green-C");
-												this.AddLine("Green-D_routeAdhrence.csv", "Green-D");
-												this.AddLine("Green-E_routeAdhrence.csv", "Green-E");
-
-												this.AddLocation("vehicleLocation.csv");
+												foreach (string lineName in lineNames)
+																this.AddLine(lineName);
 
 												circularChartLoaded = false;
 												gpsChartTabLoaded = false;
-
 								}
 
-								private void AddLocation(string fileName)
+								private void AddLocation(SortedSet<Coordinate> coordinatesDirection0, SortedSet<Coordinate> coordinatesDirection1, string fileLine, string lineName)
 								{
-												string[] lines = System.IO.File.ReadAllLines(this.folderPath + "\\" + fileName);
+												string[] parts = fileLine.Split(';');
+												if (parts.Length != 7)
+																return;
 
-												foreach (string line in lines)
+												string route = parts[4];
+												int direction;
+
+												try
 												{
-																string[] parts = line.Split(';');
-																if (parts.Length != 7)
-																				continue;
-
-																string route = parts[4];
-																int direction;
-
-																try
-																{
-																				direction = int.Parse(parts[5]);
-																}
-																catch
-																{
-																				continue;
-																}
-
-																if (!(route.Equals("Red") && direction == 1))
-																				continue;
-
-																DateTime time;
-																float latitude, longitude;
-																string vehicleID = parts[0];
-
-																try
-																{
-																				time = DateTime.Parse(parts[1]);
-																				latitude = float.Parse(parts[2], CultureInfo.InvariantCulture);
-																				longitude = float.Parse(parts[3], CultureInfo.InvariantCulture);
-
-																				coordinates.Add(new Coordinate(vehicleID, latitude, longitude, time));
-																}
-																catch
-																{
-																				continue;
-																}
-
+																direction = int.Parse(parts[5]);
+												}
+												catch
+												{
+																return;
 												}
 
+												if (!route.Equals(lineName))
+																return;
+
+												DateTime time;
+												float latitude, longitude;
+												string vehicleID = parts[0];
+
+												try
+												{
+																time = DateTime.Parse(parts[1]);
+																latitude = float.Parse(parts[2], CultureInfo.InvariantCulture);
+																longitude = float.Parse(parts[3], CultureInfo.InvariantCulture);
+
+
+																if(direction == 1)
+																				coordinatesDirection1.Add(new Coordinate(vehicleID, latitude, longitude, time));
+																else if(direction == 0)
+																				coordinatesDirection0.Add(new Coordinate(vehicleID, latitude, longitude, time));
+
+												}
+												catch
+												{
+																return;
+												}
 
 								}
-								private void AddLine(string fileName, string lineName)
+
+								private void AddArrival(SortedSet<Arrival> arrivals, string fileLine)
 								{
-												string[] lines = System.IO.File.ReadAllLines(this.folderPath + "\\" + fileName);
+												string[] parts = fileLine.Split(';');
+
+												if (parts.Length != 5)
+																return;
+
+												string scheduledString = parts[3];
+												string actualString = parts[4];
+
+												if (scheduledString == "undefined" || scheduledString == "null" || actualString == "undefined" || actualString == "null")
+																return;
+												try
+												{
+																DateTime scheduled = DateTime.Parse(parts[3]);
+																DateTime actual = DateTime.Parse(parts[4]);
+
+																arrivals.Add(new Arrival(scheduled, actual));
+												}
+												catch
+												{
+												}
+								}
+
+								private void AddLine(string lineName)
+								{
+												string adherenceFileName = lineName + "_routeAdhrence.csv";
+
+												string[] adhrenceFileLines = System.IO.File.ReadAllLines(this.folderPath + "\\" + adherenceFileName);
 
 												SortedSet<Arrival> arrivals = new SortedSet<Arrival>(new ByArrival());
+												foreach (string fileLine in adhrenceFileLines)
+																AddArrival(arrivals, fileLine);
 
-												foreach (string line in lines)
-												{
-																string[] parts = line.Split(';');
 
-																if (parts.Length != 5)
-																				continue;
 
-																string scheduledString = parts[3];
-																string actualString = parts[4];
+												string[] locationFileLines = System.IO.File.ReadAllLines(this.folderPath + "\\" + "vehicleLocation.csv");
 
-																if (scheduledString == "undefined" || scheduledString == "null" || actualString == "undefined" || actualString == "null")
-																				continue;
-																try
-																{
-																				DateTime scheduled = DateTime.Parse(parts[3]);
-																				DateTime actual = DateTime.Parse(parts[4]);
+												SortedSet<Coordinate> coordinatesDirection0 = new SortedSet<Coordinate>(new ByCoordinate());
+												SortedSet<Coordinate> coordinatesDirection1 = new SortedSet<Coordinate>(new ByCoordinate());
 
-																				arrivals.Add(new Arrival(scheduled, actual));
-																}
-																catch
-																{
-																				continue;
-																}
-												}
+												foreach (string fileLine in locationFileLines)
+																AddLocation(coordinatesDirection0, coordinatesDirection1, fileLine, lineName);
 
-												this.arrivalsByLine.Add(lineName, arrivals);
+												//this.arrivalsByLine.Add(lineName, arrivals);
+												//this.coordinates = coordinatesDirection1;
+
+												this.lines.Add(lineName, new Line(lineName, arrivals, coordinatesDirection0, coordinatesDirection1));
 								}
 
 								private void ChooseFolder_Click(object sender, EventArgs e)
@@ -172,13 +214,13 @@ namespace TransViz
 												this.barChart.Series["Late"].Points.Clear();
 												this.barChart.Series["Early"].Points.Clear();
 
-												foreach (string line in this.arrivalsByLine.Keys)
-																this.RefreshLine(line);
+												foreach (string lineName in this.lines.Keys)
+																this.RefreshLine(lineName);
 								}
 
-								private void RefreshLine(string line)
+								private void RefreshLine(string lineName)
 								{
-												SortedSet<Arrival> arrivals = this.arrivalsByLine[line];
+												SortedSet<Arrival> arrivals = this.lines[lineName].Arrivals;
 
 												int earlyArrivals = 0;
 												int onTimeArrivals = 0;
@@ -198,9 +240,9 @@ namespace TransViz
 
 												int totalArrivals = earlyArrivals + onTimeArrivals + lateArrivals;
 
-												this.barChart.Series["On Time"].Points.AddXY(line, (double)onTimeArrivals / totalArrivals * 100);
-												this.barChart.Series["Late"].Points.AddXY(line, (double)lateArrivals / totalArrivals * 100);
-												this.barChart.Series["Early"].Points.AddXY(line, (double)earlyArrivals / totalArrivals * 100);
+												this.barChart.Series["On Time"].Points.AddXY(lineName, (double)onTimeArrivals / totalArrivals * 100);
+												this.barChart.Series["Late"].Points.AddXY(lineName, (double)lateArrivals / totalArrivals * 100);
+												this.barChart.Series["Early"].Points.AddXY(lineName, (double)earlyArrivals / totalArrivals * 100);
 
 								}
 
@@ -225,14 +267,16 @@ namespace TransViz
 								private void DrawSelectedLineCircular()
 								{
 												if (!string.IsNullOrEmpty(this.circularChartSelectedLine))
-																this.DrawSectors(new DateTime(2019, 1, 14), 5, this.arrivalsByLine[this.circularChartSelectedLine]);
+																this.DrawSectors(new DateTime(2019, 1, 14), 5, this.lines[this.circularChartSelectedLine]);
 												vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
 												RenderWindowCircularChart.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
 												this.RenderWindowCircularChart.Refresh();
 								}
 
-								private void DrawSectors(DateTime startDate, int numDays, SortedSet<Arrival> arrivals)
+								private void DrawSectors(DateTime startDate, int numDays, Line line)
 								{
+												SortedSet<Arrival> arrivals = line.Arrivals;
+
 												for (int day = 0; day < numDays; ++day)
 												{
 																DateTime nextDay = startDate.AddDays(1);
@@ -369,12 +413,12 @@ namespace TransViz
 												if (!this.circularChartLoaded)
 												{
 																bool selectedFirst = false;
-																foreach (string line in this.arrivalsByLine.Keys)
+																foreach (string lineName in this.lines.Keys)
 																{
 																				RadioButton radioButton = new RadioButton
 																				{
-																								Name = line,
-																								Text = line,
+																								Name = lineName,
+																								Text = lineName,
 																								AutoSize = true,
 																								Parent = this.CircularChartCenterFlow
 																				};
@@ -383,7 +427,7 @@ namespace TransViz
 																				{
 																								radioButton.Checked = true;
 																								selectedFirst = true;
-																								this.circularChartSelectedLine = line;
+																								this.circularChartSelectedLine = lineName;
 																				}
 																				radioButton.CheckedChanged += this.CircularChartLineChanged;
 
@@ -404,7 +448,18 @@ namespace TransViz
 								DateTime startDate = new DateTime(2019, 1, 10);
 								float step = 2;
 
-								private List<vtkActor> DrawLineSectors()
+								private List<vtkActor> DrawLineSectors(string lineName)
+								{
+												Line line = lines[lineName];
+
+												List<vtkActor> actors = new List<vtkActor>();
+												actors.AddRange(DrawDirection(line.CoordinatesDirection0, 0.5f));
+												actors.AddRange(DrawDirection(line.CoordinatesDirection1, -0.5f));
+
+												return actors;
+								}
+
+								private List<vtkActor> DrawDirection(SortedSet<Coordinate> coordinates, float yOffset)
 								{
 												DateTime endDate = startDate.AddMinutes(step);
 												SortedSet<Coordinate> subset = coordinates.GetViewBetween(new Coordinate(startDate), new Coordinate(endDate));
@@ -414,7 +469,8 @@ namespace TransViz
 												{
 																bool insert = true;
 																foreach (Coordinate coord2 in noDuplicates)
-																				if (coord.VehicleID.Equals(coord2.VehicleID)){
+																				if (coord.VehicleID.Equals(coord2.VehicleID))
+																				{
 																								insert = false;
 																								break;
 																				}
@@ -446,15 +502,13 @@ namespace TransViz
 
 																Color color;
 
-
-																Console.WriteLine("Size: " + size + " | Max: " + maxUnreasonableDist + " | Min: " + minUnreasonableDist);
-
 																if (first)
 																{
 																				first = false;
 																				color = Color.GRAY;
 																}
-																else {
+																else
+																{
 																				if (size > maxUnreasonableDist || size < minUnreasonableDist)
 																								color = Color.RED;
 																				else if (size > maxAcceptableDist || size < minAcceptableDist)
@@ -462,31 +516,31 @@ namespace TransViz
 																				else
 																								color = Color.GREEN;
 																}
-																actors.Add(DrawLineSector(curX, (float)size, color));
-																actors.Add(DrawIndicatorLine(curX));
+																actors.Add(DrawLineSector(curX, yOffset, (float)size, color));
+																actors.Add(DrawIndicatorLine(curX, yOffset));
 																curX = Constants.TUBE_START_X + (float)distToOrigin;
 												}
 												{
 																double size = (Constants.TUBE_START_X + Constants.TUBE_SIZE) - curX;
 
-																actors.Add(DrawLineSector(curX, (float)size, Color.GRAY));
-																actors.Add(DrawIndicatorLine(curX));
+																actors.Add(DrawLineSector(curX, yOffset, (float)size, Color.GRAY));
+																actors.Add(DrawIndicatorLine(curX, yOffset));
 
 																curX = (Constants.TUBE_START_X + Constants.TUBE_SIZE);
-																actors.Add(DrawIndicatorLine(curX));
+																actors.Add(DrawIndicatorLine(curX, yOffset));
 
 												}
 
 												return actors;
 								}
 
-								private vtkActor DrawIndicatorLine(float curX)
+								private vtkActor DrawIndicatorLine(float curX, float yOffset)
 								{
 												// Create a line.  
 												vtkLineSource lineSource = vtkLineSource.New();
 												// Create two points, P0 and P1
-												double[] p0 = new double[] { curX, - Constants.INDICATOR_LINE_OFFSET, 0.0 };
-												double[] p1 = new double[] { curX, Constants.INDICATOR_LINE_OFFSET, 0.0 };
+												double[] p0 = new double[] { curX, -Constants.INDICATOR_LINE_OFFSET + yOffset, 0.0 };
+												double[] p1 = new double[] { curX, Constants.INDICATOR_LINE_OFFSET + yOffset, 0.0 };
 
 												lineSource.SetPoint1(p0[0], p0[1], p0[2]);
 												lineSource.SetPoint2(p1[0], p1[1], p1[2]);
@@ -533,13 +587,13 @@ namespace TransViz
 								//				return textActor;
 								//}
 
-								private vtkActor DrawLineSector(float startX, float size, Color color)
+								private vtkActor DrawLineSector(float startX, float yOffset, float size, Color color)
 								{
 												// Create a line.  
 												vtkLineSource lineSource = vtkLineSource.New();
 												// Create two points, P0 and P1
-												double[] p0 = new double[] { startX, 0.0, 0.0 };
-												double[] p1 = new double[] { startX + size, 0.0, 0.0 };
+												double[] p0 = new double[] { startX, yOffset, 0.0 };
+												double[] p1 = new double[] { startX + size, yOffset, 0.0 };
 
 												lineSource.SetPoint1(p0[0], p0[1], p0[2]);
 												lineSource.SetPoint2(p1[0], p1[1], p1[2]);
@@ -564,14 +618,17 @@ namespace TransViz
 
 								private void DrawSelectedLineGPS()
 								{
-												
+
+												if (lines.Count == 0)
+																return;
+
 												vtkRenderWindow renderWindow = RenderWindowGPS.RenderWindow;
 												vtkRenderer renderer = renderWindow.GetRenderers().GetFirstRenderer();
 												renderer.SetBackground(0.2, 0.3, 0.4);
 
 												renderer.RemoveAllViewProps();
 
-												foreach(vtkActor actor in DrawLineSectors())
+												foreach (vtkActor actor in DrawLineSectors("Red"))
 																renderer.AddActor(actor);
 
 								}

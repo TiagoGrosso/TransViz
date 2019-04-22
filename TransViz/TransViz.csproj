@@ -123,17 +123,11 @@
       <DependentUpon>DataVizPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Objects\Arrival.cs" />
-    <Compile Include="Objects\Constants.cs" />
+    <Compile Include="Objects\Helper.cs" />
     <Compile Include="Objects\Coordinate.cs" />
     <Compile Include="Objects\Line.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VTKTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="VTKTest.Designer.cs">
-      <DependentUpon>VTKTest.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="DataVizPage.resx">
       <DependentUpon>DataVizPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -146,9 +140,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="VTKTest.resx">
-      <DependentUpon>VTKTest.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

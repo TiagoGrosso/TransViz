@@ -69,7 +69,6 @@ C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\msvcm90.dll
 C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\msvcp90.dll
 C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\msvcr90.dll
 C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.csproj.CopyComplete
-C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.VTKTest.resources
 C:\Users\Utilizador\source\repos\TransViz\TransViz\obj\Debug\TransViz.DataVizPage.resources
 C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\EntityFramework.dll
 C:\Users\Utilizador\source\repos\TransViz\TransViz\bin\Debug\EntityFramework.SqlServer.dll

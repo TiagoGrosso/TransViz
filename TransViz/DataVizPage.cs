@@ -11,7 +11,7 @@ namespace TransViz
 {
 				public partial class DataVizPage : Form
 				{
-								
+
 								string folderPath;
 
 
@@ -101,9 +101,9 @@ namespace TransViz
 																longitude = float.Parse(parts[3], CultureInfo.InvariantCulture);
 
 
-																if(direction == 1)
+																if (direction == 1)
 																				coordinatesDirection1.Add(new Coordinate(vehicleID, latitude, longitude, time));
-																else if(direction == 0)
+																else if (direction == 0)
 																				coordinatesDirection0.Add(new Coordinate(vehicleID, latitude, longitude, time));
 
 												}
@@ -267,30 +267,53 @@ namespace TransViz
 
 								private void DrawSelectedLineCircular()
 								{
+												List<vtkActor> actors = new List<vtkActor>();
+
 												if (!string.IsNullOrEmpty(this.circularChartSelectedLine))
-																this.DrawSectors(new DateTime(2019, 1, 14), 5, this.lines[this.circularChartSelectedLine]);
+																actors.AddRange(this.DrawSectors(new DateTime(2019, 1, 14), 5, this.lines[this.circularChartSelectedLine]));
+
+												vtkRenderWindow renderWindow = this.RenderWindowCircularChart.RenderWindow;
+
 												vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
-												RenderWindowCircularChart.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
-												this.RenderWindowCircularChart.Refresh();
+												renderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
+
+												vtkRenderer renderer = renderer = renderWindow.GetRenderers().GetFirstRenderer();
+												renderer.SetBackground(0.2, 0.3, 0.4);
+
+												renderer.Clear();
+												this.RenderWindowCircularChart.Invalidate();
+
+
+												foreach (vtkActor actor in actors)
+																renderer.AddActor(actor);
+
+												this.RenderWindowCircularChart.Update();
+
 								}
 
-								private void DrawSectors(DateTime startDate, int numDays, Line line)
+								private List<vtkActor> DrawSectors(DateTime startDate, int numDays, Line line)
 								{
+
+												List<vtkActor> actors = new List<vtkActor>();
 												SortedSet<Arrival> arrivals = line.Arrivals;
 
 												for (int day = 0; day < numDays; ++day)
 												{
 																DateTime nextDay = startDate.AddDays(1);
 
-																this.DrawSector(startDate, day, arrivals);
+																actors.AddRange(this.DrawSector(startDate, day, arrivals));
 
 																startDate = nextDay;
 												}
 
+												return actors;
 								}
 
-								private void DrawSector(DateTime startDate, int day, SortedSet<Arrival> arrivals)
+								private List<vtkActor> DrawSector(DateTime startDate, int day, SortedSet<Arrival> arrivals)
 								{
+												List<vtkActor> actors = new List<vtkActor>();
+
+
 												float minutesInterval = 24f * 60f / Constants.NUM_SECTORS;
 												float sectorAngle = 360f / Constants.NUM_SECTORS;
 
@@ -316,13 +339,15 @@ namespace TransViz
 
 																}
 
-																this.CreateDiskSector(Constants.FIRST_INNER_RADIUS + (day * (Constants.DISK_RADIUS + Constants.DISK_SEPARATOR_RADIUS)), Constants.DISK_RADIUS, 270 + sectorAngle * i, sectorAngle, r, g, 0.2f);
+																actors.Add(this.CreateDiskSector(Constants.FIRST_INNER_RADIUS + (day * (Constants.DISK_RADIUS + Constants.DISK_SEPARATOR_RADIUS)), Constants.DISK_RADIUS, 270 + sectorAngle * i, sectorAngle, r, g, 0.2f));
 
 																startDate = nextSector;
 												}
+
+												return actors;
 								}
 
-								private void CreateDiskSector(double innerRadius, double radius, double startAngle, double arcAngle, float r, float g, float b)
+								private vtkActor CreateDiskSector(double innerRadius, double radius, double startAngle, double arcAngle, float r, float g, float b)
 								{
 												startAngle = 360 - startAngle;
 												arcAngle = 360 - arcAngle;
@@ -336,10 +361,10 @@ namespace TransViz
 												double clip2X = Math.Cos(Math.PI / 2 + finalAngle);
 												double clip2Y = Math.Sin(Math.PI / 2 + finalAngle);
 
-												this.DiskSector(innerRadius, radius, clip1X, clip1Y, clip2X, clip2Y, r, g, b);
+												return this.DiskSector(innerRadius, radius, clip1X, clip1Y, clip2X, clip2Y, r, g, b);
 								}
 
-								private void DiskSector(double innerRadius, double radius, double clip1X, double clip1Y, double clip2X, double clip2Y, float r, float g, float b)
+								private vtkActor DiskSector(double innerRadius, double radius, double clip1X, double clip1Y, double clip2X, double clip2Y, float r, float g, float b)
 								{
 
 												vtkProperty arcColor = vtkProperty.New();
@@ -370,6 +395,7 @@ namespace TransViz
 												clipper2.SetInputConnection(clipper.GetOutputPort());
 												clipper2.SetClipFunction(clipPlane2);
 
+
 												// Visualize
 												vtkPolyDataMapper mapper = vtkPolyDataMapper.New();
 												mapper.SetInputConnection(clipper2.GetOutputPort());
@@ -379,11 +405,8 @@ namespace TransViz
 												actor.SetMapper(mapper);
 												actor.SetProperty(arcColor);
 
-												vtkRenderWindow renderWindow = this.RenderWindowCircularChart.RenderWindow;
 
-												vtkRenderer renderer = renderer = renderWindow.GetRenderers().GetFirstRenderer();
-												renderer.SetBackground(0.2, 0.3, 0.4);
-												renderer.AddActor(actor);
+												return actor;
 								}
 
 								private void CircularChartLineChanged(object sender, EventArgs e)
@@ -397,6 +420,7 @@ namespace TransViz
 																								radioButton.Checked = false;
 																}
 																this.circularChartSelectedLine = newSelected.Name;
+
 																this.DrawSelectedLineCircular();
 												}
 								}
@@ -448,6 +472,7 @@ namespace TransViz
 
 								DateTime startDate = new DateTime(2019, 1, 10);
 								float step = 2;
+								private string GPSChartSelectedLine;
 
 								private List<vtkActor> DrawLineSectors(string lineName)
 								{
@@ -623,14 +648,20 @@ namespace TransViz
 												if (lines.Count == 0)
 																return;
 
+												Console.WriteLine("HELLO");
+
+
 												vtkRenderWindow renderWindow = RenderWindowGPS.RenderWindow;
 												vtkRenderer renderer = renderWindow.GetRenderers().GetFirstRenderer();
 												renderer.SetBackground(0.2, 0.3, 0.4);
 
 												renderer.RemoveAllViewProps();
+												renderer.Clear();
 
-												foreach (vtkActor actor in DrawLineSectors("Red"))
+												foreach (vtkActor actor in DrawLineSectors(this.GPSChartSelectedLine))
 																renderer.AddActor(actor);
+
+												RenderWindowGPS.Invalidate();
 
 								}
 
@@ -646,12 +677,52 @@ namespace TransViz
 																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
 																RenderWindowGPS.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
 
+
+																bool selectedFirst = false;
+																foreach (string lineName in this.lines.Keys)
+																{
+																				RadioButton radioButton = new RadioButton
+																				{
+																								Name = lineName,
+																								Text = lineName,
+																								AutoSize = true,
+																								Parent = this.GPSPageRadioButtonFlow
+																				};
+
+																				if (!selectedFirst)
+																				{
+																								radioButton.Checked = true;
+																								selectedFirst = true;
+																								this.GPSChartSelectedLine = lineName;
+																				}
+																				radioButton.CheckedChanged += this.GPSChartLineChanged;
+
+																}
+
+																this.gpsChartTabLoaded = true;
 																this.DrawSelectedLineGPS();
 																RenderWindowGPS.Refresh();
 
-																this.gpsChartTabLoaded = true;
 												}
 
+								}
+
+								private void GPSChartLineChanged(object sender, EventArgs e)
+								{
+
+
+												RadioButton newSelected = (RadioButton)sender;
+												if (newSelected.Checked == true)
+												{
+																foreach (RadioButton radioButton in this.GPSPageRadioButtonFlow.Controls)
+																{
+																				if (radioButton != newSelected)
+																								radioButton.Checked = false;
+																}
+																this.GPSChartSelectedLine = newSelected.Name;
+
+																this.DrawSelectedLineGPS();
+												}
 								}
 
 								private void SetFrameTime()
@@ -664,7 +735,7 @@ namespace TransViz
 								{
 												startDate = startDate.AddMinutes(sign * step);
 												gpsChartTabLoaded = false;
-												DrawGPSChartTab();
+												DrawSelectedLineGPS();
 								}
 
 								private void NextFrame_Click(object sender, EventArgs e)
@@ -702,6 +773,8 @@ namespace TransViz
 								{
 												SetFrameTime();
 								}
+
+
 				}
 
 				#endregion

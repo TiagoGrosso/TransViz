@@ -20,13 +20,21 @@ namespace TransViz.Objects
 								public SortedSet<Coordinate> CoordinatesDirection1 {
 												get; private set;
 								}
+								public Coordinate firstStation {
+												get; private set;
+								}
+								public Coordinate lastStation {
+												get; private set;
+								}
 
-								public Line(string name, SortedSet<Arrival> arrivals, SortedSet<Coordinate> coordinatesDirection0, SortedSet<Coordinate> coordinatesDirection1)
+								public Line(string name, SortedSet<Arrival> arrivals, SortedSet<Coordinate> coordinatesDirection0, SortedSet<Coordinate> coordinatesDirection1, Coordinate firstStation, Coordinate lastStation)
 								{
 												this.Name = name;
 												this.Arrivals = arrivals;
 												this.CoordinatesDirection0 = coordinatesDirection0;
 												this.CoordinatesDirection1 = coordinatesDirection1;
+												this.firstStation = firstStation;
+												this.lastStation = lastStation;
 								}
 				}
 }

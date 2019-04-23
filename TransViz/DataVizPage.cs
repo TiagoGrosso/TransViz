@@ -4,6 +4,7 @@ using Kitware.VTK;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 using System.Windows.Forms;
 using TransViz.Objects;
 
@@ -33,6 +34,9 @@ namespace TransViz
 												this.barChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0} %";
 
 												InitializeMap();
+
+
+
 								}
 
 								private void InitializeMap()
@@ -158,10 +162,29 @@ namespace TransViz
 												foreach (string fileLine in locationFileLines)
 																AddLocation(coordinatesDirection0, coordinatesDirection1, fileLine, lineName);
 
-												//this.arrivalsByLine.Add(lineName, arrivals);
-												//this.coordinates = coordinatesDirection1;
+												Coordinate[] firstLastStation = GetFirstLastStation(lineName);
 
-												this.lines.Add(lineName, new Line(lineName, arrivals, coordinatesDirection0, coordinatesDirection1));
+												Coordinate firstStation = firstLastStation[0];
+												Coordinate lastStation = firstLastStation[1];
+
+												this.lines.Add(lineName, new Line(lineName, arrivals, coordinatesDirection0, coordinatesDirection1, firstStation, lastStation));
+								}
+
+								private Coordinate[] GetFirstLastStation(string lineName)
+								{
+
+												lineName = lineName.Replace('-', '_');
+
+												string firstFieldName = "LINE_" + lineName.ToUpper() + "_START";
+												string lastFieldName = "LINE_" + lineName.ToUpper() + "_END";
+
+												Console.WriteLine(firstFieldName);
+												Console.WriteLine(lastFieldName);
+
+												Coordinate firstStation = (Coordinate)typeof(Constants).GetField(firstFieldName).GetValue(null);
+												Coordinate lastStation = (Coordinate)typeof(Constants).GetField(lastFieldName).GetValue(null);
+
+												return new Coordinate[2] { firstStation, lastStation };
 								}
 
 								private void ChooseFolder_Click(object sender, EventArgs e)
@@ -479,18 +502,18 @@ namespace TransViz
 												Line line = lines[lineName];
 
 												List<vtkActor> actors = new List<vtkActor>();
-												actors.AddRange(DrawDirection(line.CoordinatesDirection0, 0.5f));
-												actors.AddRange(DrawDirection(line.CoordinatesDirection1, -0.5f));
+												actors.AddRange(DrawDirection(line.CoordinatesDirection0, 0.5f, line.firstStation, line.lastStation));
+												actors.AddRange(DrawDirection(line.CoordinatesDirection1, -0.5f, line.firstStation, line.lastStation));
 
 												return actors;
 								}
 
-								private List<vtkActor> DrawDirection(SortedSet<Coordinate> coordinates, float yOffset)
+								private List<vtkActor> DrawDirection(SortedSet<Coordinate> coordinates, float yOffset, Coordinate start, Coordinate end)
 								{
 												DateTime endDate = startDate.AddMinutes(step);
 												SortedSet<Coordinate> subset = coordinates.GetViewBetween(new Coordinate(startDate), new Coordinate(endDate));
 
-												SortedSet<Coordinate> noDuplicates = new SortedSet<Coordinate>(new ByDist(Constants.RED_LINE_START));
+												SortedSet<Coordinate> noDuplicates = new SortedSet<Coordinate>(new ByDist(start));
 												foreach (Coordinate coord in subset)
 												{
 																bool insert = true;
@@ -505,7 +528,7 @@ namespace TransViz
 																				noDuplicates.Add(coord);
 												}
 
-												double routeLength = Coordinate.CalcDist(Constants.RED_LINE_START, Constants.RED_LINE_END);
+												double routeLength = Coordinate.CalcDist(start, end);
 												double scale = Constants.TUBE_SIZE / routeLength;
 												float curX = Constants.TUBE_START_X;
 
@@ -523,7 +546,7 @@ namespace TransViz
 												foreach (Coordinate coord in noDuplicates)
 												{
 
-																double distToOrigin = Coordinate.CalcDist(Constants.RED_LINE_START, coord) * scale;
+																double distToOrigin = Coordinate.CalcDist(start, coord) * scale;
 																double size = Math.Abs(curX - (Constants.TUBE_START_X + distToOrigin));
 
 																Color color;
@@ -644,12 +667,10 @@ namespace TransViz
 
 								private void DrawSelectedLineGPS()
 								{
+												SetFrameTime();
 
 												if (lines.Count == 0)
 																return;
-
-												Console.WriteLine("HELLO");
-
 
 												vtkRenderWindow renderWindow = RenderWindowGPS.RenderWindow;
 												vtkRenderer renderer = renderWindow.GetRenderers().GetFirstRenderer();
@@ -670,8 +691,6 @@ namespace TransViz
 
 												if (!this.gpsChartTabLoaded)
 												{
-																DateLabel.Text = startDate.ToString("d");
-																TimeLabel.Text = startDate.ToString("t");
 																SetFrameTime();
 
 																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
@@ -727,6 +746,8 @@ namespace TransViz
 
 								private void SetFrameTime()
 								{
+												DateLabel.Text = startDate.ToString("d");
+												TimeLabel.Text = startDate.ToString("t");
 												StepLabel.Text = (IntervalSlider.Value / 1000f) + " seconds";
 												FrameTimer.Interval = IntervalSlider.Value;
 								}
@@ -734,6 +755,7 @@ namespace TransViz
 								private void DrawNextFrame(int sign)
 								{
 												startDate = startDate.AddMinutes(sign * step);
+
 												gpsChartTabLoaded = false;
 												DrawSelectedLineGPS();
 								}

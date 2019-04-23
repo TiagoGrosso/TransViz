@@ -26,11 +26,11 @@
 								private void InitializeComponent()
 								{
 												this.components = new System.ComponentModel.Container();
-												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-												System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-												System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+												System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+												System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
 												this.barChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
 												this.PageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.LeftFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
@@ -99,32 +99,32 @@
 												// 
 												// barChart
 												// 
-												chartArea1.Name = "ChartArea1";
-												this.barChart.ChartAreas.Add(chartArea1);
+												chartArea2.Name = "ChartArea1";
+												this.barChart.ChartAreas.Add(chartArea2);
 												this.barChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												legend1.Name = "Legend1";
-												this.barChart.Legends.Add(legend1);
+												legend2.Name = "Legend1";
+												this.barChart.Legends.Add(legend2);
 												this.barChart.Location = new System.Drawing.Point(3, 3);
 												this.barChart.Name = "barChart";
-												series1.ChartArea = "ChartArea1";
-												series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series1.Color = System.Drawing.Color.Blue;
-												series1.IsXValueIndexed = true;
-												series1.Legend = "Legend1";
-												series1.Name = "On Time";
-												series2.ChartArea = "ChartArea1";
-												series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-												series2.Legend = "Legend1";
-												series2.Name = "Late";
-												series3.ChartArea = "ChartArea1";
-												series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series3.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-												series3.Legend = "Legend1";
-												series3.Name = "Early";
-												this.barChart.Series.Add(series1);
-												this.barChart.Series.Add(series2);
-												this.barChart.Series.Add(series3);
+												series4.ChartArea = "ChartArea1";
+												series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series4.Color = System.Drawing.Color.Blue;
+												series4.IsXValueIndexed = true;
+												series4.Legend = "Legend1";
+												series4.Name = "On Time";
+												series5.ChartArea = "ChartArea1";
+												series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series5.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+												series5.Legend = "Legend1";
+												series5.Name = "Late";
+												series6.ChartArea = "ChartArea1";
+												series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series6.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+												series6.Legend = "Legend1";
+												series6.Name = "Early";
+												this.barChart.Series.Add(series4);
+												this.barChart.Series.Add(series5);
+												this.barChart.Series.Add(series6);
 												this.barChart.Size = new System.Drawing.Size(756, 393);
 												this.barChart.TabIndex = 0;
 												this.barChart.Text = "chart1";
@@ -501,10 +501,10 @@
 												// StepLabel
 												// 
 												this.StepLabel.AutoSize = true;
-												this.StepLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.StepLabel.Location = new System.Drawing.Point(254, 0);
+												this.StepLabel.Dock = System.Windows.Forms.DockStyle.Right;
+												this.StepLabel.Location = new System.Drawing.Point(470, 0);
 												this.StepLabel.Name = "StepLabel";
-												this.StepLabel.Size = new System.Drawing.Size(245, 42);
+												this.StepLabel.Size = new System.Drawing.Size(29, 42);
 												this.StepLabel.TabIndex = 4;
 												this.StepLabel.Text = "Step";
 												this.StepLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

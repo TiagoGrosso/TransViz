@@ -52,9 +52,26 @@ namespace TransViz.Objects
 								public const float ACCEPTABLE_DIST_SKEW = 0.2f;
 								public const float GRAVE_DIST_SKEW = 0.4f;
 
-								public static Coordinate RED_LINE_START = new Coordinate(42.2844f, -71.06369999999998f);
-								public static Coordinate RED_LINE_END = new Coordinate(42.3961388f, -71.1407727f);
+								public static Coordinate LINE_RED_START = new Coordinate(42.2844f, -71.06369999999998f);
+								public static Coordinate LINE_RED_END = new Coordinate(42.3961388f, -71.1407727f);
 
+								public static Coordinate LINE_747_START = new Coordinate(42.384035f, -71.076612f);
+								public static Coordinate LINE_747_END = new Coordinate(42.336647f, -71.089407f);
+
+								public static Coordinate LINE_1_START = new Coordinate(42.373366f, -71.118106f);
+								public static Coordinate LINE_1_END = new Coordinate(42.329789f, -71.083887f);
+
+								public static Coordinate LINE_GREEN_B_START = new Coordinate(42.340081f, -71.1689577f);
+								public static Coordinate LINE_GREEN_B_END = new Coordinate(42.356395f, -71.062424f);
+
+								public static Coordinate LINE_GREEN_C_START = new Coordinate(42.336142f, -71.149326f);
+								public static Coordinate LINE_GREEN_C_END = new Coordinate(42.365577f, -71.06129f);
+
+								public static Coordinate LINE_GREEN_D_START = new Coordinate(42.337059f, -71.251742f);
+								public static Coordinate LINE_GREEN_D_END = new Coordinate(42.359705f, -71.059215f);
+
+								public static Coordinate LINE_GREEN_E_START = new Coordinate(42.328316f, -71.110252f);
+								public static Coordinate LINE_GREEN_E_END = new Coordinate(42.370772f, -71.076536f);
 
 				}
 }

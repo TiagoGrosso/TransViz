@@ -26,17 +26,16 @@
 								private void InitializeComponent()
 								{
 												this.components = new System.ComponentModel.Container();
-												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-												System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-												System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+												System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+												System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
 												this.barChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
 												this.PageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.LeftFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
 												this.ChooseFolder = new System.Windows.Forms.Button();
-												this.TopMonthCalendar = new System.Windows.Forms.MonthCalendar();
-												this.BottomMonthCalendar = new System.Windows.Forms.MonthCalendar();
+												this.MonthCalendar = new System.Windows.Forms.MonthCalendar();
 												this.RightTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.TabControl = new System.Windows.Forms.TabControl();
 												this.BarChartTab = new System.Windows.Forms.TabPage();
@@ -69,10 +68,10 @@
 												this.MainMap = new GMap.NET.WindowsForms.GMapControl();
 												this.FilesFolder = new System.Windows.Forms.FolderBrowserDialog();
 												this.FrameTimer = new System.Windows.Forms.Timer(this.components);
-												this.TimeLabel = new System.Windows.Forms.Label();
 												this.DateLabel = new System.Windows.Forms.Label();
-												this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 												this.GPSPageRadioButtonFlow = new System.Windows.Forms.FlowLayoutPanel();
+												this.BarChartStopList = new System.Windows.Forms.CheckedListBox();
+												this.StartTime = new System.Windows.Forms.DateTimePicker();
 												((System.ComponentModel.ISupportInitialize)(this.barChart)).BeginInit();
 												this.PageTableLayout.SuspendLayout();
 												this.LeftFlowLayout.SuspendLayout();
@@ -94,37 +93,36 @@
 												this.ButtonControlsTableLayout.SuspendLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).BeginInit();
 												this.MapPage.SuspendLayout();
-												this.tableLayoutPanel1.SuspendLayout();
 												this.SuspendLayout();
 												// 
 												// barChart
 												// 
-												chartArea2.Name = "ChartArea1";
-												this.barChart.ChartAreas.Add(chartArea2);
+												chartArea3.Name = "ChartArea1";
+												this.barChart.ChartAreas.Add(chartArea3);
 												this.barChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												legend2.Name = "Legend1";
-												this.barChart.Legends.Add(legend2);
+												legend3.Name = "Legend1";
+												this.barChart.Legends.Add(legend3);
 												this.barChart.Location = new System.Drawing.Point(3, 3);
 												this.barChart.Name = "barChart";
-												series4.ChartArea = "ChartArea1";
-												series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series4.Color = System.Drawing.Color.Blue;
-												series4.IsXValueIndexed = true;
-												series4.Legend = "Legend1";
-												series4.Name = "On Time";
-												series5.ChartArea = "ChartArea1";
-												series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series5.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-												series5.Legend = "Legend1";
-												series5.Name = "Late";
-												series6.ChartArea = "ChartArea1";
-												series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series6.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-												series6.Legend = "Legend1";
-												series6.Name = "Early";
-												this.barChart.Series.Add(series4);
-												this.barChart.Series.Add(series5);
-												this.barChart.Series.Add(series6);
+												series7.ChartArea = "ChartArea1";
+												series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series7.Color = System.Drawing.Color.Blue;
+												series7.IsXValueIndexed = true;
+												series7.Legend = "Legend1";
+												series7.Name = "On Time";
+												series8.ChartArea = "ChartArea1";
+												series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series8.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+												series8.Legend = "Legend1";
+												series8.Name = "Late";
+												series9.ChartArea = "ChartArea1";
+												series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series9.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+												series9.Legend = "Legend1";
+												series9.Name = "Early";
+												this.barChart.Series.Add(series7);
+												this.barChart.Series.Add(series8);
+												this.barChart.Series.Add(series9);
 												this.barChart.Size = new System.Drawing.Size(756, 393);
 												this.barChart.TabIndex = 0;
 												this.barChart.Text = "chart1";
@@ -148,8 +146,8 @@
 												// 
 												this.LeftFlowLayout.Anchor = System.Windows.Forms.AnchorStyles.Top;
 												this.LeftFlowLayout.Controls.Add(this.ChooseFolder);
-												this.LeftFlowLayout.Controls.Add(this.TopMonthCalendar);
-												this.LeftFlowLayout.Controls.Add(this.BottomMonthCalendar);
+												this.LeftFlowLayout.Controls.Add(this.MonthCalendar);
+												this.LeftFlowLayout.Controls.Add(this.StartTime);
 												this.LeftFlowLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 												this.LeftFlowLayout.Location = new System.Drawing.Point(3, 3);
 												this.LeftFlowLayout.Name = "LeftFlowLayout";
@@ -161,23 +159,21 @@
 												this.ChooseFolder.Dock = System.Windows.Forms.DockStyle.Top;
 												this.ChooseFolder.Location = new System.Drawing.Point(3, 3);
 												this.ChooseFolder.Name = "ChooseFolder";
-												this.ChooseFolder.Size = new System.Drawing.Size(239, 114);
+												this.ChooseFolder.Size = new System.Drawing.Size(240, 114);
 												this.ChooseFolder.TabIndex = 2;
 												this.ChooseFolder.Text = "ChooseFolder";
 												this.ChooseFolder.UseVisualStyleBackColor = true;
 												this.ChooseFolder.Click += new System.EventHandler(this.ChooseFolder_Click);
 												// 
-												// TopMonthCalendar
+												// MonthCalendar
 												// 
-												this.TopMonthCalendar.Location = new System.Drawing.Point(9, 129);
-												this.TopMonthCalendar.Name = "TopMonthCalendar";
-												this.TopMonthCalendar.TabIndex = 0;
-												// 
-												// BottomMonthCalendar
-												// 
-												this.BottomMonthCalendar.Location = new System.Drawing.Point(9, 309);
-												this.BottomMonthCalendar.Name = "BottomMonthCalendar";
-												this.BottomMonthCalendar.TabIndex = 1;
+												this.MonthCalendar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.MonthCalendar.CalendarDimensions = new System.Drawing.Size(1, 2);
+												this.MonthCalendar.Location = new System.Drawing.Point(9, 129);
+												this.MonthCalendar.Name = "MonthCalendar";
+												this.MonthCalendar.ShowToday = false;
+												this.MonthCalendar.ShowTodayCircle = false;
+												this.MonthCalendar.TabIndex = 0;
 												// 
 												// RightTableLayout
 												// 
@@ -225,12 +221,14 @@
 												this.BarChartTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 												this.BarChartTableLayout.Controls.Add(this.barChart, 0, 0);
 												this.BarChartTableLayout.Controls.Add(this.BarChartBottomFlow, 0, 1);
+												this.BarChartTableLayout.Controls.Add(this.BarChartStopList, 0, 2);
 												this.BarChartTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
 												this.BarChartTableLayout.Location = new System.Drawing.Point(3, 3);
 												this.BarChartTableLayout.Name = "BarChartTableLayout";
-												this.BarChartTableLayout.RowCount = 2;
+												this.BarChartTableLayout.RowCount = 3;
 												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
 												this.BarChartTableLayout.Size = new System.Drawing.Size(762, 499);
 												this.BarChartTableLayout.TabIndex = 1;
 												// 
@@ -449,19 +447,18 @@
 												this.ButtonControlsTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 												this.ButtonControlsTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 												this.ButtonControlsTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+												this.ButtonControlsTableLayout.Controls.Add(this.DateLabel, 0, 0);
 												this.ButtonControlsTableLayout.Controls.Add(this.PreviousFrame, 0, 1);
 												this.ButtonControlsTableLayout.Controls.Add(this.PlayPause, 1, 1);
 												this.ButtonControlsTableLayout.Controls.Add(this.NextFrame, 2, 1);
 												this.ButtonControlsTableLayout.Controls.Add(this.StepLabel, 1, 0);
 												this.ButtonControlsTableLayout.Controls.Add(this.IntervalSlider, 2, 0);
-												this.ButtonControlsTableLayout.Controls.Add(this.tableLayoutPanel1, 0, 0);
 												this.ButtonControlsTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
 												this.ButtonControlsTableLayout.Location = new System.Drawing.Point(3, 33);
 												this.ButtonControlsTableLayout.Name = "ButtonControlsTableLayout";
 												this.ButtonControlsTableLayout.RowCount = 2;
 												this.ButtonControlsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 												this.ButtonControlsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-												this.ButtonControlsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 												this.ButtonControlsTableLayout.Size = new System.Drawing.Size(756, 85);
 												this.ButtonControlsTableLayout.TabIndex = 1;
 												// 
@@ -574,41 +571,16 @@
 												this.FrameTimer.Interval = 500;
 												this.FrameTimer.Tick += new System.EventHandler(this.FrameTimer_Tick);
 												// 
-												// TimeLabel
-												// 
-												this.TimeLabel.AutoSize = true;
-												this.TimeLabel.Dock = System.Windows.Forms.DockStyle.Left;
-												this.TimeLabel.Location = new System.Drawing.Point(125, 0);
-												this.TimeLabel.Name = "TimeLabel";
-												this.TimeLabel.Size = new System.Drawing.Size(30, 36);
-												this.TimeLabel.TabIndex = 5;
-												this.TimeLabel.Text = "Time";
-												this.TimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-												// 
 												// DateLabel
 												// 
 												this.DateLabel.AutoSize = true;
-												this.DateLabel.Dock = System.Windows.Forms.DockStyle.Right;
-												this.DateLabel.Location = new System.Drawing.Point(89, 0);
+												this.DateLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+												this.DateLabel.Location = new System.Drawing.Point(3, 0);
 												this.DateLabel.Name = "DateLabel";
-												this.DateLabel.Size = new System.Drawing.Size(30, 36);
+												this.DateLabel.Size = new System.Drawing.Size(245, 42);
 												this.DateLabel.TabIndex = 6;
 												this.DateLabel.Text = "Date";
 												this.DateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-												// 
-												// tableLayoutPanel1
-												// 
-												this.tableLayoutPanel1.ColumnCount = 2;
-												this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-												this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-												this.tableLayoutPanel1.Controls.Add(this.TimeLabel, 0, 0);
-												this.tableLayoutPanel1.Controls.Add(this.DateLabel, 0, 0);
-												this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-												this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-												this.tableLayoutPanel1.RowCount = 1;
-												this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-												this.tableLayoutPanel1.Size = new System.Drawing.Size(245, 36);
-												this.tableLayoutPanel1.TabIndex = 8;
 												// 
 												// GPSPageRadioButtonFlow
 												// 
@@ -619,10 +591,37 @@
 												this.GPSPageRadioButtonFlow.Size = new System.Drawing.Size(0, 0);
 												this.GPSPageRadioButtonFlow.TabIndex = 2;
 												// 
+												// BarChartStopList
+												// 
+												this.BarChartStopList.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.BarChartStopList.CheckOnClick = true;
+												this.BarChartStopList.FormattingEnabled = true;
+												this.BarChartStopList.Location = new System.Drawing.Point(136, 451);
+												this.BarChartStopList.MultiColumn = true;
+												this.BarChartStopList.Name = "BarChartStopList";
+												this.BarChartStopList.Size = new System.Drawing.Size(490, 34);
+												this.BarChartStopList.TabIndex = 0;
+												this.BarChartStopList.ThreeDCheckBoxes = true;
+												this.BarChartStopList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BarChartStopList_ItemCheck);
+												// 
+												// StartTime
+												// 
+												this.StartTime.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.StartTime.Checked = false;
+												this.StartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+												this.StartTime.Location = new System.Drawing.Point(89, 452);
+												this.StartTime.Name = "StartTime";
+												this.StartTime.ShowUpDown = true;
+												this.StartTime.Size = new System.Drawing.Size(67, 20);
+												this.StartTime.TabIndex = 3;
+												this.StartTime.Value = new System.DateTime(2019, 1, 9, 16, 0, 0, 0);
+												this.StartTime.ValueChanged += new System.EventHandler(this.StartTime_ValueChanged);
+												// 
 												// DataVizPage
 												// 
 												this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 												this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+												this.AutoSize = true;
 												this.ClientSize = new System.Drawing.Size(1050, 543);
 												this.Controls.Add(this.PageTableLayout);
 												this.Name = "DataVizPage";
@@ -654,8 +653,6 @@
 												this.ButtonControlsTableLayout.PerformLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).EndInit();
 												this.MapPage.ResumeLayout(false);
-												this.tableLayoutPanel1.ResumeLayout(false);
-												this.tableLayoutPanel1.PerformLayout();
 												this.ResumeLayout(false);
 
 								}
@@ -668,8 +665,7 @@
 								private System.Windows.Forms.FolderBrowserDialog FilesFolder;
 								private System.Windows.Forms.Button ChooseFolder;
 								private System.Windows.Forms.FlowLayoutPanel LeftFlowLayout;
-								private System.Windows.Forms.MonthCalendar TopMonthCalendar;
-								private System.Windows.Forms.MonthCalendar BottomMonthCalendar;
+								private System.Windows.Forms.MonthCalendar MonthCalendar;
 								private System.Windows.Forms.TabControl TabControl;
 								private System.Windows.Forms.TabPage BarChartTab;
 								private System.Windows.Forms.TabPage CircularChartTab;
@@ -700,10 +696,10 @@
 								private System.Windows.Forms.TabPage MapPage;
 								private GMap.NET.WindowsForms.GMapControl MainMap;
 								private System.Windows.Forms.TableLayoutPanel GPSPageBottomTableLayout;
-								private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-								private System.Windows.Forms.Label TimeLabel;
 								private System.Windows.Forms.Label DateLabel;
 								private System.Windows.Forms.FlowLayoutPanel GPSPageRadioButtonFlow;
+								private System.Windows.Forms.CheckedListBox BarChartStopList;
+								private System.Windows.Forms.DateTimePicker StartTime;
 				}
 }
 

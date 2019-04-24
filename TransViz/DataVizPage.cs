@@ -35,7 +35,7 @@ namespace TransViz
 
 												InitializeMap();
 
-
+												startDate = new DateTime(2019, 1, 09, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
 
 								}
 
@@ -71,6 +71,8 @@ namespace TransViz
 
 												circularChartLoaded = false;
 												gpsChartTabLoaded = false;
+
+												AddBarChartItemList();
 								}
 
 								private void AddLocation(SortedSet<Coordinate> coordinatesDirection0, SortedSet<Coordinate> coordinatesDirection1, string fileLine, string lineName)
@@ -232,14 +234,19 @@ namespace TransViz
 
 								#region Bar Chart
 
+								string selectedBarChartLine;
+
 								private void RefreshChart()
 								{
 												this.barChart.Series["On Time"].Points.Clear();
 												this.barChart.Series["Late"].Points.Clear();
 												this.barChart.Series["Early"].Points.Clear();
 
-												foreach (string lineName in this.lines.Keys)
-																this.RefreshLine(lineName);
+
+												if(selectedBarChartLine == "none" || selectedBarChartLine == null)
+																foreach (string lineName in this.lines.Keys)
+																				this.RefreshLine(lineName);
+																
 								}
 
 								private void RefreshLine(string lineName)
@@ -275,11 +282,34 @@ namespace TransViz
 												this.RefreshChart();
 								}
 
+								private void BarChartStopList_ItemCheck(object sender, ItemCheckEventArgs e)
+								{
+												if (e.NewValue == CheckState.Checked)
+												{
+																for (int ix = 0; ix < BarChartStopList.Items.Count; ++ix)
+																				if (e.Index != ix) BarChartStopList.SetItemChecked(ix, false);
+
+																selectedBarChartLine = (string)BarChartStopList.Items[e.Index];
+												}
+												else
+																selectedBarChartLine = "none";
+
+												RefreshChart();
+								}
+
+								private void AddBarChartItemList()
+								{
+												foreach (string line in lines.Keys)
+																BarChartStopList.Items.Add(line);
+								}
+
 								private void DrawBarChartTab()
 								{
 												this.BarChartBottomFlow.Visible = true;
 												this.RefreshChart();
 								}
+
+
 
 								#endregion
 
@@ -493,7 +523,7 @@ namespace TransViz
 								bool gpsChartTabLoaded = false;
 								bool playing = false;
 
-								DateTime startDate = new DateTime(2019, 1, 10);
+								DateTime startDate;
 								float step = 2;
 								private string GPSChartSelectedLine;
 
@@ -548,6 +578,8 @@ namespace TransViz
 
 																double distToOrigin = Coordinate.CalcDist(start, coord) * scale;
 																double size = Math.Abs(curX - (Constants.TUBE_START_X + distToOrigin));
+
+																size = Math.Min(Constants.TUBE_START_X + Constants.TUBE_SIZE - curX, size);
 
 																Color color;
 
@@ -747,7 +779,8 @@ namespace TransViz
 								private void SetFrameTime()
 								{
 												DateLabel.Text = startDate.ToString("d");
-												TimeLabel.Text = startDate.ToString("t");
+												StartTime.Value = startDate;
+												MonthCalendar.SetSelectionRange(startDate, startDate);
 												StepLabel.Text = (IntervalSlider.Value / 1000f) + " seconds";
 												FrameTimer.Interval = IntervalSlider.Value;
 								}
@@ -796,7 +829,10 @@ namespace TransViz
 												SetFrameTime();
 								}
 
-
+								private void StartTime_ValueChanged(object sender, EventArgs e)
+								{
+												startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
+								}
 				}
 
 				#endregion

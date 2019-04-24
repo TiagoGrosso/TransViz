@@ -320,7 +320,9 @@ namespace TransViz
 
 								private void DrawSelectedLineCircular()
 								{
+
 												List<vtkActor> actors = new List<vtkActor>();
+
 
 												if (!string.IsNullOrEmpty(this.circularChartSelectedLine))
 																actors.AddRange(this.DrawSectors(new DateTime(2019, 1, 14), 5, this.lines[this.circularChartSelectedLine]));
@@ -337,11 +339,50 @@ namespace TransViz
 												this.RenderWindowCircularChart.Invalidate();
 
 
+												actors.AddRange(DrawClockLines());
+
+
 												foreach (vtkActor actor in actors)
 																renderer.AddActor(actor);
 
+
+
 												this.RenderWindowCircularChart.Update();
 
+								}
+
+								private List<vtkActor> DrawClockLines()
+								{
+												List<vtkActor> actors = new List<vtkActor>();
+
+												// Create a line.  
+												vtkLineSource line1 = vtkLineSource.New();
+												vtkLineSource line2 = vtkLineSource.New();
+												vtkLineSource line3 = vtkLineSource.New();
+												vtkLineSource line4 = vtkLineSource.New();
+
+												line1.SetPoint1(0.05, 0, 0);
+												line1.SetPoint2(1.05, 0, 0);
+												line2.SetPoint1(0, 0.05, 0);
+												line2.SetPoint2(0, 1.05, 0);
+												line3.SetPoint1(-0.05, 0, 0);
+												line3.SetPoint2(-1.05, 0, 0);
+												line4.SetPoint1(0, -0.05, 0);
+												line4.SetPoint2(0, -1.05, 0);
+
+												vtkLineSource[] lines = { line1, line2, line3, line4 };
+
+												foreach (vtkLineSource line in lines)
+												{
+																vtkPolyDataMapper mapper = vtkPolyDataMapper.New();
+																mapper.SetInputConnection(line.GetOutputPort());
+																vtkActor lineActor = vtkActor.New();
+																lineActor.SetMapper(mapper);
+																lineActor.GetProperty().SetColor(0, 0, 0);
+																actors.Add(lineActor);
+												}
+
+												return actors;
 								}
 
 								private List<vtkActor> DrawSectors(DateTime startDate, int numDays, Line line)

@@ -20,12 +20,12 @@ namespace TransViz
 
 								private List<string> lineNames = new List<string>()
 								{   "Red",
-												"747",
-												"1",
-												"Green-B",
-												"Green-C",
-												"Green-D",
-												"Green-E"
+												//"747",
+												//"1",
+												//"Green-B",
+												//"Green-C",
+												//"Green-D",
+												//"Green-E"
 								};
 								private Dictionary<string, Line> lines = new Dictionary<string, Line>();
 
@@ -37,8 +37,9 @@ namespace TransViz
 												this.barChart.ChartAreas.FirstOrDefault().AxisX.Interval = 1;
 												//InitializeMap();
 
-												startDate = new DateTime(2019, 1, 09, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
+												startDate = MonthCalendar.SelectionStart;
 
+												this.DrawTab();
 								}
 
 								//private void InitializeMap()
@@ -216,6 +217,10 @@ namespace TransViz
 
 								private void DrawTab()
 								{
+
+												StartTime.Visible = true;
+												NumDaysSelector.Visible = false;
+
 												switch (this.TabControl.SelectedIndex)
 												{
 																case Constants.BAR_CHART_TAB:
@@ -249,20 +254,25 @@ namespace TransViz
 												this.barChart.Series["Late"].Points.Clear();
 												this.barChart.Series["Early"].Points.Clear();
 
+												DateTime beginDate = new DateTime(startDate.Year, startDate.Month, startDate.Day);
+												DateTime endDate = beginDate.AddDays((int)NumDaysSelector.Value);
+
+												Arrival firstArrival = new Arrival(beginDate, beginDate);
+												Arrival lastArrival = new Arrival(endDate, endDate);
 
 												if (selectedBarChartLine == "none" || selectedBarChartLine == null)
 																foreach (string lineName in this.lines.Keys)
-																				this.RefreshBar(lineName, this.lines[lineName].Arrivals.ToList());
+																				this.RefreshBar(lineName, this.lines[lineName].Arrivals.GetViewBetween(firstArrival, lastArrival).ToList());
 												else
-																this.RefreshStops();
+																this.RefreshStops(firstArrival, lastArrival);
 
 								}
 
-								private void RefreshStops()
+								private void RefreshStops(Arrival firstArrival, Arrival lastArrival)
 								{
 												Dictionary<string, List<Arrival>> arrivalsByStop = new Dictionary<string, List<Arrival>>();
 
-												foreach (Arrival arrival in lines[selectedBarChartLine].Arrivals)
+												foreach (Arrival arrival in lines[selectedBarChartLine].Arrivals.GetViewBetween(firstArrival, lastArrival))
 												{
 																string stopId = arrival.StopID;
 
@@ -279,12 +289,15 @@ namespace TransViz
 
 								private void RefreshBar(string barName, List<Arrival> arrivals)
 								{
+
 												int earlyArrivals = 0;
 												int onTimeArrivals = 0;
 												int lateArrivals = 0;
 
 												foreach (Arrival arrival in arrivals)
 												{
+
+
 																int onTime = arrival.OnTime((int)this.EarlinessThresholdBarChart.Value, (int)this.LatenessThresholdBarChart.Value);
 
 																if (onTime == Constants.ARRIVED_EARLY)
@@ -333,6 +346,8 @@ namespace TransViz
 
 								private void DrawBarChartTab()
 								{
+												StartTime.Visible = false;
+												NumDaysSelector.Visible = true;
 												this.BarChartBottomFlow.Visible = true;
 												this.RefreshChart();
 								}
@@ -349,11 +364,14 @@ namespace TransViz
 								private void DrawSelectedLineCircular()
 								{
 
+												DateTime monday = startDate.AddDays(-(int)startDate.DayOfWeek + (int)DayOfWeek.Monday);
+												Console.WriteLine(monday);
+
 												List<vtkActor> actors = new List<vtkActor>();
 
 
 												if (!string.IsNullOrEmpty(this.circularChartSelectedLine))
-																actors.AddRange(this.DrawSectors(new DateTime(2019, 1, 14), 5, this.lines[this.circularChartSelectedLine]));
+																actors.AddRange(this.DrawSectors(monday, 5, this.lines[this.circularChartSelectedLine]));
 
 												vtkRenderWindow renderWindow = this.RenderWindowCircularChart.RenderWindow;
 
@@ -556,6 +574,7 @@ namespace TransViz
 								{
 												this.CircularChartBottomFlow.Visible = true;
 												this.CircularChartCenterFlow.Visible = true;
+												this.StartTime.Visible = false;
 
 												if (!this.circularChartLoaded)
 												{
@@ -898,10 +917,6 @@ namespace TransViz
 												SetFrameTime();
 								}
 
-								private void StartTime_ValueChanged(object sender, EventArgs e)
-								{
-												startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
-								}
 
 								private void BarChart_MouseMove(object sender, MouseEventArgs e)
 								{
@@ -922,9 +937,35 @@ namespace TransViz
 												else
 																ChartToolTip.Hide(barChart);
 								}
+
+								#endregion
+
+								private void StartTime_ValueChanged(object sender, EventArgs e)
+								{
+												startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
+
+												circularChartLoaded = false;
+
+												this.DrawTab();
+								}
+
+								private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+								{ 
+												startDate = MonthCalendar.SelectionStart;
+
+												circularChartLoaded = false;
+
+
+												this.DrawTab();
+								}
+
+								private void NumDaysSelector_ValueChanged(object sender, EventArgs e)
+								{
+												this.DrawTab();
+								}
 				}
 
-				#endregion
+				
 
 
 

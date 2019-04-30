@@ -174,14 +174,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TransViz.exe" size="41416">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TransViz.exe" size="41928">
       <assemblyIdentity name="TransViz" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+CVz4kzgSKlkwiIfrYpun9CA7TXleFtpM/pYZl2okEI=</dsig:DigestValue>
+        <dsig:DigestValue>3UID3q6bS7vPBYQa8tJeRr7cQkiaEJHPJKFM38NcDIA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

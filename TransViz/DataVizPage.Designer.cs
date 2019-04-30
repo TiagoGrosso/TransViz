@@ -26,11 +26,11 @@
 								private void InitializeComponent()
 								{
 												this.components = new System.ComponentModel.Container();
-												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-												System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-												System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+												System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+												System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
 												this.barChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
 												this.PageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.LeftFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
@@ -71,6 +71,7 @@
 												this.FilesFolder = new System.Windows.Forms.FolderBrowserDialog();
 												this.FrameTimer = new System.Windows.Forms.Timer(this.components);
 												this.ChartToolTip = new System.Windows.Forms.ToolTip(this.components);
+												this.NumDaysSelector = new System.Windows.Forms.NumericUpDown();
 												((System.ComponentModel.ISupportInitialize)(this.barChart)).BeginInit();
 												this.PageTableLayout.SuspendLayout();
 												this.LeftFlowLayout.SuspendLayout();
@@ -91,39 +92,40 @@
 												this.GPSPageBottomTableLayout.SuspendLayout();
 												this.ButtonControlsTableLayout.SuspendLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).BeginInit();
+												((System.ComponentModel.ISupportInitialize)(this.NumDaysSelector)).BeginInit();
 												this.SuspendLayout();
 												// 
 												// barChart
 												// 
-												chartArea1.Name = "ChartArea1";
-												this.barChart.ChartAreas.Add(chartArea1);
+												chartArea3.Name = "ChartArea1";
+												this.barChart.ChartAreas.Add(chartArea3);
 												this.barChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												legend1.Name = "Legend1";
-												this.barChart.Legends.Add(legend1);
+												legend3.Name = "Legend1";
+												this.barChart.Legends.Add(legend3);
 												this.barChart.Location = new System.Drawing.Point(3, 3);
 												this.barChart.Name = "barChart";
-												series1.ChartArea = "ChartArea1";
-												series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series1.Color = System.Drawing.Color.Blue;
-												series1.IsXValueIndexed = true;
-												series1.Legend = "Legend1";
-												series1.Name = "On Time";
-												series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												series2.ChartArea = "ChartArea1";
-												series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-												series2.Legend = "Legend1";
-												series2.Name = "Late";
-												series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												series3.ChartArea = "ChartArea1";
-												series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series3.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-												series3.Legend = "Legend1";
-												series3.Name = "Early";
-												series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												this.barChart.Series.Add(series1);
-												this.barChart.Series.Add(series2);
-												this.barChart.Series.Add(series3);
+												series7.ChartArea = "ChartArea1";
+												series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series7.Color = System.Drawing.Color.Blue;
+												series7.IsXValueIndexed = true;
+												series7.Legend = "Legend1";
+												series7.Name = "On Time";
+												series7.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series8.ChartArea = "ChartArea1";
+												series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series8.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+												series8.Legend = "Legend1";
+												series8.Name = "Late";
+												series8.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series9.ChartArea = "ChartArea1";
+												series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series9.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+												series9.Legend = "Legend1";
+												series9.Name = "Early";
+												series9.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												this.barChart.Series.Add(series7);
+												this.barChart.Series.Add(series8);
+												this.barChart.Series.Add(series9);
 												this.barChart.Size = new System.Drawing.Size(756, 393);
 												this.barChart.TabIndex = 0;
 												this.barChart.Text = "Schedule Adherence";
@@ -150,6 +152,7 @@
 												this.LeftFlowLayout.Controls.Add(this.ChooseFolder);
 												this.LeftFlowLayout.Controls.Add(this.MonthCalendar);
 												this.LeftFlowLayout.Controls.Add(this.StartTime);
+												this.LeftFlowLayout.Controls.Add(this.NumDaysSelector);
 												this.LeftFlowLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 												this.LeftFlowLayout.Location = new System.Drawing.Point(3, 3);
 												this.LeftFlowLayout.Name = "LeftFlowLayout";
@@ -176,6 +179,7 @@
 												this.MonthCalendar.ShowToday = false;
 												this.MonthCalendar.ShowTodayCircle = false;
 												this.MonthCalendar.TabIndex = 0;
+												this.MonthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.MonthCalendar_DateChanged);
 												// 
 												// StartTime
 												// 
@@ -581,6 +585,25 @@
 												this.FrameTimer.Interval = 500;
 												this.FrameTimer.Tick += new System.EventHandler(this.FrameTimer_Tick);
 												// 
+												// NumDaysSelector
+												// 
+												this.NumDaysSelector.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.NumDaysSelector.Location = new System.Drawing.Point(87, 478);
+												this.NumDaysSelector.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+												this.NumDaysSelector.Name = "NumDaysSelector";
+												this.NumDaysSelector.Size = new System.Drawing.Size(70, 20);
+												this.NumDaysSelector.TabIndex = 4;
+												this.NumDaysSelector.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+												this.NumDaysSelector.ValueChanged += new System.EventHandler(this.NumDaysSelector_ValueChanged);
+												// 
 												// DataVizPage
 												// 
 												this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -616,6 +639,7 @@
 												this.ButtonControlsTableLayout.ResumeLayout(false);
 												this.ButtonControlsTableLayout.PerformLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).EndInit();
+												((System.ComponentModel.ISupportInitialize)(this.NumDaysSelector)).EndInit();
 												this.ResumeLayout(false);
 
 								}
@@ -662,6 +686,7 @@
 								private System.Windows.Forms.CheckedListBox BarChartStopList;
 								private System.Windows.Forms.DateTimePicker StartTime;
 								private System.Windows.Forms.ToolTip ChartToolTip;
+								private System.Windows.Forms.NumericUpDown NumDaysSelector;
 				}
 }
 

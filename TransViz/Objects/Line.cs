@@ -27,6 +27,8 @@ namespace TransViz.Objects
 												get; private set;
 								}
 
+
+
 								public Line(string name, SortedSet<Arrival> arrivals, SortedSet<Coordinate> coordinatesDirection0, SortedSet<Coordinate> coordinatesDirection1, Coordinate firstStation, Coordinate lastStation)
 								{
 												this.Name = name;

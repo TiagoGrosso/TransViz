@@ -26,16 +26,17 @@
 								private void InitializeComponent()
 								{
 												this.components = new System.ComponentModel.Container();
-												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-												System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-												System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+												System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+												System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
 												this.barChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
 												this.PageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.LeftFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
 												this.ChooseFolder = new System.Windows.Forms.Button();
 												this.MonthCalendar = new System.Windows.Forms.MonthCalendar();
+												this.StartTime = new System.Windows.Forms.DateTimePicker();
 												this.RightTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.TabControl = new System.Windows.Forms.TabControl();
 												this.BarChartTab = new System.Windows.Forms.TabPage();
@@ -45,6 +46,7 @@
 												this.EarlinessThresholdBarChartLabel = new System.Windows.Forms.Label();
 												this.LatenessThresholdBarChart = new System.Windows.Forms.NumericUpDown();
 												this.LatenessThresholdBarChartLabel = new System.Windows.Forms.Label();
+												this.BarChartStopList = new System.Windows.Forms.CheckedListBox();
 												this.CircularChartTab = new System.Windows.Forms.TabPage();
 												this.CircularChartTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.RenderWindowCircularChart = new Kitware.VTK.RenderWindowControl();
@@ -57,21 +59,18 @@
 												this.GPSPage = new System.Windows.Forms.TabPage();
 												this.GPSPageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.GPSPageBottomTableLayout = new System.Windows.Forms.TableLayoutPanel();
+												this.GPSPageRadioButtonFlow = new System.Windows.Forms.FlowLayoutPanel();
 												this.ButtonControlsTableLayout = new System.Windows.Forms.TableLayoutPanel();
+												this.DateLabel = new System.Windows.Forms.Label();
 												this.PreviousFrame = new System.Windows.Forms.Button();
 												this.PlayPause = new System.Windows.Forms.Button();
 												this.NextFrame = new System.Windows.Forms.Button();
 												this.StepLabel = new System.Windows.Forms.Label();
 												this.IntervalSlider = new System.Windows.Forms.TrackBar();
 												this.RenderWindowGPS = new Kitware.VTK.RenderWindowControl();
-												this.MapPage = new System.Windows.Forms.TabPage();
-												this.MainMap = new GMap.NET.WindowsForms.GMapControl();
 												this.FilesFolder = new System.Windows.Forms.FolderBrowserDialog();
 												this.FrameTimer = new System.Windows.Forms.Timer(this.components);
-												this.DateLabel = new System.Windows.Forms.Label();
-												this.GPSPageRadioButtonFlow = new System.Windows.Forms.FlowLayoutPanel();
-												this.BarChartStopList = new System.Windows.Forms.CheckedListBox();
-												this.StartTime = new System.Windows.Forms.DateTimePicker();
+												this.ChartToolTip = new System.Windows.Forms.ToolTip(this.components);
 												((System.ComponentModel.ISupportInitialize)(this.barChart)).BeginInit();
 												this.PageTableLayout.SuspendLayout();
 												this.LeftFlowLayout.SuspendLayout();
@@ -92,40 +91,43 @@
 												this.GPSPageBottomTableLayout.SuspendLayout();
 												this.ButtonControlsTableLayout.SuspendLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).BeginInit();
-												this.MapPage.SuspendLayout();
 												this.SuspendLayout();
 												// 
 												// barChart
 												// 
-												chartArea3.Name = "ChartArea1";
-												this.barChart.ChartAreas.Add(chartArea3);
+												chartArea1.Name = "ChartArea1";
+												this.barChart.ChartAreas.Add(chartArea1);
 												this.barChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												legend3.Name = "Legend1";
-												this.barChart.Legends.Add(legend3);
+												legend1.Name = "Legend1";
+												this.barChart.Legends.Add(legend1);
 												this.barChart.Location = new System.Drawing.Point(3, 3);
 												this.barChart.Name = "barChart";
-												series7.ChartArea = "ChartArea1";
-												series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series7.Color = System.Drawing.Color.Blue;
-												series7.IsXValueIndexed = true;
-												series7.Legend = "Legend1";
-												series7.Name = "On Time";
-												series8.ChartArea = "ChartArea1";
-												series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series8.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-												series8.Legend = "Legend1";
-												series8.Name = "Late";
-												series9.ChartArea = "ChartArea1";
-												series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series9.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-												series9.Legend = "Legend1";
-												series9.Name = "Early";
-												this.barChart.Series.Add(series7);
-												this.barChart.Series.Add(series8);
-												this.barChart.Series.Add(series9);
+												series1.ChartArea = "ChartArea1";
+												series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series1.Color = System.Drawing.Color.Blue;
+												series1.IsXValueIndexed = true;
+												series1.Legend = "Legend1";
+												series1.Name = "On Time";
+												series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series2.ChartArea = "ChartArea1";
+												series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+												series2.Legend = "Legend1";
+												series2.Name = "Late";
+												series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series3.ChartArea = "ChartArea1";
+												series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series3.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+												series3.Legend = "Legend1";
+												series3.Name = "Early";
+												series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												this.barChart.Series.Add(series1);
+												this.barChart.Series.Add(series2);
+												this.barChart.Series.Add(series3);
 												this.barChart.Size = new System.Drawing.Size(756, 393);
 												this.barChart.TabIndex = 0;
-												this.barChart.Text = "chart1";
+												this.barChart.Text = "Schedule Adherence";
+												this.barChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BarChart_MouseMove);
 												// 
 												// PageTableLayout
 												// 
@@ -159,7 +161,7 @@
 												this.ChooseFolder.Dock = System.Windows.Forms.DockStyle.Top;
 												this.ChooseFolder.Location = new System.Drawing.Point(3, 3);
 												this.ChooseFolder.Name = "ChooseFolder";
-												this.ChooseFolder.Size = new System.Drawing.Size(240, 114);
+												this.ChooseFolder.Size = new System.Drawing.Size(239, 114);
 												this.ChooseFolder.TabIndex = 2;
 												this.ChooseFolder.Text = "ChooseFolder";
 												this.ChooseFolder.UseVisualStyleBackColor = true;
@@ -174,6 +176,19 @@
 												this.MonthCalendar.ShowToday = false;
 												this.MonthCalendar.ShowTodayCircle = false;
 												this.MonthCalendar.TabIndex = 0;
+												// 
+												// StartTime
+												// 
+												this.StartTime.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.StartTime.Checked = false;
+												this.StartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+												this.StartTime.Location = new System.Drawing.Point(89, 452);
+												this.StartTime.Name = "StartTime";
+												this.StartTime.ShowUpDown = true;
+												this.StartTime.Size = new System.Drawing.Size(67, 20);
+												this.StartTime.TabIndex = 3;
+												this.StartTime.Value = new System.DateTime(2019, 1, 9, 16, 0, 0, 0);
+												this.StartTime.ValueChanged += new System.EventHandler(this.StartTime_ValueChanged);
 												// 
 												// RightTableLayout
 												// 
@@ -194,7 +209,6 @@
 												this.TabControl.Controls.Add(this.BarChartTab);
 												this.TabControl.Controls.Add(this.CircularChartTab);
 												this.TabControl.Controls.Add(this.GPSPage);
-												this.TabControl.Controls.Add(this.MapPage);
 												this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 												this.TabControl.Location = new System.Drawing.Point(3, 3);
 												this.TabControl.Name = "TabControl";
@@ -291,6 +305,19 @@
 												this.LatenessThresholdBarChartLabel.TabIndex = 3;
 												this.LatenessThresholdBarChartLabel.Text = "Lateness Threshold";
 												this.LatenessThresholdBarChartLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+												// 
+												// BarChartStopList
+												// 
+												this.BarChartStopList.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.BarChartStopList.CheckOnClick = true;
+												this.BarChartStopList.FormattingEnabled = true;
+												this.BarChartStopList.Location = new System.Drawing.Point(136, 451);
+												this.BarChartStopList.MultiColumn = true;
+												this.BarChartStopList.Name = "BarChartStopList";
+												this.BarChartStopList.Size = new System.Drawing.Size(490, 34);
+												this.BarChartStopList.TabIndex = 0;
+												this.BarChartStopList.ThreeDCheckBoxes = true;
+												this.BarChartStopList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BarChartStopList_ItemCheck);
 												// 
 												// CircularChartTab
 												// 
@@ -441,6 +468,15 @@
 												this.GPSPageBottomTableLayout.Size = new System.Drawing.Size(762, 121);
 												this.GPSPageBottomTableLayout.TabIndex = 2;
 												// 
+												// GPSPageRadioButtonFlow
+												// 
+												this.GPSPageRadioButtonFlow.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.GPSPageRadioButtonFlow.AutoSize = true;
+												this.GPSPageRadioButtonFlow.Location = new System.Drawing.Point(381, 3);
+												this.GPSPageRadioButtonFlow.Name = "GPSPageRadioButtonFlow";
+												this.GPSPageRadioButtonFlow.Size = new System.Drawing.Size(0, 0);
+												this.GPSPageRadioButtonFlow.TabIndex = 2;
+												// 
 												// ButtonControlsTableLayout
 												// 
 												this.ButtonControlsTableLayout.ColumnCount = 3;
@@ -462,12 +498,23 @@
 												this.ButtonControlsTableLayout.Size = new System.Drawing.Size(756, 85);
 												this.ButtonControlsTableLayout.TabIndex = 1;
 												// 
+												// DateLabel
+												// 
+												this.DateLabel.AutoSize = true;
+												this.DateLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+												this.DateLabel.Location = new System.Drawing.Point(3, 0);
+												this.DateLabel.Name = "DateLabel";
+												this.DateLabel.Size = new System.Drawing.Size(246, 42);
+												this.DateLabel.TabIndex = 6;
+												this.DateLabel.Text = "Date";
+												this.DateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+												// 
 												// PreviousFrame
 												// 
 												this.PreviousFrame.Dock = System.Windows.Forms.DockStyle.Fill;
 												this.PreviousFrame.Location = new System.Drawing.Point(3, 45);
 												this.PreviousFrame.Name = "PreviousFrame";
-												this.PreviousFrame.Size = new System.Drawing.Size(245, 37);
+												this.PreviousFrame.Size = new System.Drawing.Size(246, 37);
 												this.PreviousFrame.TabIndex = 2;
 												this.PreviousFrame.Text = "Prev";
 												this.PreviousFrame.UseVisualStyleBackColor = true;
@@ -476,9 +523,9 @@
 												// PlayPause
 												// 
 												this.PlayPause.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.PlayPause.Location = new System.Drawing.Point(254, 45);
+												this.PlayPause.Location = new System.Drawing.Point(255, 45);
 												this.PlayPause.Name = "PlayPause";
-												this.PlayPause.Size = new System.Drawing.Size(245, 37);
+												this.PlayPause.Size = new System.Drawing.Size(246, 37);
 												this.PlayPause.TabIndex = 3;
 												this.PlayPause.Text = "Play";
 												this.PlayPause.UseVisualStyleBackColor = true;
@@ -487,9 +534,9 @@
 												// NextFrame
 												// 
 												this.NextFrame.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.NextFrame.Location = new System.Drawing.Point(505, 45);
+												this.NextFrame.Location = new System.Drawing.Point(507, 45);
 												this.NextFrame.Name = "NextFrame";
-												this.NextFrame.Size = new System.Drawing.Size(248, 37);
+												this.NextFrame.Size = new System.Drawing.Size(246, 37);
 												this.NextFrame.TabIndex = 1;
 												this.NextFrame.Text = "Next";
 												this.NextFrame.UseVisualStyleBackColor = true;
@@ -499,7 +546,7 @@
 												// 
 												this.StepLabel.AutoSize = true;
 												this.StepLabel.Dock = System.Windows.Forms.DockStyle.Right;
-												this.StepLabel.Location = new System.Drawing.Point(470, 0);
+												this.StepLabel.Location = new System.Drawing.Point(472, 0);
 												this.StepLabel.Name = "StepLabel";
 												this.StepLabel.Size = new System.Drawing.Size(29, 42);
 												this.StepLabel.TabIndex = 4;
@@ -509,11 +556,11 @@
 												// IntervalSlider
 												// 
 												this.IntervalSlider.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.IntervalSlider.Location = new System.Drawing.Point(505, 3);
+												this.IntervalSlider.Location = new System.Drawing.Point(507, 3);
 												this.IntervalSlider.Maximum = 2000;
 												this.IntervalSlider.Minimum = 100;
 												this.IntervalSlider.Name = "IntervalSlider";
-												this.IntervalSlider.Size = new System.Drawing.Size(248, 36);
+												this.IntervalSlider.Size = new System.Drawing.Size(246, 36);
 												this.IntervalSlider.TabIndex = 7;
 												this.IntervalSlider.TickStyle = System.Windows.Forms.TickStyle.None;
 												this.IntervalSlider.Value = 100;
@@ -529,93 +576,10 @@
 												this.RenderWindowGPS.TabIndex = 0;
 												this.RenderWindowGPS.TestText = null;
 												// 
-												// MapPage
-												// 
-												this.MapPage.Controls.Add(this.MainMap);
-												this.MapPage.Location = new System.Drawing.Point(4, 22);
-												this.MapPage.Name = "MapPage";
-												this.MapPage.Size = new System.Drawing.Size(768, 505);
-												this.MapPage.TabIndex = 3;
-												this.MapPage.Text = "Map";
-												this.MapPage.UseVisualStyleBackColor = true;
-												// 
-												// MainMap
-												// 
-												this.MainMap.Bearing = 0F;
-												this.MainMap.CanDragMap = true;
-												this.MainMap.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.MainMap.EmptyTileColor = System.Drawing.Color.Navy;
-												this.MainMap.GrayScaleMode = false;
-												this.MainMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
-												this.MainMap.LevelsKeepInMemmory = 5;
-												this.MainMap.Location = new System.Drawing.Point(0, 0);
-												this.MainMap.MarkersEnabled = true;
-												this.MainMap.MaxZoom = 2;
-												this.MainMap.MinZoom = 2;
-												this.MainMap.MouseWheelZoomEnabled = true;
-												this.MainMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
-												this.MainMap.Name = "MainMap";
-												this.MainMap.NegativeMode = false;
-												this.MainMap.PolygonsEnabled = true;
-												this.MainMap.RetryLoadTile = 0;
-												this.MainMap.RoutesEnabled = true;
-												this.MainMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
-												this.MainMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
-												this.MainMap.ShowTileGridLines = false;
-												this.MainMap.Size = new System.Drawing.Size(768, 505);
-												this.MainMap.TabIndex = 0;
-												this.MainMap.Zoom = 0D;
-												// 
 												// FrameTimer
 												// 
 												this.FrameTimer.Interval = 500;
 												this.FrameTimer.Tick += new System.EventHandler(this.FrameTimer_Tick);
-												// 
-												// DateLabel
-												// 
-												this.DateLabel.AutoSize = true;
-												this.DateLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.DateLabel.Location = new System.Drawing.Point(3, 0);
-												this.DateLabel.Name = "DateLabel";
-												this.DateLabel.Size = new System.Drawing.Size(245, 42);
-												this.DateLabel.TabIndex = 6;
-												this.DateLabel.Text = "Date";
-												this.DateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-												// 
-												// GPSPageRadioButtonFlow
-												// 
-												this.GPSPageRadioButtonFlow.Anchor = System.Windows.Forms.AnchorStyles.Top;
-												this.GPSPageRadioButtonFlow.AutoSize = true;
-												this.GPSPageRadioButtonFlow.Location = new System.Drawing.Point(381, 3);
-												this.GPSPageRadioButtonFlow.Name = "GPSPageRadioButtonFlow";
-												this.GPSPageRadioButtonFlow.Size = new System.Drawing.Size(0, 0);
-												this.GPSPageRadioButtonFlow.TabIndex = 2;
-												// 
-												// BarChartStopList
-												// 
-												this.BarChartStopList.Anchor = System.Windows.Forms.AnchorStyles.Top;
-												this.BarChartStopList.CheckOnClick = true;
-												this.BarChartStopList.FormattingEnabled = true;
-												this.BarChartStopList.Location = new System.Drawing.Point(136, 451);
-												this.BarChartStopList.MultiColumn = true;
-												this.BarChartStopList.Name = "BarChartStopList";
-												this.BarChartStopList.Size = new System.Drawing.Size(490, 34);
-												this.BarChartStopList.TabIndex = 0;
-												this.BarChartStopList.ThreeDCheckBoxes = true;
-												this.BarChartStopList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BarChartStopList_ItemCheck);
-												// 
-												// StartTime
-												// 
-												this.StartTime.Anchor = System.Windows.Forms.AnchorStyles.Top;
-												this.StartTime.Checked = false;
-												this.StartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-												this.StartTime.Location = new System.Drawing.Point(89, 452);
-												this.StartTime.Name = "StartTime";
-												this.StartTime.ShowUpDown = true;
-												this.StartTime.Size = new System.Drawing.Size(67, 20);
-												this.StartTime.TabIndex = 3;
-												this.StartTime.Value = new System.DateTime(2019, 1, 9, 16, 0, 0, 0);
-												this.StartTime.ValueChanged += new System.EventHandler(this.StartTime_ValueChanged);
 												// 
 												// DataVizPage
 												// 
@@ -652,7 +616,6 @@
 												this.ButtonControlsTableLayout.ResumeLayout(false);
 												this.ButtonControlsTableLayout.PerformLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).EndInit();
-												this.MapPage.ResumeLayout(false);
 												this.ResumeLayout(false);
 
 								}
@@ -693,13 +656,12 @@
 								private System.Windows.Forms.Button PlayPause;
 								private System.Windows.Forms.Label StepLabel;
 								private System.Windows.Forms.TrackBar IntervalSlider;
-								private System.Windows.Forms.TabPage MapPage;
-								private GMap.NET.WindowsForms.GMapControl MainMap;
 								private System.Windows.Forms.TableLayoutPanel GPSPageBottomTableLayout;
 								private System.Windows.Forms.Label DateLabel;
 								private System.Windows.Forms.FlowLayoutPanel GPSPageRadioButtonFlow;
 								private System.Windows.Forms.CheckedListBox BarChartStopList;
 								private System.Windows.Forms.DateTimePicker StartTime;
+								private System.Windows.Forms.ToolTip ChartToolTip;
 				}
 }
 

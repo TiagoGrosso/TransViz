@@ -12,8 +12,10 @@ namespace TransViz.Objects {
 												get; private set;
 								}
 
+								public string StopID { get; private set; }
+
 								/* TODO 
-									* CHANGE TO AN LATENESS NUMBER TO AVOID SOMECALCULATIONS AND LAG
+									* CHANGE TO A LATENESS NUMBER TO AVOID SOMECALCULATIONS AND LAG
 									* 
 									* Current:
 									* Checks if the arrival was beyond an earliness or lateness threshold
@@ -31,6 +33,10 @@ namespace TransViz.Objects {
 												return Constants.ARRIVED_ONTIME;
 								}
 
+								public Arrival(DateTime scheduled, DateTime actual, string stopID) : this(scheduled, actual)
+								{
+												this.StopID = stopID;
+								}
 
 								public Arrival(DateTime scheduled, DateTime actual)
 								{

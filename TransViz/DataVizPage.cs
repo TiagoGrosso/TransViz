@@ -4,8 +4,10 @@ using Kitware.VTK;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using TransViz.Objects;
 
 namespace TransViz
@@ -32,35 +34,35 @@ namespace TransViz
 												this.InitializeComponent();
 
 												this.barChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0} %";
-
-												InitializeMap();
+												this.barChart.ChartAreas.FirstOrDefault().AxisX.Interval = 1;
+												//InitializeMap();
 
 												startDate = new DateTime(2019, 1, 09, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
 
 								}
 
-								private void InitializeMap()
-								{
-												try
-												{
-																System.Net.IPHostEntry e =
-																					System.Net.Dns.GetHostEntry("www.google.com");
-												}
-												catch
-												{
-																MainMap.Manager.Mode = AccessMode.CacheOnly;
-																MessageBox.Show("No internet connection avaible, going to CacheOnly mode.",
-																						"GMap.NET - Demo.WindowsForms", MessageBoxButtons.OK,
-																						MessageBoxIcon.Warning);
-												}
+								//private void InitializeMap()
+								//{
+								//				try
+								//				{
+								//								System.Net.IPHostEntry e =
+								//													System.Net.Dns.GetHostEntry("www.google.com");
+								//				}
+								//				catch
+								//				{
+								//								MainMap.Manager.Mode = AccessMode.CacheOnly;
+								//								MessageBox.Show("No internet connection avaible, going to CacheOnly mode.",
+								//														"GMap.NET - Demo.WindowsForms", MessageBoxButtons.OK,
+								//														MessageBoxIcon.Warning);
+								//				}
 
-												// config map
-												MainMap.MapProvider = GMapProviders.GoogleMap;
-												MainMap.Position = new PointLatLng(54.6961334816182, 25.2985095977783);
-												MainMap.MinZoom = 0;
-												MainMap.MaxZoom = 24;
-												MainMap.Zoom = 9;
-								}
+								//				// config map
+								//				MainMap.MapProvider = GMapProviders.GoogleMap;
+								//				MainMap.Position = new PointLatLng(54.6961334816182, 25.2985095977783);
+								//				MainMap.MinZoom = 0;
+								//				MainMap.MaxZoom = 24;
+								//				MainMap.Zoom = 9;
+								//}
 
 								#region Data
 
@@ -127,25 +129,32 @@ namespace TransViz
 												if (parts.Length != 5)
 																return;
 
+												string stopID = parts[1];
 												string scheduledString = parts[3];
 												string actualString = parts[4];
 
-												if (scheduledString == "undefined" || scheduledString == "null" || actualString == "undefined" || actualString == "null")
+												if (stopID == "undefined" || stopID == "null" ||
+																scheduledString == "undefined" || scheduledString == "null" ||
+																actualString == "undefined" || actualString == "null")
 																return;
 												try
 												{
 																DateTime scheduled = DateTime.Parse(parts[3]);
 																DateTime actual = DateTime.Parse(parts[4]);
 
-																arrivals.Add(new Arrival(scheduled, actual));
+																arrivals.Add(new Arrival(scheduled, actual, stopID));
+
 												}
 												catch
 												{
 												}
+
 								}
 
 								private void AddLine(string lineName)
 								{
+												Console.WriteLine("Starting to load: " + lineName);
+
 												string adherenceFileName = lineName + "_routeAdhrence.csv";
 
 												string[] adhrenceFileLines = System.IO.File.ReadAllLines(this.folderPath + "\\" + adherenceFileName);
@@ -153,8 +162,6 @@ namespace TransViz
 												SortedSet<Arrival> arrivals = new SortedSet<Arrival>(new ByArrival());
 												foreach (string fileLine in adhrenceFileLines)
 																AddArrival(arrivals, fileLine);
-
-
 
 												string[] locationFileLines = System.IO.File.ReadAllLines(this.folderPath + "\\" + "vehicleLocation.csv");
 
@@ -170,6 +177,9 @@ namespace TransViz
 												Coordinate lastStation = firstLastStation[1];
 
 												this.lines.Add(lineName, new Line(lineName, arrivals, coordinatesDirection0, coordinatesDirection1, firstStation, lastStation));
+
+												Console.WriteLine("Finished loading: " + lineName);
+
 								}
 
 								private Coordinate[] GetFirstLastStation(string lineName)
@@ -179,9 +189,6 @@ namespace TransViz
 
 												string firstFieldName = "LINE_" + lineName.ToUpper() + "_START";
 												string lastFieldName = "LINE_" + lineName.ToUpper() + "_END";
-
-												Console.WriteLine(firstFieldName);
-												Console.WriteLine(lastFieldName);
 
 												Coordinate firstStation = (Coordinate)typeof(Constants).GetField(firstFieldName).GetValue(null);
 												Coordinate lastStation = (Coordinate)typeof(Constants).GetField(lastFieldName).GetValue(null);
@@ -243,16 +250,35 @@ namespace TransViz
 												this.barChart.Series["Early"].Points.Clear();
 
 
-												if(selectedBarChartLine == "none" || selectedBarChartLine == null)
+												if (selectedBarChartLine == "none" || selectedBarChartLine == null)
 																foreach (string lineName in this.lines.Keys)
-																				this.RefreshLine(lineName);
-																
+																				this.RefreshBar(lineName, this.lines[lineName].Arrivals.ToList());
+												else
+																this.RefreshStops();
+
 								}
 
-								private void RefreshLine(string lineName)
+								private void RefreshStops()
 								{
-												SortedSet<Arrival> arrivals = this.lines[lineName].Arrivals;
+												Dictionary<string, List<Arrival>> arrivalsByStop = new Dictionary<string, List<Arrival>>();
 
+												foreach (Arrival arrival in lines[selectedBarChartLine].Arrivals)
+												{
+																string stopId = arrival.StopID;
+
+																if (!arrivalsByStop.ContainsKey(stopId))
+																				arrivalsByStop.Add(stopId, new List<Arrival>());
+
+																arrivalsByStop[stopId].Add(arrival);
+												}
+
+												foreach (string stopName in arrivalsByStop.Keys)
+																this.RefreshBar(stopName, arrivalsByStop[stopName]);
+
+								}
+
+								private void RefreshBar(string barName, List<Arrival> arrivals)
+								{
 												int earlyArrivals = 0;
 												int onTimeArrivals = 0;
 												int lateArrivals = 0;
@@ -271,10 +297,12 @@ namespace TransViz
 
 												int totalArrivals = earlyArrivals + onTimeArrivals + lateArrivals;
 
-												this.barChart.Series["On Time"].Points.AddXY(lineName, (double)onTimeArrivals / totalArrivals * 100);
-												this.barChart.Series["Late"].Points.AddXY(lineName, (double)lateArrivals / totalArrivals * 100);
-												this.barChart.Series["Early"].Points.AddXY(lineName, (double)earlyArrivals / totalArrivals * 100);
-
+												DataPoint point = new DataPoint();
+												point.SetValueXY(barName, (double)onTimeArrivals / totalArrivals * 100);
+												//point.ToolTip = "" + onTimeArrivals / totalArrivals * 100;
+												this.barChart.Series["On Time"].Points.Add(point);
+												this.barChart.Series["Late"].Points.AddXY(barName, (double)lateArrivals / totalArrivals * 100);
+												this.barChart.Series["Early"].Points.AddXY(barName, (double)earlyArrivals / totalArrivals * 100);
 								}
 
 								private void BarChartThresholdsChanged(object sender, EventArgs e)
@@ -873,6 +901,26 @@ namespace TransViz
 								private void StartTime_ValueChanged(object sender, EventArgs e)
 								{
 												startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
+								}
+
+								private void BarChart_MouseMove(object sender, MouseEventArgs e)
+								{
+
+												HitTestResult result = barChart.HitTest(e.X, e.Y);
+
+												if (result.PointIndex > -1 && result.ChartArea != null)
+																try
+																{
+																				string toolTipMessage = result.Series.Points[result.PointIndex].YValues[0].ToString("0.0");
+
+																				ChartToolTip.Show(toolTipMessage, barChart, e.X + 10, e.Y);
+																}
+																catch
+																{
+
+																}
+												else
+																ChartToolTip.Hide(barChart);
 								}
 				}
 

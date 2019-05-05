@@ -20,12 +20,12 @@ namespace TransViz
 
 								private List<string> lineNames = new List<string>()
 								{   "Red",
-												//"747",
-												//"1",
-												//"Green-B",
-												//"Green-C",
-												//"Green-D",
-												//"Green-E"
+												"747",
+												"1",
+												"Green-B",
+												"Green-C",
+												"Green-D",
+												"Green-E"
 								};
 								private Dictionary<string, Line> lines = new Dictionary<string, Line>();
 
@@ -217,6 +217,7 @@ namespace TransViz
 
 								private void DrawTab()
 								{
+
 
 												StartTime.Visible = true;
 												NumDaysSelector.Visible = false;
@@ -599,9 +600,11 @@ namespace TransViz
 
 																}
 
-																this.DrawSelectedLineCircular();
 																this.circularChartLoaded = true;
 												}
+
+												this.DrawSelectedLineCircular();
+
 								}
 
 								#endregion
@@ -808,10 +811,10 @@ namespace TransViz
 
 								private void DrawGPSChartTab()
 								{
+												SetFrameTime();
 
 												if (!this.gpsChartTabLoaded)
 												{
-																SetFrameTime();
 
 																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
 																RenderWindowGPS.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
@@ -839,10 +842,13 @@ namespace TransViz
 																}
 
 																this.gpsChartTabLoaded = true;
-																this.DrawSelectedLineGPS();
-																RenderWindowGPS.Refresh();
 
 												}
+
+
+												this.DrawSelectedLineGPS();
+												RenderWindowGPS.Refresh();
+
 
 								}
 
@@ -877,7 +883,6 @@ namespace TransViz
 								{
 												startDate = startDate.AddMinutes(sign * step);
 
-												gpsChartTabLoaded = false;
 												DrawSelectedLineGPS();
 								}
 
@@ -944,7 +949,6 @@ namespace TransViz
 								{
 												startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
 
-												circularChartLoaded = false;
 
 												this.DrawTab();
 								}
@@ -952,9 +956,6 @@ namespace TransViz
 								private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
 								{ 
 												startDate = MonthCalendar.SelectionStart;
-
-												circularChartLoaded = false;
-
 
 												this.DrawTab();
 								}

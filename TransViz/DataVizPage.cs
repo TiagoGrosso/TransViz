@@ -1,19 +1,25 @@
-﻿using GMap.NET;
-using GMap.NET.MapProviders;
-using Kitware.VTK;
+﻿using Kitware.VTK;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using TransViz.Objects;
 
-namespace TransViz
-{
-				public partial class DataVizPage : Form
-				{
+namespace TransViz {
+				public partial class DataVizPage : Form {
+
+
+								// TODO
+								// Ordenar paragens
+								// Viz geografica (manhatan)
+								// Alterar GPSChart com delta vertical
+								// Passar para fase de testes
+												// 20 de Maio
+												// Testar o Guiao primeiro
+
+
 
 								string folderPath;
 
@@ -37,9 +43,70 @@ namespace TransViz
 												this.barChart.ChartAreas.FirstOrDefault().AxisX.Interval = 1;
 												//InitializeMap();
 
-												startDate = MonthCalendar.SelectionStart;
+
+												this.MonthCalendar.SelectionStart = new DateTime(2019, 1, 9);
+												this.startDate = this.MonthCalendar.SelectionStart;
 
 												this.DrawTab();
+								}
+
+								private void AddBoldedDates()
+								{
+												List<DateTime> boldedDates = new List<DateTime>();
+
+												DateTime current = new DateTime(2019, 1, 9);
+												DateTime end = new DateTime(2019, 1, 24);
+
+												while (current <= end) {
+																Console.WriteLine(current);
+																if (this.CheckDateForProblems(current))
+																				boldedDates.Add(current);
+
+																current = current.AddDays(1);
+												}
+
+
+												this.MonthCalendar.BoldedDates = boldedDates.ToArray();
+								}
+
+								private bool CheckDateForProblems(DateTime date)
+								{
+												foreach (Line line in this.lines.Values) {
+																if (this.CheckLineForProblems(line, date))
+																				return true;
+												}
+
+												return false;
+								}
+
+								private bool CheckLineForProblems(Line line, DateTime date)
+								{
+												int earlyArrivals = 0;
+												int onTimeArrivals = 0;
+												int lateArrivals = 0;
+
+												foreach (Arrival arrival in line.Arrivals
+																												.GetViewBetween(new Arrival(date, date),
+																												new Arrival(date.AddDays(1), date.AddDays(1)))) {
+
+
+																int onTime = arrival.OnTime(3, 5);
+
+																if (onTime == Constants.ARRIVED_EARLY)
+																				++earlyArrivals;
+																else if (onTime == Constants.ARRIVED_ONTIME)
+																				++onTimeArrivals;
+																else
+																				++lateArrivals;
+												}
+
+												int totalArrivals = earlyArrivals + onTimeArrivals + lateArrivals;
+
+												Console.WriteLine((float) onTimeArrivals / (float) totalArrivals);
+
+												if ((float) onTimeArrivals / (float) totalArrivals < 0.40f)
+																return true;
+												return false;
 								}
 
 								//private void InitializeMap()
@@ -69,13 +136,15 @@ namespace TransViz
 
 								private void LoadData()
 								{
-												foreach (string lineName in lineNames)
+												foreach (string lineName in this.lineNames)
 																this.AddLine(lineName);
 
-												circularChartLoaded = false;
-												gpsChartTabLoaded = false;
+												this.circularChartLoaded = false;
+												this.gpsChartTabLoaded = false;
 
-												AddBarChartItemList();
+												this.AddBarChartItemList();
+												this.AddBoldedDates();
+
 								}
 
 								private void AddLocation(SortedSet<Coordinate> coordinatesDirection0, SortedSet<Coordinate> coordinatesDirection1, string fileLine, string lineName)
@@ -87,12 +156,10 @@ namespace TransViz
 												string route = parts[4];
 												int direction;
 
-												try
-												{
+												try {
 																direction = int.Parse(parts[5]);
 												}
-												catch
-												{
+												catch {
 																return;
 												}
 
@@ -103,8 +170,7 @@ namespace TransViz
 												float latitude, longitude;
 												string vehicleID = parts[0];
 
-												try
-												{
+												try {
 																time = DateTime.Parse(parts[1]);
 																latitude = float.Parse(parts[2], CultureInfo.InvariantCulture);
 																longitude = float.Parse(parts[3], CultureInfo.InvariantCulture);
@@ -116,8 +182,7 @@ namespace TransViz
 																				coordinatesDirection0.Add(new Coordinate(vehicleID, latitude, longitude, time));
 
 												}
-												catch
-												{
+												catch {
 																return;
 												}
 
@@ -138,16 +203,14 @@ namespace TransViz
 																scheduledString == "undefined" || scheduledString == "null" ||
 																actualString == "undefined" || actualString == "null")
 																return;
-												try
-												{
+												try {
 																DateTime scheduled = DateTime.Parse(parts[3]);
 																DateTime actual = DateTime.Parse(parts[4]);
 
 																arrivals.Add(new Arrival(scheduled, actual, stopID));
 
 												}
-												catch
-												{
+												catch {
 												}
 
 								}
@@ -162,7 +225,7 @@ namespace TransViz
 
 												SortedSet<Arrival> arrivals = new SortedSet<Arrival>(new ByArrival());
 												foreach (string fileLine in adhrenceFileLines)
-																AddArrival(arrivals, fileLine);
+																this.AddArrival(arrivals, fileLine);
 
 												string[] locationFileLines = System.IO.File.ReadAllLines(this.folderPath + "\\" + "vehicleLocation.csv");
 
@@ -170,9 +233,9 @@ namespace TransViz
 												SortedSet<Coordinate> coordinatesDirection1 = new SortedSet<Coordinate>(new ByCoordinate());
 
 												foreach (string fileLine in locationFileLines)
-																AddLocation(coordinatesDirection0, coordinatesDirection1, fileLine, lineName);
+																this.AddLocation(coordinatesDirection0, coordinatesDirection1, fileLine, lineName);
 
-												Coordinate[] firstLastStation = GetFirstLastStation(lineName);
+												Coordinate[] firstLastStation = this.GetFirstLastStation(lineName);
 
 												Coordinate firstStation = firstLastStation[0];
 												Coordinate lastStation = firstLastStation[1];
@@ -191,16 +254,15 @@ namespace TransViz
 												string firstFieldName = "LINE_" + lineName.ToUpper() + "_START";
 												string lastFieldName = "LINE_" + lineName.ToUpper() + "_END";
 
-												Coordinate firstStation = (Coordinate)typeof(Constants).GetField(firstFieldName).GetValue(null);
-												Coordinate lastStation = (Coordinate)typeof(Constants).GetField(lastFieldName).GetValue(null);
+												Coordinate firstStation = (Coordinate) typeof(Constants).GetField(firstFieldName).GetValue(null);
+												Coordinate lastStation = (Coordinate) typeof(Constants).GetField(lastFieldName).GetValue(null);
 
 												return new Coordinate[2] { firstStation, lastStation };
 								}
 
 								private void ChooseFolder_Click(object sender, EventArgs e)
 								{
-												if (this.FilesFolder.ShowDialog() == DialogResult.OK)
-												{
+												if (this.FilesFolder.ShowDialog() == DialogResult.OK) {
 																//Get the path of specified file
 																this.folderPath = this.FilesFolder.SelectedPath;
 																this.LoadData();
@@ -219,11 +281,10 @@ namespace TransViz
 								{
 
 
-												StartTime.Visible = true;
-												NumDaysSelector.Visible = false;
+												this.StartTime.Visible = true;
+												this.NumDaysSelector.Visible = false;
 
-												switch (this.TabControl.SelectedIndex)
-												{
+												switch (this.TabControl.SelectedIndex) {
 																case Constants.BAR_CHART_TAB:
 																				this.DrawBarChartTab();
 																				break;
@@ -255,13 +316,13 @@ namespace TransViz
 												this.barChart.Series["Late"].Points.Clear();
 												this.barChart.Series["Early"].Points.Clear();
 
-												DateTime beginDate = new DateTime(startDate.Year, startDate.Month, startDate.Day);
-												DateTime endDate = beginDate.AddDays((int)NumDaysSelector.Value);
+												DateTime beginDate = new DateTime(this.startDate.Year, this.startDate.Month, this.startDate.Day);
+												DateTime endDate = beginDate.AddDays((int) this.NumDaysSelector.Value);
 
 												Arrival firstArrival = new Arrival(beginDate, beginDate);
 												Arrival lastArrival = new Arrival(endDate, endDate);
 
-												if (selectedBarChartLine == "none" || selectedBarChartLine == null)
+												if (this.selectedBarChartLine == "none" || this.selectedBarChartLine == null)
 																foreach (string lineName in this.lines.Keys)
 																				this.RefreshBar(lineName, this.lines[lineName].Arrivals.GetViewBetween(firstArrival, lastArrival).ToList());
 												else
@@ -273,8 +334,7 @@ namespace TransViz
 								{
 												Dictionary<string, List<Arrival>> arrivalsByStop = new Dictionary<string, List<Arrival>>();
 
-												foreach (Arrival arrival in lines[selectedBarChartLine].Arrivals.GetViewBetween(firstArrival, lastArrival))
-												{
+												foreach (Arrival arrival in this.lines[this.selectedBarChartLine].Arrivals.GetViewBetween(firstArrival, lastArrival)) {
 																string stopId = arrival.StopID;
 
 																if (!arrivalsByStop.ContainsKey(stopId))
@@ -295,11 +355,10 @@ namespace TransViz
 												int onTimeArrivals = 0;
 												int lateArrivals = 0;
 
-												foreach (Arrival arrival in arrivals)
-												{
+												foreach (Arrival arrival in arrivals) {
 
 
-																int onTime = arrival.OnTime((int)this.EarlinessThresholdBarChart.Value, (int)this.LatenessThresholdBarChart.Value);
+																int onTime = arrival.OnTime((int) this.EarlinessThresholdBarChart.Value, (int) this.LatenessThresholdBarChart.Value);
 
 																if (onTime == Constants.ARRIVED_EARLY)
 																				++earlyArrivals;
@@ -312,11 +371,11 @@ namespace TransViz
 												int totalArrivals = earlyArrivals + onTimeArrivals + lateArrivals;
 
 												DataPoint point = new DataPoint();
-												point.SetValueXY(barName, (double)onTimeArrivals / totalArrivals * 100);
+												point.SetValueXY(barName, (double) onTimeArrivals / totalArrivals * 100);
 												//point.ToolTip = "" + onTimeArrivals / totalArrivals * 100;
 												this.barChart.Series["On Time"].Points.Add(point);
-												this.barChart.Series["Late"].Points.AddXY(barName, (double)lateArrivals / totalArrivals * 100);
-												this.barChart.Series["Early"].Points.AddXY(barName, (double)earlyArrivals / totalArrivals * 100);
+												this.barChart.Series["Late"].Points.AddXY(barName, (double) lateArrivals / totalArrivals * 100);
+												this.barChart.Series["Early"].Points.AddXY(barName, (double) earlyArrivals / totalArrivals * 100);
 								}
 
 								private void BarChartThresholdsChanged(object sender, EventArgs e)
@@ -326,29 +385,28 @@ namespace TransViz
 
 								private void BarChartStopList_ItemCheck(object sender, ItemCheckEventArgs e)
 								{
-												if (e.NewValue == CheckState.Checked)
-												{
-																for (int ix = 0; ix < BarChartStopList.Items.Count; ++ix)
-																				if (e.Index != ix) BarChartStopList.SetItemChecked(ix, false);
+												if (e.NewValue == CheckState.Checked) {
+																for (int ix = 0; ix < this.BarChartStopList.Items.Count; ++ix)
+																				if (e.Index != ix) this.BarChartStopList.SetItemChecked(ix, false);
 
-																selectedBarChartLine = (string)BarChartStopList.Items[e.Index];
+																this.selectedBarChartLine = (string) this.BarChartStopList.Items[e.Index];
 												}
 												else
-																selectedBarChartLine = "none";
+																this.selectedBarChartLine = "none";
 
-												RefreshChart();
+												this.RefreshChart();
 								}
 
 								private void AddBarChartItemList()
 								{
-												foreach (string line in lines.Keys)
-																BarChartStopList.Items.Add(line);
+												foreach (string line in this.lines.Keys)
+																this.BarChartStopList.Items.Add(line);
 								}
 
 								private void DrawBarChartTab()
 								{
-												StartTime.Visible = false;
-												NumDaysSelector.Visible = true;
+												this.StartTime.Visible = false;
+												this.NumDaysSelector.Visible = true;
 												this.BarChartBottomFlow.Visible = true;
 												this.RefreshChart();
 								}
@@ -365,7 +423,7 @@ namespace TransViz
 								private void DrawSelectedLineCircular()
 								{
 
-												DateTime monday = startDate.AddDays(-(int)startDate.DayOfWeek + (int)DayOfWeek.Monday);
+												DateTime monday = this.startDate.AddDays(-(int) this.startDate.DayOfWeek + (int) DayOfWeek.Monday);
 												Console.WriteLine(monday);
 
 												List<vtkActor> actors = new List<vtkActor>();
@@ -386,7 +444,7 @@ namespace TransViz
 												this.RenderWindowCircularChart.Invalidate();
 
 
-												actors.AddRange(DrawClockLines());
+												actors.AddRange(this.DrawClockLines());
 
 
 												foreach (vtkActor actor in actors)
@@ -419,8 +477,7 @@ namespace TransViz
 
 												vtkLineSource[] lines = { line1, line2, line3, line4 };
 
-												foreach (vtkLineSource line in lines)
-												{
+												foreach (vtkLineSource line in lines) {
 																vtkPolyDataMapper mapper = vtkPolyDataMapper.New();
 																mapper.SetInputConnection(line.GetOutputPort());
 																vtkActor lineActor = vtkActor.New();
@@ -438,8 +495,7 @@ namespace TransViz
 												List<vtkActor> actors = new List<vtkActor>();
 												SortedSet<Arrival> arrivals = line.Arrivals;
 
-												for (int day = 0; day < numDays; ++day)
-												{
+												for (int day = 0; day < numDays; ++day) {
 																DateTime nextDay = startDate.AddDays(1);
 
 																actors.AddRange(this.DrawSector(startDate, day, arrivals));
@@ -458,20 +514,18 @@ namespace TransViz
 												float minutesInterval = 24f * 60f / Constants.NUM_SECTORS;
 												float sectorAngle = 360f / Constants.NUM_SECTORS;
 
-												for (int i = 0; i < Constants.NUM_SECTORS; ++i)
-												{
+												for (int i = 0; i < Constants.NUM_SECTORS; ++i) {
 																DateTime nextSector = startDate.AddMinutes(minutesInterval);
 
 																float r, g, b;
 																r = b = g = 0.2f;
 
 																SortedSet<Arrival> arrivalsSubset = arrivals.GetViewBetween(new Arrival(startDate, startDate), new Arrival(nextSector, nextSector));
-																if (arrivalsSubset.Count != 0)
-																{
+																if (arrivalsSubset.Count != 0) {
 																				float sectorValue = 0;
 
 																				foreach (Arrival arrival in arrivalsSubset)
-																								sectorValue += Math.Abs(arrival.OnTime((int)this.EarlinessThresholdCircularChart.Value, (int)this.LatenessThresholdCircularChart.Value));
+																								sectorValue += Math.Abs(arrival.OnTime((int) this.EarlinessThresholdCircularChart.Value, (int) this.LatenessThresholdCircularChart.Value));
 
 																				if (sectorValue == 0)
 																								g = 1;
@@ -480,7 +534,7 @@ namespace TransViz
 
 																}
 
-																actors.Add(this.CreateDiskSector(Constants.FIRST_INNER_RADIUS + (day * (Constants.DISK_RADIUS + Constants.DISK_SEPARATOR_RADIUS)), Constants.DISK_RADIUS, 270 + sectorAngle * i, sectorAngle, r, g, 0.2f));
+																actors.Add(this.CreateDiskSector(Constants.FIRST_INNER_RADIUS + ( day * ( Constants.DISK_RADIUS + Constants.DISK_SEPARATOR_RADIUS ) ), Constants.DISK_RADIUS, 270 + sectorAngle * i, sectorAngle, r, g, 0.2f));
 
 																startDate = nextSector;
 												}
@@ -552,11 +606,9 @@ namespace TransViz
 
 								private void CircularChartLineChanged(object sender, EventArgs e)
 								{
-												RadioButton newSelected = (RadioButton)sender;
-												if (newSelected.Checked == true)
-												{
-																foreach (RadioButton radioButton in this.CircularChartCenterFlow.Controls)
-																{
+												RadioButton newSelected = (RadioButton) sender;
+												if (newSelected.Checked == true) {
+																foreach (RadioButton radioButton in this.CircularChartCenterFlow.Controls) {
 																				if (radioButton != newSelected)
 																								radioButton.Checked = false;
 																}
@@ -577,21 +629,17 @@ namespace TransViz
 												this.CircularChartCenterFlow.Visible = true;
 												this.StartTime.Visible = false;
 
-												if (!this.circularChartLoaded)
-												{
+												if (!this.circularChartLoaded) {
 																bool selectedFirst = false;
-																foreach (string lineName in this.lines.Keys)
-																{
-																				RadioButton radioButton = new RadioButton
-																				{
+																foreach (string lineName in this.lines.Keys) {
+																				RadioButton radioButton = new RadioButton {
 																								Name = lineName,
 																								Text = lineName,
 																								AutoSize = true,
 																								Parent = this.CircularChartCenterFlow
 																				};
 
-																				if (!selectedFirst)
-																				{
+																				if (!selectedFirst) {
 																								radioButton.Checked = true;
 																								selectedFirst = true;
 																								this.circularChartSelectedLine = lineName;
@@ -620,27 +668,25 @@ namespace TransViz
 
 								private List<vtkActor> DrawLineSectors(string lineName)
 								{
-												Line line = lines[lineName];
+												Line line = this.lines[lineName];
 
 												List<vtkActor> actors = new List<vtkActor>();
-												actors.AddRange(DrawDirection(line.CoordinatesDirection0, 0.5f, line.firstStation, line.lastStation));
-												actors.AddRange(DrawDirection(line.CoordinatesDirection1, -0.5f, line.firstStation, line.lastStation));
+												actors.AddRange(this.DrawDirection(line.CoordinatesDirection0, 0.5f, line.firstStation, line.lastStation));
+												actors.AddRange(this.DrawDirection(line.CoordinatesDirection1, -0.5f, line.firstStation, line.lastStation));
 
 												return actors;
 								}
 
 								private List<vtkActor> DrawDirection(SortedSet<Coordinate> coordinates, float yOffset, Coordinate start, Coordinate end)
 								{
-												DateTime endDate = startDate.AddMinutes(step);
-												SortedSet<Coordinate> subset = coordinates.GetViewBetween(new Coordinate(startDate), new Coordinate(endDate));
+												DateTime endDate = this.startDate.AddMinutes(this.step);
+												SortedSet<Coordinate> subset = coordinates.GetViewBetween(new Coordinate(this.startDate), new Coordinate(endDate));
 
 												SortedSet<Coordinate> noDuplicates = new SortedSet<Coordinate>(new ByDist(start));
-												foreach (Coordinate coord in subset)
-												{
+												foreach (Coordinate coord in subset) {
 																bool insert = true;
 																foreach (Coordinate coord2 in noDuplicates)
-																				if (coord.VehicleID.Equals(coord2.VehicleID))
-																				{
+																				if (coord.VehicleID.Equals(coord2.VehicleID)) {
 																								insert = false;
 																								break;
 																				}
@@ -655,32 +701,29 @@ namespace TransViz
 
 
 												float averageDist = Constants.TUBE_SIZE / noDuplicates.Count;
-												float maxAcceptableDist = averageDist * (1 + Constants.ACCEPTABLE_DIST_SKEW);
-												float minAcceptableDist = averageDist * (1 - Constants.ACCEPTABLE_DIST_SKEW);
-												float maxUnreasonableDist = averageDist * (1 + Constants.GRAVE_DIST_SKEW);
-												float minUnreasonableDist = averageDist * (1 - Constants.GRAVE_DIST_SKEW);
+												float maxAcceptableDist = averageDist * ( 1 + Constants.ACCEPTABLE_DIST_SKEW );
+												float minAcceptableDist = averageDist * ( 1 - Constants.ACCEPTABLE_DIST_SKEW );
+												float maxUnreasonableDist = averageDist * ( 1 + Constants.GRAVE_DIST_SKEW );
+												float minUnreasonableDist = averageDist * ( 1 - Constants.GRAVE_DIST_SKEW );
 
 												List<vtkActor> actors = new List<vtkActor>();
 
 												bool first = true;
 
-												foreach (Coordinate coord in noDuplicates)
-												{
+												foreach (Coordinate coord in noDuplicates) {
 
 																double distToOrigin = Coordinate.CalcDist(start, coord) * scale;
-																double size = Math.Abs(curX - (Constants.TUBE_START_X + distToOrigin));
+																double size = Math.Abs(curX - ( Constants.TUBE_START_X + distToOrigin ));
 
 																size = Math.Min(Constants.TUBE_START_X + Constants.TUBE_SIZE - curX, size);
 
 																Color color;
 
-																if (first)
-																{
+																if (first) {
 																				first = false;
 																				color = Color.GRAY;
 																}
-																else
-																{
+																else {
 																				if (size > maxUnreasonableDist || size < minUnreasonableDist)
 																								color = Color.RED;
 																				else if (size > maxAcceptableDist || size < minAcceptableDist)
@@ -688,18 +731,18 @@ namespace TransViz
 																				else
 																								color = Color.GREEN;
 																}
-																actors.Add(DrawLineSector(curX, yOffset, (float)size, color));
-																actors.Add(DrawIndicatorLine(curX, yOffset));
-																curX = Constants.TUBE_START_X + (float)distToOrigin;
+																actors.Add(this.DrawLineSector(curX, yOffset, (float) size, color));
+																actors.Add(this.DrawIndicatorLine(curX, yOffset));
+																curX = Constants.TUBE_START_X + (float) distToOrigin;
 												}
 												{
-																double size = (Constants.TUBE_START_X + Constants.TUBE_SIZE) - curX;
+																double size = ( Constants.TUBE_START_X + Constants.TUBE_SIZE ) - curX;
 
-																actors.Add(DrawLineSector(curX, yOffset, (float)size, Color.GRAY));
-																actors.Add(DrawIndicatorLine(curX, yOffset));
+																actors.Add(this.DrawLineSector(curX, yOffset, (float) size, Color.GRAY));
+																actors.Add(this.DrawIndicatorLine(curX, yOffset));
 
-																curX = (Constants.TUBE_START_X + Constants.TUBE_SIZE);
-																actors.Add(DrawIndicatorLine(curX, yOffset));
+																curX = ( Constants.TUBE_START_X + Constants.TUBE_SIZE );
+																actors.Add(this.DrawIndicatorLine(curX, yOffset));
 
 												}
 
@@ -790,49 +833,45 @@ namespace TransViz
 
 								private void DrawSelectedLineGPS()
 								{
-												SetFrameTime();
+												this.SetFrameTime();
 
-												if (lines.Count == 0)
+												if (this.lines.Count == 0)
 																return;
 
-												vtkRenderWindow renderWindow = RenderWindowGPS.RenderWindow;
+												vtkRenderWindow renderWindow = this.RenderWindowGPS.RenderWindow;
 												vtkRenderer renderer = renderWindow.GetRenderers().GetFirstRenderer();
 												renderer.SetBackground(0.2, 0.3, 0.4);
 
 												renderer.RemoveAllViewProps();
 												renderer.Clear();
 
-												foreach (vtkActor actor in DrawLineSectors(this.GPSChartSelectedLine))
+												foreach (vtkActor actor in this.DrawLineSectors(this.GPSChartSelectedLine))
 																renderer.AddActor(actor);
 
-												RenderWindowGPS.Invalidate();
+												this.RenderWindowGPS.Invalidate();
 
 								}
 
 								private void DrawGPSChartTab()
 								{
-												SetFrameTime();
+												this.SetFrameTime();
 
-												if (!this.gpsChartTabLoaded)
-												{
+												if (!this.gpsChartTabLoaded) {
 
 																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
-																RenderWindowGPS.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
+																this.RenderWindowGPS.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
 
 
 																bool selectedFirst = false;
-																foreach (string lineName in this.lines.Keys)
-																{
-																				RadioButton radioButton = new RadioButton
-																				{
+																foreach (string lineName in this.lines.Keys) {
+																				RadioButton radioButton = new RadioButton {
 																								Name = lineName,
 																								Text = lineName,
 																								AutoSize = true,
 																								Parent = this.GPSPageRadioButtonFlow
 																				};
 
-																				if (!selectedFirst)
-																				{
+																				if (!selectedFirst) {
 																								radioButton.Checked = true;
 																								selectedFirst = true;
 																								this.GPSChartSelectedLine = lineName;
@@ -847,7 +886,7 @@ namespace TransViz
 
 
 												this.DrawSelectedLineGPS();
-												RenderWindowGPS.Refresh();
+												this.RenderWindowGPS.Refresh();
 
 
 								}
@@ -856,11 +895,9 @@ namespace TransViz
 								{
 
 
-												RadioButton newSelected = (RadioButton)sender;
-												if (newSelected.Checked == true)
-												{
-																foreach (RadioButton radioButton in this.GPSPageRadioButtonFlow.Controls)
-																{
+												RadioButton newSelected = (RadioButton) sender;
+												if (newSelected.Checked == true) {
+																foreach (RadioButton radioButton in this.GPSPageRadioButtonFlow.Controls) {
 																				if (radioButton != newSelected)
 																								radioButton.Checked = false;
 																}
@@ -872,90 +909,86 @@ namespace TransViz
 
 								private void SetFrameTime()
 								{
-												DateLabel.Text = startDate.ToString("d");
-												StartTime.Value = startDate;
-												MonthCalendar.SetSelectionRange(startDate, startDate);
-												StepLabel.Text = (IntervalSlider.Value / 1000f) + " seconds";
-												FrameTimer.Interval = IntervalSlider.Value;
+												this.DateLabel.Text = this.startDate.ToString("d");
+												this.StartTime.Value = this.startDate;
+												this.MonthCalendar.SetSelectionRange(this.startDate, this.startDate);
+												this.StepLabel.Text = ( this.IntervalSlider.Value / 1000f ) + " seconds";
+												this.FrameTimer.Interval = this.IntervalSlider.Value;
 								}
 
 								private void DrawNextFrame(int sign)
 								{
-												startDate = startDate.AddMinutes(sign * step);
+												this.startDate = this.startDate.AddMinutes(sign * this.step);
 
-												DrawSelectedLineGPS();
+												this.DrawSelectedLineGPS();
 								}
 
 								private void NextFrame_Click(object sender, EventArgs e)
 								{
-												DrawNextFrame(1);
+												this.DrawNextFrame(1);
 								}
 
 								private void PreviousFrame_Click(object sender, EventArgs e)
 								{
-												DrawNextFrame(-1);
+												this.DrawNextFrame(-1);
 								}
 
 								private void PlayPause_Click(object sender, EventArgs e)
 								{
-												playing = !playing;
+												this.playing = !this.playing;
 
-												if (playing)
-												{
-																PlayPause.Text = "Pause";
-																FrameTimer.Start();
+												if (this.playing) {
+																this.PlayPause.Text = "Pause";
+																this.FrameTimer.Start();
 												}
-												else
-												{
-																PlayPause.Text = "Play";
-																FrameTimer.Stop();
+												else {
+																this.PlayPause.Text = "Play";
+																this.FrameTimer.Stop();
 												}
 								}
 
 								private void FrameTimer_Tick(object sender, EventArgs e)
 								{
-												DrawNextFrame(1);
+												this.DrawNextFrame(1);
 								}
 
 								private void IntervalSlider_ValueChanged(object sender, EventArgs e)
 								{
-												SetFrameTime();
+												this.SetFrameTime();
 								}
 
 
 								private void BarChart_MouseMove(object sender, MouseEventArgs e)
 								{
 
-												HitTestResult result = barChart.HitTest(e.X, e.Y);
+												HitTestResult result = this.barChart.HitTest(e.X, e.Y);
 
 												if (result.PointIndex > -1 && result.ChartArea != null)
-																try
-																{
+																try {
 																				string toolTipMessage = result.Series.Points[result.PointIndex].YValues[0].ToString("0.0");
 
-																				ChartToolTip.Show(toolTipMessage, barChart, e.X + 10, e.Y);
+																				this.ChartToolTip.Show(toolTipMessage, this.barChart, e.X + 10, e.Y);
 																}
-																catch
-																{
+																catch {
 
 																}
 												else
-																ChartToolTip.Hide(barChart);
+																this.ChartToolTip.Hide(this.barChart);
 								}
 
 								#endregion
 
 								private void StartTime_ValueChanged(object sender, EventArgs e)
 								{
-												startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, StartTime.Value.Hour, StartTime.Value.Minute, StartTime.Value.Second);
+												this.startDate = new DateTime(this.startDate.Year, this.startDate.Month, this.startDate.Day, this.StartTime.Value.Hour, this.StartTime.Value.Minute, this.StartTime.Value.Second);
 
 
 												this.DrawTab();
 								}
 
 								private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
-								{ 
-												startDate = MonthCalendar.SelectionStart;
+								{
+												this.startDate = this.MonthCalendar.SelectionStart;
 
 												this.DrawTab();
 								}
@@ -966,7 +999,7 @@ namespace TransViz
 								}
 				}
 
-				
+
 
 
 

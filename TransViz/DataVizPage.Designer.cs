@@ -26,17 +26,18 @@
 								private void InitializeComponent()
 								{
 												this.components = new System.ComponentModel.Container();
-												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-												System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-												System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+												System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+												System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
 												this.barChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
 												this.PageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.LeftFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
 												this.ChooseFolder = new System.Windows.Forms.Button();
 												this.MonthCalendar = new System.Windows.Forms.MonthCalendar();
 												this.StartTime = new System.Windows.Forms.DateTimePicker();
+												this.NumDaysSelector = new System.Windows.Forms.NumericUpDown();
 												this.RightTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.TabControl = new System.Windows.Forms.TabControl();
 												this.BarChartTab = new System.Windows.Forms.TabPage();
@@ -71,10 +72,10 @@
 												this.FilesFolder = new System.Windows.Forms.FolderBrowserDialog();
 												this.FrameTimer = new System.Windows.Forms.Timer(this.components);
 												this.ChartToolTip = new System.Windows.Forms.ToolTip(this.components);
-												this.NumDaysSelector = new System.Windows.Forms.NumericUpDown();
 												((System.ComponentModel.ISupportInitialize)(this.barChart)).BeginInit();
 												this.PageTableLayout.SuspendLayout();
 												this.LeftFlowLayout.SuspendLayout();
+												((System.ComponentModel.ISupportInitialize)(this.NumDaysSelector)).BeginInit();
 												this.RightTableLayout.SuspendLayout();
 												this.TabControl.SuspendLayout();
 												this.BarChartTab.SuspendLayout();
@@ -92,41 +93,41 @@
 												this.GPSPageBottomTableLayout.SuspendLayout();
 												this.ButtonControlsTableLayout.SuspendLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).BeginInit();
-												((System.ComponentModel.ISupportInitialize)(this.NumDaysSelector)).BeginInit();
 												this.SuspendLayout();
 												// 
 												// barChart
 												// 
-												chartArea3.Name = "ChartArea1";
-												this.barChart.ChartAreas.Add(chartArea3);
+												chartArea1.Name = "ChartArea1";
+												this.barChart.ChartAreas.Add(chartArea1);
 												this.barChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												legend3.Name = "Legend1";
-												this.barChart.Legends.Add(legend3);
-												this.barChart.Location = new System.Drawing.Point(3, 3);
+												legend1.Name = "Legend1";
+												this.barChart.Legends.Add(legend1);
+												this.barChart.Location = new System.Drawing.Point(4, 5);
+												this.barChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.barChart.Name = "barChart";
-												series7.ChartArea = "ChartArea1";
-												series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series7.Color = System.Drawing.Color.Blue;
-												series7.IsXValueIndexed = true;
-												series7.Legend = "Legend1";
-												series7.Name = "On Time";
-												series7.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												series8.ChartArea = "ChartArea1";
-												series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series8.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-												series8.Legend = "Legend1";
-												series8.Name = "Late";
-												series8.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												series9.ChartArea = "ChartArea1";
-												series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series9.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-												series9.Legend = "Legend1";
-												series9.Name = "Early";
-												series9.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												this.barChart.Series.Add(series7);
-												this.barChart.Series.Add(series8);
-												this.barChart.Series.Add(series9);
-												this.barChart.Size = new System.Drawing.Size(756, 393);
+												series1.ChartArea = "ChartArea1";
+												series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series1.Color = System.Drawing.Color.Blue;
+												series1.IsXValueIndexed = true;
+												series1.Legend = "Legend1";
+												series1.Name = "On Time";
+												series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series2.ChartArea = "ChartArea1";
+												series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+												series2.Legend = "Legend1";
+												series2.Name = "Late";
+												series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series3.ChartArea = "ChartArea1";
+												series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series3.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+												series3.Legend = "Legend1";
+												series3.Name = "Early";
+												series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												this.barChart.Series.Add(series1);
+												this.barChart.Series.Add(series2);
+												this.barChart.Series.Add(series3);
+												this.barChart.Size = new System.Drawing.Size(1142, 607);
 												this.barChart.TabIndex = 0;
 												this.barChart.Text = "Schedule Adherence";
 												this.barChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BarChart_MouseMove);
@@ -140,10 +141,11 @@
 												this.PageTableLayout.Controls.Add(this.RightTableLayout, 1, 0);
 												this.PageTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
 												this.PageTableLayout.Location = new System.Drawing.Point(0, 0);
+												this.PageTableLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.PageTableLayout.Name = "PageTableLayout";
 												this.PageTableLayout.RowCount = 1;
 												this.PageTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-												this.PageTableLayout.Size = new System.Drawing.Size(1050, 543);
+												this.PageTableLayout.Size = new System.Drawing.Size(1575, 835);
 												this.PageTableLayout.TabIndex = 4;
 												// 
 												// LeftFlowLayout
@@ -154,17 +156,19 @@
 												this.LeftFlowLayout.Controls.Add(this.StartTime);
 												this.LeftFlowLayout.Controls.Add(this.NumDaysSelector);
 												this.LeftFlowLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-												this.LeftFlowLayout.Location = new System.Drawing.Point(3, 3);
+												this.LeftFlowLayout.Location = new System.Drawing.Point(4, 5);
+												this.LeftFlowLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.LeftFlowLayout.Name = "LeftFlowLayout";
-												this.LeftFlowLayout.Size = new System.Drawing.Size(256, 537);
+												this.LeftFlowLayout.Size = new System.Drawing.Size(384, 825);
 												this.LeftFlowLayout.TabIndex = 3;
 												// 
 												// ChooseFolder
 												// 
 												this.ChooseFolder.Dock = System.Windows.Forms.DockStyle.Top;
-												this.ChooseFolder.Location = new System.Drawing.Point(3, 3);
+												this.ChooseFolder.Location = new System.Drawing.Point(4, 5);
+												this.ChooseFolder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.ChooseFolder.Name = "ChooseFolder";
-												this.ChooseFolder.Size = new System.Drawing.Size(239, 114);
+												this.ChooseFolder.Size = new System.Drawing.Size(0, 175);
 												this.ChooseFolder.TabIndex = 2;
 												this.ChooseFolder.Text = "ChooseFolder";
 												this.ChooseFolder.UseVisualStyleBackColor = true;
@@ -173,8 +177,9 @@
 												// MonthCalendar
 												// 
 												this.MonthCalendar.Anchor = System.Windows.Forms.AnchorStyles.Top;
-												this.MonthCalendar.CalendarDimensions = new System.Drawing.Size(1, 2);
-												this.MonthCalendar.Location = new System.Drawing.Point(9, 129);
+												this.MonthCalendar.CalendarDimensions = new System.Drawing.Size(1, 3);
+												this.MonthCalendar.Location = new System.Drawing.Point(22, 14);
+												this.MonthCalendar.Margin = new System.Windows.Forms.Padding(14, 14, 14, 14);
 												this.MonthCalendar.Name = "MonthCalendar";
 												this.MonthCalendar.ShowToday = false;
 												this.MonthCalendar.ShowTodayCircle = false;
@@ -186,13 +191,34 @@
 												this.StartTime.Anchor = System.Windows.Forms.AnchorStyles.Top;
 												this.StartTime.Checked = false;
 												this.StartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-												this.StartTime.Location = new System.Drawing.Point(89, 452);
+												this.StartTime.Location = new System.Drawing.Point(132, 740);
+												this.StartTime.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.StartTime.Name = "StartTime";
 												this.StartTime.ShowUpDown = true;
-												this.StartTime.Size = new System.Drawing.Size(67, 20);
+												this.StartTime.Size = new System.Drawing.Size(98, 26);
 												this.StartTime.TabIndex = 3;
 												this.StartTime.Value = new System.DateTime(2019, 1, 9, 16, 0, 0, 0);
 												this.StartTime.ValueChanged += new System.EventHandler(this.StartTime_ValueChanged);
+												// 
+												// NumDaysSelector
+												// 
+												this.NumDaysSelector.Anchor = System.Windows.Forms.AnchorStyles.Top;
+												this.NumDaysSelector.Location = new System.Drawing.Point(128, 776);
+												this.NumDaysSelector.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+												this.NumDaysSelector.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+												this.NumDaysSelector.Name = "NumDaysSelector";
+												this.NumDaysSelector.Size = new System.Drawing.Size(105, 26);
+												this.NumDaysSelector.TabIndex = 4;
+												this.NumDaysSelector.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+												this.NumDaysSelector.ValueChanged += new System.EventHandler(this.NumDaysSelector_ValueChanged);
 												// 
 												// RightTableLayout
 												// 
@@ -200,12 +226,13 @@
 												this.RightTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 												this.RightTableLayout.Controls.Add(this.TabControl, 0, 0);
 												this.RightTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.RightTableLayout.Location = new System.Drawing.Point(265, 3);
+												this.RightTableLayout.Location = new System.Drawing.Point(397, 5);
+												this.RightTableLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.RightTableLayout.Name = "RightTableLayout";
 												this.RightTableLayout.RowCount = 2;
 												this.RightTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
 												this.RightTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 64F));
-												this.RightTableLayout.Size = new System.Drawing.Size(782, 537);
+												this.RightTableLayout.Size = new System.Drawing.Size(1174, 825);
 												this.RightTableLayout.TabIndex = 2;
 												// 
 												// TabControl
@@ -214,21 +241,23 @@
 												this.TabControl.Controls.Add(this.CircularChartTab);
 												this.TabControl.Controls.Add(this.GPSPage);
 												this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.TabControl.Location = new System.Drawing.Point(3, 3);
+												this.TabControl.Location = new System.Drawing.Point(4, 5);
+												this.TabControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.TabControl.Name = "TabControl";
 												this.RightTableLayout.SetRowSpan(this.TabControl, 2);
 												this.TabControl.SelectedIndex = 0;
-												this.TabControl.Size = new System.Drawing.Size(776, 531);
+												this.TabControl.Size = new System.Drawing.Size(1166, 815);
 												this.TabControl.TabIndex = 5;
 												this.TabControl.SelectedIndexChanged += new System.EventHandler(this.TabControl_SelectedIndexChanged);
 												// 
 												// BarChartTab
 												// 
 												this.BarChartTab.Controls.Add(this.BarChartTableLayout);
-												this.BarChartTab.Location = new System.Drawing.Point(4, 22);
+												this.BarChartTab.Location = new System.Drawing.Point(4, 29);
+												this.BarChartTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.BarChartTab.Name = "BarChartTab";
-												this.BarChartTab.Padding = new System.Windows.Forms.Padding(3);
-												this.BarChartTab.Size = new System.Drawing.Size(768, 505);
+												this.BarChartTab.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+												this.BarChartTab.Size = new System.Drawing.Size(1158, 782);
 												this.BarChartTab.TabIndex = 0;
 												this.BarChartTab.Text = "Bar Chart (SA)";
 												this.BarChartTab.UseVisualStyleBackColor = true;
@@ -241,13 +270,14 @@
 												this.BarChartTableLayout.Controls.Add(this.BarChartBottomFlow, 0, 1);
 												this.BarChartTableLayout.Controls.Add(this.BarChartStopList, 0, 2);
 												this.BarChartTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.BarChartTableLayout.Location = new System.Drawing.Point(3, 3);
+												this.BarChartTableLayout.Location = new System.Drawing.Point(4, 5);
+												this.BarChartTableLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.BarChartTableLayout.Name = "BarChartTableLayout";
 												this.BarChartTableLayout.RowCount = 3;
 												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
 												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
 												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-												this.BarChartTableLayout.Size = new System.Drawing.Size(762, 499);
+												this.BarChartTableLayout.Size = new System.Drawing.Size(1150, 772);
 												this.BarChartTableLayout.TabIndex = 1;
 												// 
 												// BarChartBottomFlow
@@ -258,18 +288,20 @@
 												this.BarChartBottomFlow.Controls.Add(this.EarlinessThresholdBarChartLabel);
 												this.BarChartBottomFlow.Controls.Add(this.LatenessThresholdBarChart);
 												this.BarChartBottomFlow.Controls.Add(this.LatenessThresholdBarChartLabel);
-												this.BarChartBottomFlow.Location = new System.Drawing.Point(228, 402);
+												this.BarChartBottomFlow.Location = new System.Drawing.Point(350, 622);
+												this.BarChartBottomFlow.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.BarChartBottomFlow.Name = "BarChartBottomFlow";
-												this.BarChartBottomFlow.Size = new System.Drawing.Size(305, 26);
+												this.BarChartBottomFlow.Size = new System.Drawing.Size(450, 36);
 												this.BarChartBottomFlow.TabIndex = 1;
 												this.BarChartBottomFlow.Visible = false;
 												// 
 												// EarlinessThresholdBarChart
 												// 
 												this.EarlinessThresholdBarChart.AutoSize = true;
-												this.EarlinessThresholdBarChart.Location = new System.Drawing.Point(3, 3);
+												this.EarlinessThresholdBarChart.Location = new System.Drawing.Point(4, 5);
+												this.EarlinessThresholdBarChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.EarlinessThresholdBarChart.Name = "EarlinessThresholdBarChart";
-												this.EarlinessThresholdBarChart.Size = new System.Drawing.Size(41, 20);
+												this.EarlinessThresholdBarChart.Size = new System.Drawing.Size(60, 26);
 												this.EarlinessThresholdBarChart.TabIndex = 0;
 												this.EarlinessThresholdBarChart.Value = new decimal(new int[] {
             2,
@@ -280,9 +312,10 @@
 												// 
 												// EarlinessThresholdBarChartLabel
 												// 
-												this.EarlinessThresholdBarChartLabel.Location = new System.Drawing.Point(50, 0);
+												this.EarlinessThresholdBarChartLabel.Location = new System.Drawing.Point(72, 0);
+												this.EarlinessThresholdBarChartLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 												this.EarlinessThresholdBarChartLabel.Name = "EarlinessThresholdBarChartLabel";
-												this.EarlinessThresholdBarChartLabel.Size = new System.Drawing.Size(99, 20);
+												this.EarlinessThresholdBarChartLabel.Size = new System.Drawing.Size(148, 31);
 												this.EarlinessThresholdBarChartLabel.TabIndex = 2;
 												this.EarlinessThresholdBarChartLabel.Text = "Earliness Threshold";
 												this.EarlinessThresholdBarChartLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -290,9 +323,10 @@
 												// LatenessThresholdBarChart
 												// 
 												this.LatenessThresholdBarChart.AutoSize = true;
-												this.LatenessThresholdBarChart.Location = new System.Drawing.Point(155, 3);
+												this.LatenessThresholdBarChart.Location = new System.Drawing.Point(228, 5);
+												this.LatenessThresholdBarChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.LatenessThresholdBarChart.Name = "LatenessThresholdBarChart";
-												this.LatenessThresholdBarChart.Size = new System.Drawing.Size(41, 20);
+												this.LatenessThresholdBarChart.Size = new System.Drawing.Size(60, 26);
 												this.LatenessThresholdBarChart.TabIndex = 1;
 												this.LatenessThresholdBarChart.Value = new decimal(new int[] {
             4,
@@ -303,9 +337,10 @@
 												// 
 												// LatenessThresholdBarChartLabel
 												// 
-												this.LatenessThresholdBarChartLabel.Location = new System.Drawing.Point(202, 0);
+												this.LatenessThresholdBarChartLabel.Location = new System.Drawing.Point(296, 0);
+												this.LatenessThresholdBarChartLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 												this.LatenessThresholdBarChartLabel.Name = "LatenessThresholdBarChartLabel";
-												this.LatenessThresholdBarChartLabel.Size = new System.Drawing.Size(100, 20);
+												this.LatenessThresholdBarChartLabel.Size = new System.Drawing.Size(150, 31);
 												this.LatenessThresholdBarChartLabel.TabIndex = 3;
 												this.LatenessThresholdBarChartLabel.Text = "Lateness Threshold";
 												this.LatenessThresholdBarChartLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -315,10 +350,11 @@
 												this.BarChartStopList.Anchor = System.Windows.Forms.AnchorStyles.Top;
 												this.BarChartStopList.CheckOnClick = true;
 												this.BarChartStopList.FormattingEnabled = true;
-												this.BarChartStopList.Location = new System.Drawing.Point(136, 451);
+												this.BarChartStopList.Location = new System.Drawing.Point(208, 699);
+												this.BarChartStopList.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.BarChartStopList.MultiColumn = true;
 												this.BarChartStopList.Name = "BarChartStopList";
-												this.BarChartStopList.Size = new System.Drawing.Size(490, 34);
+												this.BarChartStopList.Size = new System.Drawing.Size(733, 46);
 												this.BarChartStopList.TabIndex = 0;
 												this.BarChartStopList.ThreeDCheckBoxes = true;
 												this.BarChartStopList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BarChartStopList_ItemCheck);
@@ -326,10 +362,11 @@
 												// CircularChartTab
 												// 
 												this.CircularChartTab.Controls.Add(this.CircularChartTableLayout);
-												this.CircularChartTab.Location = new System.Drawing.Point(4, 22);
+												this.CircularChartTab.Location = new System.Drawing.Point(4, 29);
+												this.CircularChartTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.CircularChartTab.Name = "CircularChartTab";
-												this.CircularChartTab.Padding = new System.Windows.Forms.Padding(3);
-												this.CircularChartTab.Size = new System.Drawing.Size(768, 505);
+												this.CircularChartTab.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+												this.CircularChartTab.Size = new System.Drawing.Size(1156, 784);
 												this.CircularChartTab.TabIndex = 1;
 												this.CircularChartTab.Text = "Circular Chart (SA)";
 												this.CircularChartTab.UseVisualStyleBackColor = true;
@@ -342,23 +379,25 @@
 												this.CircularChartTableLayout.Controls.Add(this.CircularChartCenterFlow, 0, 1);
 												this.CircularChartTableLayout.Controls.Add(this.CircularChartBottomFlow, 0, 2);
 												this.CircularChartTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.CircularChartTableLayout.Location = new System.Drawing.Point(3, 3);
+												this.CircularChartTableLayout.Location = new System.Drawing.Point(4, 5);
+												this.CircularChartTableLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.CircularChartTableLayout.Name = "CircularChartTableLayout";
 												this.CircularChartTableLayout.RowCount = 3;
 												this.CircularChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
 												this.CircularChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12F));
 												this.CircularChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
-												this.CircularChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-												this.CircularChartTableLayout.Size = new System.Drawing.Size(762, 499);
+												this.CircularChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+												this.CircularChartTableLayout.Size = new System.Drawing.Size(1148, 774);
 												this.CircularChartTableLayout.TabIndex = 7;
 												// 
 												// RenderWindowCircularChart
 												// 
 												this.RenderWindowCircularChart.AddTestActors = false;
 												this.RenderWindowCircularChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.RenderWindowCircularChart.Location = new System.Drawing.Point(3, 3);
+												this.RenderWindowCircularChart.Location = new System.Drawing.Point(6, 8);
+												this.RenderWindowCircularChart.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
 												this.RenderWindowCircularChart.Name = "RenderWindowCircularChart";
-												this.RenderWindowCircularChart.Size = new System.Drawing.Size(756, 393);
+												this.RenderWindowCircularChart.Size = new System.Drawing.Size(1136, 603);
 												this.RenderWindowCircularChart.TabIndex = 6;
 												this.RenderWindowCircularChart.TestText = null;
 												// 
@@ -366,7 +405,8 @@
 												// 
 												this.CircularChartCenterFlow.Anchor = System.Windows.Forms.AnchorStyles.Top;
 												this.CircularChartCenterFlow.AutoSize = true;
-												this.CircularChartCenterFlow.Location = new System.Drawing.Point(381, 402);
+												this.CircularChartCenterFlow.Location = new System.Drawing.Point(574, 624);
+												this.CircularChartCenterFlow.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.CircularChartCenterFlow.Name = "CircularChartCenterFlow";
 												this.CircularChartCenterFlow.Size = new System.Drawing.Size(0, 0);
 												this.CircularChartCenterFlow.TabIndex = 8;
@@ -379,18 +419,20 @@
 												this.CircularChartBottomFlow.Controls.Add(this.EarlinessThresholdCircularChartLabel);
 												this.CircularChartBottomFlow.Controls.Add(this.LatenessThresholdCircularChart);
 												this.CircularChartBottomFlow.Controls.Add(this.LatenessThresholdCircularChartLabel);
-												this.CircularChartBottomFlow.Location = new System.Drawing.Point(228, 461);
+												this.CircularChartBottomFlow.Location = new System.Drawing.Point(349, 716);
+												this.CircularChartBottomFlow.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.CircularChartBottomFlow.Name = "CircularChartBottomFlow";
-												this.CircularChartBottomFlow.Size = new System.Drawing.Size(305, 26);
+												this.CircularChartBottomFlow.Size = new System.Drawing.Size(450, 36);
 												this.CircularChartBottomFlow.TabIndex = 7;
 												this.CircularChartBottomFlow.Visible = false;
 												// 
 												// EarlinessThresholdCircularChart
 												// 
 												this.EarlinessThresholdCircularChart.AutoSize = true;
-												this.EarlinessThresholdCircularChart.Location = new System.Drawing.Point(3, 3);
+												this.EarlinessThresholdCircularChart.Location = new System.Drawing.Point(4, 5);
+												this.EarlinessThresholdCircularChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.EarlinessThresholdCircularChart.Name = "EarlinessThresholdCircularChart";
-												this.EarlinessThresholdCircularChart.Size = new System.Drawing.Size(41, 20);
+												this.EarlinessThresholdCircularChart.Size = new System.Drawing.Size(60, 26);
 												this.EarlinessThresholdCircularChart.TabIndex = 0;
 												this.EarlinessThresholdCircularChart.Value = new decimal(new int[] {
             100,
@@ -401,9 +443,10 @@
 												// 
 												// EarlinessThresholdCircularChartLabel
 												// 
-												this.EarlinessThresholdCircularChartLabel.Location = new System.Drawing.Point(50, 0);
+												this.EarlinessThresholdCircularChartLabel.Location = new System.Drawing.Point(72, 0);
+												this.EarlinessThresholdCircularChartLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 												this.EarlinessThresholdCircularChartLabel.Name = "EarlinessThresholdCircularChartLabel";
-												this.EarlinessThresholdCircularChartLabel.Size = new System.Drawing.Size(99, 20);
+												this.EarlinessThresholdCircularChartLabel.Size = new System.Drawing.Size(148, 31);
 												this.EarlinessThresholdCircularChartLabel.TabIndex = 2;
 												this.EarlinessThresholdCircularChartLabel.Text = "Earliness Threshold";
 												this.EarlinessThresholdCircularChartLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -411,9 +454,10 @@
 												// LatenessThresholdCircularChart
 												// 
 												this.LatenessThresholdCircularChart.AutoSize = true;
-												this.LatenessThresholdCircularChart.Location = new System.Drawing.Point(155, 3);
+												this.LatenessThresholdCircularChart.Location = new System.Drawing.Point(228, 5);
+												this.LatenessThresholdCircularChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.LatenessThresholdCircularChart.Name = "LatenessThresholdCircularChart";
-												this.LatenessThresholdCircularChart.Size = new System.Drawing.Size(41, 20);
+												this.LatenessThresholdCircularChart.Size = new System.Drawing.Size(60, 26);
 												this.LatenessThresholdCircularChart.TabIndex = 1;
 												this.LatenessThresholdCircularChart.Value = new decimal(new int[] {
             4,
@@ -424,9 +468,10 @@
 												// 
 												// LatenessThresholdCircularChartLabel
 												// 
-												this.LatenessThresholdCircularChartLabel.Location = new System.Drawing.Point(202, 0);
+												this.LatenessThresholdCircularChartLabel.Location = new System.Drawing.Point(296, 0);
+												this.LatenessThresholdCircularChartLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 												this.LatenessThresholdCircularChartLabel.Name = "LatenessThresholdCircularChartLabel";
-												this.LatenessThresholdCircularChartLabel.Size = new System.Drawing.Size(100, 20);
+												this.LatenessThresholdCircularChartLabel.Size = new System.Drawing.Size(150, 31);
 												this.LatenessThresholdCircularChartLabel.TabIndex = 3;
 												this.LatenessThresholdCircularChartLabel.Text = "Lateness Threshold";
 												this.LatenessThresholdCircularChartLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -434,9 +479,10 @@
 												// GPSPage
 												// 
 												this.GPSPage.Controls.Add(this.GPSPageTableLayout);
-												this.GPSPage.Location = new System.Drawing.Point(4, 22);
+												this.GPSPage.Location = new System.Drawing.Point(4, 29);
+												this.GPSPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.GPSPage.Name = "GPSPage";
-												this.GPSPage.Size = new System.Drawing.Size(768, 505);
+												this.GPSPage.Size = new System.Drawing.Size(1156, 784);
 												this.GPSPage.TabIndex = 2;
 												this.GPSPage.Text = "GPS Chart (H)";
 												this.GPSPage.UseVisualStyleBackColor = true;
@@ -449,11 +495,12 @@
 												this.GPSPageTableLayout.Controls.Add(this.RenderWindowGPS, 0, 0);
 												this.GPSPageTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
 												this.GPSPageTableLayout.Location = new System.Drawing.Point(0, 0);
+												this.GPSPageTableLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.GPSPageTableLayout.Name = "GPSPageTableLayout";
 												this.GPSPageTableLayout.RowCount = 2;
 												this.GPSPageTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
 												this.GPSPageTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-												this.GPSPageTableLayout.Size = new System.Drawing.Size(768, 505);
+												this.GPSPageTableLayout.Size = new System.Drawing.Size(1156, 784);
 												this.GPSPageTableLayout.TabIndex = 1;
 												// 
 												// GPSPageBottomTableLayout
@@ -463,20 +510,22 @@
 												this.GPSPageBottomTableLayout.Controls.Add(this.GPSPageRadioButtonFlow, 0, 0);
 												this.GPSPageBottomTableLayout.Controls.Add(this.ButtonControlsTableLayout, 0, 1);
 												this.GPSPageBottomTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.GPSPageBottomTableLayout.Location = new System.Drawing.Point(3, 381);
+												this.GPSPageBottomTableLayout.Location = new System.Drawing.Point(4, 593);
+												this.GPSPageBottomTableLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.GPSPageBottomTableLayout.Name = "GPSPageBottomTableLayout";
 												this.GPSPageBottomTableLayout.RowCount = 2;
 												this.GPSPageBottomTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
 												this.GPSPageBottomTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
-												this.GPSPageBottomTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-												this.GPSPageBottomTableLayout.Size = new System.Drawing.Size(762, 121);
+												this.GPSPageBottomTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+												this.GPSPageBottomTableLayout.Size = new System.Drawing.Size(1148, 186);
 												this.GPSPageBottomTableLayout.TabIndex = 2;
 												// 
 												// GPSPageRadioButtonFlow
 												// 
 												this.GPSPageRadioButtonFlow.Anchor = System.Windows.Forms.AnchorStyles.Top;
 												this.GPSPageRadioButtonFlow.AutoSize = true;
-												this.GPSPageRadioButtonFlow.Location = new System.Drawing.Point(381, 3);
+												this.GPSPageRadioButtonFlow.Location = new System.Drawing.Point(574, 5);
+												this.GPSPageRadioButtonFlow.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.GPSPageRadioButtonFlow.Name = "GPSPageRadioButtonFlow";
 												this.GPSPageRadioButtonFlow.Size = new System.Drawing.Size(0, 0);
 												this.GPSPageRadioButtonFlow.TabIndex = 2;
@@ -494,21 +543,23 @@
 												this.ButtonControlsTableLayout.Controls.Add(this.StepLabel, 1, 0);
 												this.ButtonControlsTableLayout.Controls.Add(this.IntervalSlider, 2, 0);
 												this.ButtonControlsTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.ButtonControlsTableLayout.Location = new System.Drawing.Point(3, 33);
+												this.ButtonControlsTableLayout.Location = new System.Drawing.Point(4, 51);
+												this.ButtonControlsTableLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.ButtonControlsTableLayout.Name = "ButtonControlsTableLayout";
 												this.ButtonControlsTableLayout.RowCount = 2;
 												this.ButtonControlsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 												this.ButtonControlsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-												this.ButtonControlsTableLayout.Size = new System.Drawing.Size(756, 85);
+												this.ButtonControlsTableLayout.Size = new System.Drawing.Size(1140, 130);
 												this.ButtonControlsTableLayout.TabIndex = 1;
 												// 
 												// DateLabel
 												// 
 												this.DateLabel.AutoSize = true;
 												this.DateLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.DateLabel.Location = new System.Drawing.Point(3, 0);
+												this.DateLabel.Location = new System.Drawing.Point(4, 0);
+												this.DateLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 												this.DateLabel.Name = "DateLabel";
-												this.DateLabel.Size = new System.Drawing.Size(246, 42);
+												this.DateLabel.Size = new System.Drawing.Size(372, 65);
 												this.DateLabel.TabIndex = 6;
 												this.DateLabel.Text = "Date";
 												this.DateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -516,9 +567,10 @@
 												// PreviousFrame
 												// 
 												this.PreviousFrame.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.PreviousFrame.Location = new System.Drawing.Point(3, 45);
+												this.PreviousFrame.Location = new System.Drawing.Point(4, 70);
+												this.PreviousFrame.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.PreviousFrame.Name = "PreviousFrame";
-												this.PreviousFrame.Size = new System.Drawing.Size(246, 37);
+												this.PreviousFrame.Size = new System.Drawing.Size(372, 55);
 												this.PreviousFrame.TabIndex = 2;
 												this.PreviousFrame.Text = "Prev";
 												this.PreviousFrame.UseVisualStyleBackColor = true;
@@ -527,9 +579,10 @@
 												// PlayPause
 												// 
 												this.PlayPause.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.PlayPause.Location = new System.Drawing.Point(255, 45);
+												this.PlayPause.Location = new System.Drawing.Point(384, 70);
+												this.PlayPause.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.PlayPause.Name = "PlayPause";
-												this.PlayPause.Size = new System.Drawing.Size(246, 37);
+												this.PlayPause.Size = new System.Drawing.Size(372, 55);
 												this.PlayPause.TabIndex = 3;
 												this.PlayPause.Text = "Play";
 												this.PlayPause.UseVisualStyleBackColor = true;
@@ -538,9 +591,10 @@
 												// NextFrame
 												// 
 												this.NextFrame.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.NextFrame.Location = new System.Drawing.Point(507, 45);
+												this.NextFrame.Location = new System.Drawing.Point(764, 70);
+												this.NextFrame.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.NextFrame.Name = "NextFrame";
-												this.NextFrame.Size = new System.Drawing.Size(246, 37);
+												this.NextFrame.Size = new System.Drawing.Size(372, 55);
 												this.NextFrame.TabIndex = 1;
 												this.NextFrame.Text = "Next";
 												this.NextFrame.UseVisualStyleBackColor = true;
@@ -550,9 +604,10 @@
 												// 
 												this.StepLabel.AutoSize = true;
 												this.StepLabel.Dock = System.Windows.Forms.DockStyle.Right;
-												this.StepLabel.Location = new System.Drawing.Point(472, 0);
+												this.StepLabel.Location = new System.Drawing.Point(713, 0);
+												this.StepLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 												this.StepLabel.Name = "StepLabel";
-												this.StepLabel.Size = new System.Drawing.Size(29, 42);
+												this.StepLabel.Size = new System.Drawing.Size(43, 65);
 												this.StepLabel.TabIndex = 4;
 												this.StepLabel.Text = "Step";
 												this.StepLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -560,11 +615,12 @@
 												// IntervalSlider
 												// 
 												this.IntervalSlider.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.IntervalSlider.Location = new System.Drawing.Point(507, 3);
+												this.IntervalSlider.Location = new System.Drawing.Point(764, 5);
+												this.IntervalSlider.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.IntervalSlider.Maximum = 2000;
 												this.IntervalSlider.Minimum = 100;
 												this.IntervalSlider.Name = "IntervalSlider";
-												this.IntervalSlider.Size = new System.Drawing.Size(246, 36);
+												this.IntervalSlider.Size = new System.Drawing.Size(372, 55);
 												this.IntervalSlider.TabIndex = 7;
 												this.IntervalSlider.TickStyle = System.Windows.Forms.TickStyle.None;
 												this.IntervalSlider.Value = 100;
@@ -574,9 +630,10 @@
 												// 
 												this.RenderWindowGPS.AddTestActors = false;
 												this.RenderWindowGPS.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.RenderWindowGPS.Location = new System.Drawing.Point(3, 3);
+												this.RenderWindowGPS.Location = new System.Drawing.Point(6, 8);
+												this.RenderWindowGPS.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
 												this.RenderWindowGPS.Name = "RenderWindowGPS";
-												this.RenderWindowGPS.Size = new System.Drawing.Size(762, 372);
+												this.RenderWindowGPS.Size = new System.Drawing.Size(1144, 572);
 												this.RenderWindowGPS.TabIndex = 0;
 												this.RenderWindowGPS.TestText = null;
 												// 
@@ -585,37 +642,20 @@
 												this.FrameTimer.Interval = 500;
 												this.FrameTimer.Tick += new System.EventHandler(this.FrameTimer_Tick);
 												// 
-												// NumDaysSelector
-												// 
-												this.NumDaysSelector.Anchor = System.Windows.Forms.AnchorStyles.Top;
-												this.NumDaysSelector.Location = new System.Drawing.Point(87, 478);
-												this.NumDaysSelector.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-												this.NumDaysSelector.Name = "NumDaysSelector";
-												this.NumDaysSelector.Size = new System.Drawing.Size(70, 20);
-												this.NumDaysSelector.TabIndex = 4;
-												this.NumDaysSelector.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-												this.NumDaysSelector.ValueChanged += new System.EventHandler(this.NumDaysSelector_ValueChanged);
-												// 
 												// DataVizPage
 												// 
-												this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+												this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
 												this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 												this.AutoSize = true;
-												this.ClientSize = new System.Drawing.Size(1050, 543);
+												this.ClientSize = new System.Drawing.Size(1575, 835);
 												this.Controls.Add(this.PageTableLayout);
+												this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 												this.Name = "DataVizPage";
 												this.Text = "TransViz";
 												((System.ComponentModel.ISupportInitialize)(this.barChart)).EndInit();
 												this.PageTableLayout.ResumeLayout(false);
 												this.LeftFlowLayout.ResumeLayout(false);
+												((System.ComponentModel.ISupportInitialize)(this.NumDaysSelector)).EndInit();
 												this.RightTableLayout.ResumeLayout(false);
 												this.TabControl.ResumeLayout(false);
 												this.BarChartTab.ResumeLayout(false);
@@ -639,7 +679,6 @@
 												this.ButtonControlsTableLayout.ResumeLayout(false);
 												this.ButtonControlsTableLayout.PerformLayout();
 												((System.ComponentModel.ISupportInitialize)(this.IntervalSlider)).EndInit();
-												((System.ComponentModel.ISupportInitialize)(this.NumDaysSelector)).EndInit();
 												this.ResumeLayout(false);
 
 								}

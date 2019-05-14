@@ -91,15 +91,20 @@ namespace TransViz.Objects
 								public const double DISK_SEPARATOR_RADIUS = 0.01;
 								public const double DISK_RADIUS = 0.1;
 
-
 								public const int BAR_CHART_TAB = 0;
 								public const int CIRCULAR_CHART_TAB = 1;
 								public const int GPS_CHART_TAB = 2;
+								public const int MAP_TAB = 3;
 
 								public const float TUBE_START_X = -1f;
 								public const float TUBE_SIZE = 2f;
 								public const float TUBE_DEFAULT_HALFSIZE_Y = 0.1f;
 								public const float TUBE_MAX_DELTA_Y = 0.18f;
+
+								public const float MAP_MIN_LONGITUDE = -71.2809472f;
+								public const float MAP_MAX_LONGITUDE = -70.8570f;
+								public const float MAP_MIN_LATITUDE = 42.2196f;
+								public const float MAP_MAX_LATITUDE = 42.4412f;
 
 								public const float INDICATOR_LINE_OFFSET = 0.3f;
 								public const float INDICATOR_TEXT_SIZE_X = 0.05f;

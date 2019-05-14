@@ -26,13 +26,14 @@ namespace TransViz
 								string folderPath;
 
 								private List<string> lineNames = new List<string>()
-								{   "Red",
-												"747",
-												//"1",
-												//"Green-B",
-												//"Green-C",
-												//"Green-D",
-												//"Green-E"
+								{   
+								"Red",
+								//						"747",
+								//				"1",
+								//				"Green-B",
+								//				"Green-C",
+								//				"Green-D",
+								//				"Green-E"
 								};
 								private Dictionary<string, Line> lines = new Dictionary<string, Line>();
 								private Dictionary<string, Stop> stops = new Dictionary<string, Stop>();
@@ -347,7 +348,6 @@ namespace TransViz
 								private void DrawTab()
 								{
 
-
 												this.StartTime.Visible = true;
 												this.NumDaysSelector.Visible = false;
 
@@ -361,6 +361,9 @@ namespace TransViz
 																				break;
 																case Constants.GPS_CHART_TAB:
 																				this.DrawGPSChartTab();
+																				break;
+																case Constants.MAP_TAB:
+																				this.DrawMapTab();
 																				break;
 																default:
 																				break;
@@ -487,7 +490,6 @@ namespace TransViz
 												this.BarChartBottomFlow.Visible = true;
 												this.RefreshChart();
 								}
-
 
 
 								#endregion
@@ -1106,6 +1108,131 @@ namespace TransViz
 
 								#endregion
 
-				}
+								#region Map Page
 
+								private bool mapTabLoaded = false;
+								public const float horizontalRes = 1236;
+								public const float verticalRes = 870;
+
+								private void DrawMapTab()
+								{
+												if (!this.mapTabLoaded)
+												{
+																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
+																this.mapTabLoaded = true;
+												}
+
+												this.DrawMap();
+												this.MapRenderWindow.Refresh();
+
+								}
+
+								private void DrawMap()
+								{
+												this.SetFrameTime();
+
+												if (this.lines.Count == 0)
+																return;
+
+												vtkRenderWindow renderWindow = this.MapRenderWindow.RenderWindow;
+												vtkRenderer renderer = renderWindow.GetRenderers().GetFirstRenderer();
+												renderer.SetBackground(0.6f, 0.6f, 0.6f);
+
+												renderer.RemoveAllViewProps();
+												renderer.Clear();
+
+												renderer.AddActor(GetMapImage());
+
+												foreach (vtkActor actor in DrawMapBars())
+																renderer.AddActor(actor);
+
+
+
+												this.MapRenderWindow.Invalidate();
+								}
+
+								private vtkImageActor GetMapImage()
+								{
+												string filePath = @"C:\Users\Utilizador\Desktop\map.jpg";
+
+												vtkImageData imageData;
+
+
+
+												//Read the image
+												vtkJPEGReader jpegReader = new vtkJPEGReader();
+												if (jpegReader.CanReadFile(filePath) == 0)
+												{
+																Console.WriteLine("ERROR");
+																return null;
+												}
+												jpegReader.SetFileName(filePath);
+												jpegReader.Update();
+												imageData = jpegReader.GetOutput();
+
+												//imageData.SetExtent(0, 1236, 0, 870, 0, 0);
+												//imageData.SetSpacing(1236, 870, 0.01);
+												imageData.SetOrigin(0, 0, 0);
+
+												vtkImageActor imageActor = new vtkImageActor();
+												imageActor.SetInput(imageData);
+
+												imageActor.SetScale(1f / horizontalRes);
+												double[] bounds = imageActor.GetBounds();
+												return imageActor;
+								}
+
+								private List<vtkActor> DrawMapBars()
+								{
+												vtkLineSource lineSource = new vtkLineSource();
+
+												float[] point = GetPointOnMap(lines["Red"].lastStation);
+
+												lineSource.SetPoint1(point[0], point[1], 0.0);
+												lineSource.SetPoint2(point[0], point[1], 1.0);
+
+												vtkTubeFilter tubeSource = new vtkTubeFilter();
+												tubeSource.SetInputConnection(lineSource.GetOutputPort());
+												tubeSource.SetRadius(0.005);
+												tubeSource.SetNumberOfSides(4);
+												tubeSource.Update();
+
+												vtkPolyDataMapper tubeMapper = vtkPolyDataMapper.New();
+												tubeMapper.SetInputConnection(tubeSource.GetOutputPort());
+
+
+												vtkActor actor = vtkActor.New();
+												actor.GetProperty().SetOpacity(1);
+												actor.GetProperty().SetColor(1, 0, 0);
+												actor.SetMapper(tubeMapper);
+
+												double[] bounds = actor.GetBounds();
+
+												return new List<vtkActor>() { actor };
+								}
+
+								private float[] GetPointOnMap(Coordinate location)
+								{
+												float topY = 1 / horizontalRes * verticalRes;
+
+												Coordinate botLeft = new Coordinate(Constants.MAP_MIN_LATITUDE, Constants.MAP_MIN_LONGITUDE);
+												Coordinate botRight = new Coordinate(Constants.MAP_MIN_LATITUDE, Constants.MAP_MAX_LONGITUDE);
+												Coordinate topLeft = new Coordinate(Constants.MAP_MAX_LATITUDE,Constants.MAP_MIN_LONGITUDE);
+
+												float sizeX = (float) Coordinate.CalcDist(botLeft, botRight);
+												float sizeY = (float)Coordinate.CalcDist(botLeft, topLeft);
+
+												float scaleX = 1f / sizeX;
+												float scaleY = topY / sizeY;
+
+												float distX = (float)Coordinate.CalcDist(botLeft, new Coordinate(botLeft.Latitude, location.Longitude)) * scaleX;
+												float distY = (float)Coordinate.CalcDist(botLeft, new Coordinate(location.Latitude, botLeft.Longitude)) * scaleY;
+
+												Console.WriteLine("Dist: {0} | {1}", distX, distY);
+
+												return new float[] { distX, distY };
+								}
+
+								#endregion
+				}
 }

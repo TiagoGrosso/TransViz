@@ -11,6 +11,11 @@ namespace TransViz
 {
 				public partial class DataVizPage : Form
 				{
+
+								/// <summary>
+								/// PROBLEMA: ALGUMAS PARAGENS APARECEM NAS ARRIVALS MAS NAO NO FICHEIRO DE PARAGENS DO GTFS
+								/// </summary>
+
 								// TODO
 								// Viz geografica (manhatan)
 
@@ -22,7 +27,7 @@ namespace TransViz
 
 								private List<string> lineNames = new List<string>()
 								{   "Red",
-												//"747",
+												"747",
 												//"1",
 												//"Green-B",
 												//"Green-C",
@@ -402,12 +407,15 @@ namespace TransViz
 
 												foreach (Arrival arrival in arrivals)
 												{
-																string stopId = arrival.StopID;
+																string stopID = arrival.StopID;
 
-																if (!arrivalsByStop.ContainsKey(stopId))
-																				arrivalsByStop.Add(stopId, new List<Arrival>());
+																if (stops[stopID] == null)
+																				continue;
 
-																arrivalsByStop[stopId].Add(arrival);
+																if (!arrivalsByStop.ContainsKey(stopID))
+																				arrivalsByStop.Add(stopID, new List<Arrival>());
+
+																arrivalsByStop[stopID].Add(arrival);
 												}
 
 												foreach (string stopName in arrivalsByStop.Keys)

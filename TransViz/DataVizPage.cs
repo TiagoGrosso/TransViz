@@ -17,7 +17,10 @@ namespace TransViz
 								/// </summary>
 
 								// TODO
-								// Viz geografica (manhatan)
+								// Interatividade na viz do mapa
+								// Corrigir bugs a selecionar paragens
+								// Aplicar palette de cores ao resto do programa
+								// Acrescentar opçao de escolha de palette
 
 								// Passar para fase de testes
 								// 20 de Maio

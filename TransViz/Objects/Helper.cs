@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransViz.Objects
 {
-				public struct Color
+				public class Color
 				{
 								public readonly float r, g, b;
 
@@ -22,6 +22,59 @@ namespace TransViz.Objects
 								public readonly static Color GREEN = new Color(0.2f, 1, 0.2f);
 								public readonly static Color GRAY = new Color(0.2f, 0.2f, 0.2f);
 								public readonly static Color YELLOW = new Color(1f, 1f, 0.2f);
+
+								public static Color[] colorPalette = {
+												new Color(1, 0.843137f, 0),
+												new Color(1, 0.694117f, 0.305882f),
+												new Color(0.980392f, 0.529411f, 0.458823f),
+												new Color(0.917647f, 0.372549f, 0.580392f),
+												new Color(0.803921f, 0.203921f, 0.709803f),
+												new Color(0.615686f, 0.007843f, 0.843137f),
+												new Color(0, 0, 1)
+								};
+
+								/*
+								 [  "rgb(255,215,0)",
+												"rgb(255,177,78)",
+												"rgb(250,135,117)",
+												"rgb(234,95,148)",
+												"rgb(205,52,181)",
+												"rgb(157,2,215)",
+												"rgb(0,0,255)"]
+								*/
+
+
+								public static Color GetColorFromPalette(float value, float min, float max)
+								{
+
+												float step = (max - min) / 7;
+												int index = colorPalette.Length - 1;
+
+												if (value > min)
+												{
+																float cur = min;
+
+																while (index > 0)
+																{
+																				float next = cur + step;
+
+																				if (value >= cur && value < next)
+																								break;
+
+																				--index;
+																				cur = next;
+																}
+												}
+
+												return colorPalette[index];
+								}
+
+								public static Color GetColorFromPalette(int step, int totalStep)
+								{
+												int index = totalStep / step - 1;
+
+												return colorPalette[index];
+								}
 
 				}
 
@@ -45,7 +98,10 @@ namespace TransViz.Objects
 
 								public const float TUBE_START_X = -1f;
 								public const float TUBE_SIZE = 2f;
-								public const float INDICATOR_LINE_OFFSET = 0.2f;
+								public const float TUBE_DEFAULT_HALFSIZE_Y = 0.1f;
+								public const float TUBE_MAX_DELTA_Y = 0.18f;
+
+								public const float INDICATOR_LINE_OFFSET = 0.3f;
 								public const float INDICATOR_TEXT_SIZE_X = 0.05f;
 								public const float INDICATOR_TEXT_SIZE_Y = 0.05f;
 								public const float SECONDS_PER_FRAME = 0.5f;

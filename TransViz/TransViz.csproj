@@ -126,6 +126,7 @@
     <Compile Include="Objects\Helper.cs" />
     <Compile Include="Objects\Coordinate.cs" />
     <Compile Include="Objects\Line.cs" />
+    <Compile Include="Objects\Stop.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DataVizPage.resx">

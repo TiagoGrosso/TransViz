@@ -7,14 +7,14 @@
     <framework targetVersion="4.6.1" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="TransViz.exe.manifest" size="11077">
+    <dependentAssembly dependencyType="install" codebase="TransViz.exe.manifest" size="11075">
       <assemblyIdentity name="TransViz.exe" version="1.0.0.10" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9EqZC9RV0GvufIHY6LZTPxJ6U9SLuQ5nwuJ8iVjo398=</dsig:DigestValue>
+        <dsig:DigestValue>keeVVMgUDKzE9uEeTxYtFLCOhlrsE0T72VShagMPuQE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

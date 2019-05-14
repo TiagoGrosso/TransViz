@@ -52,4 +52,20 @@ namespace TransViz.Objects {
 												return DateTime.Compare(x.Scheduled, y.Scheduled);
 								}
 				}
+
+				public class ByArrivalDist : IComparer<Coordinate>
+				{
+								public Coordinate Reference { get; private set; }
+
+								public ByArrivalDist(Coordinate reference)
+								{
+												Reference = reference;
+								}
+
+								public int Compare(Coordinate x, Coordinate y)
+								{
+												return Math.Sign(Coordinate.CalcDist(Reference, x) - Coordinate.CalcDist(Reference, y));
+								}
+				}
+
 }

@@ -11,12 +11,15 @@ namespace TransViz.Objects
 								public string Name { get; private set; }
 								public Coordinate Location { get; private set; }
 
+								public Dictionary<string, SortedSet<Arrival>> arrivalsByLine = new Dictionary<string, SortedSet<Arrival>>();
+
 								public Stop(string name, Coordinate location)
 								{
 												this.Name = name;
 												this.Location = location;
 								}
 				}
+
 
 				public class ByStopDist : IComparer<string>
 				{

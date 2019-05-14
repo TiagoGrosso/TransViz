@@ -26,14 +26,14 @@ namespace TransViz
 								string folderPath;
 
 								private List<string> lineNames = new List<string>()
-								{   
-								"Red",
-								//						"747",
-								//				"1",
-								//				"Green-B",
-								//				"Green-C",
-								//				"Green-D",
-								//				"Green-E"
+								{
+												"Red",
+												"747",
+												"1",
+												"Green-B",
+												"Green-C",
+												"Green-D",
+												"Green-E"
 								};
 								private Dictionary<string, Line> lines = new Dictionary<string, Line>();
 								private Dictionary<string, Stop> stops = new Dictionary<string, Stop>();
@@ -183,6 +183,14 @@ namespace TransViz
 																}
 												}
 
+												foreach (string line in lines.Keys)
+																foreach (Arrival arrival in lines[line].Arrivals)
+																				if (stops.ContainsKey(arrival.StopID))
+																								if (stops[arrival.StopID] != null)
+																												if (!stops[arrival.StopID].arrivalsByLine.ContainsKey(line))
+																																stops[arrival.StopID].arrivalsByLine.Add(line, new SortedSet<Arrival>(new ByArrival()));
+																												else
+																																stops[arrival.StopID].arrivalsByLine[line].Add(arrival);
 								}
 
 								private void AddLocation(SortedSet<Coordinate> coordinatesDirection0, SortedSet<Coordinate> coordinatesDirection1, string fileLine, string lineName)
@@ -339,7 +347,6 @@ namespace TransViz
 								{
 												this.DrawTab();
 								}
-
 
 								#endregion
 
@@ -1184,12 +1191,30 @@ namespace TransViz
 
 								private List<vtkActor> DrawMapBars()
 								{
+												List<vtkActor> actors = new List<vtkActor>();
+
+												foreach (string line in lines.Keys)
+																foreach (Stop stop in stops.Values)
+																				if (stop != null)
+																								actors.Add(DrawMapBar(stop, line));
+
+												return actors;
+								}
+
+								private vtkActor DrawMapBar(Stop stop, string line)
+								{
+												if (stop.arrivalsByLine == null)
+																return null;
+												if (!stop.arrivalsByLine.ContainsKey(line))
+																return null;
+
+												float[] point = GetPointOnMap(stop.Location);
+												float z = CalculateZ(stop.arrivalsByLine[line]) * 0.35f;
+
 												vtkLineSource lineSource = new vtkLineSource();
 
-												float[] point = GetPointOnMap(lines["Red"].lastStation);
-
-												lineSource.SetPoint1(point[0], point[1], 0.0);
-												lineSource.SetPoint2(point[0], point[1], 1.0);
+												lineSource.SetPoint1(point[0], point[1], 0);
+												lineSource.SetPoint2(point[0], point[1], z);
 
 												vtkTubeFilter tubeSource = new vtkTubeFilter();
 												tubeSource.SetInputConnection(lineSource.GetOutputPort());
@@ -1206,9 +1231,32 @@ namespace TransViz
 												actor.GetProperty().SetColor(1, 0, 0);
 												actor.SetMapper(tubeMapper);
 
-												double[] bounds = actor.GetBounds();
+												return actor;
+								}
 
-												return new List<vtkActor>() { actor };
+								private float CalculateZ(SortedSet<Arrival> arrivals)
+								{
+												int earlyArrivals = 0;
+												int onTimeArrivals = 0;
+												int lateArrivals = 0;
+
+
+												foreach (Arrival arrival in arrivals)
+												{
+
+																int onTime = arrival.OnTime(3, 5);
+
+																if (onTime == Constants.ARRIVED_EARLY)
+																				++earlyArrivals;
+																else if (onTime == Constants.ARRIVED_ONTIME)
+																				++onTimeArrivals;
+																else
+																				++lateArrivals;
+												}
+
+												int totalArrivals = earlyArrivals + onTimeArrivals + lateArrivals;
+
+												return Math.Max(((float)earlyArrivals + lateArrivals) / totalArrivals, 0.005f);
 								}
 
 								private float[] GetPointOnMap(Coordinate location)
@@ -1217,9 +1265,9 @@ namespace TransViz
 
 												Coordinate botLeft = new Coordinate(Constants.MAP_MIN_LATITUDE, Constants.MAP_MIN_LONGITUDE);
 												Coordinate botRight = new Coordinate(Constants.MAP_MIN_LATITUDE, Constants.MAP_MAX_LONGITUDE);
-												Coordinate topLeft = new Coordinate(Constants.MAP_MAX_LATITUDE,Constants.MAP_MIN_LONGITUDE);
+												Coordinate topLeft = new Coordinate(Constants.MAP_MAX_LATITUDE, Constants.MAP_MIN_LONGITUDE);
 
-												float sizeX = (float) Coordinate.CalcDist(botLeft, botRight);
+												float sizeX = (float)Coordinate.CalcDist(botLeft, botRight);
 												float sizeY = (float)Coordinate.CalcDist(botLeft, topLeft);
 
 												float scaleX = 1f / sizeX;

@@ -1183,11 +1183,9 @@ namespace TransViz
 
 								private vtkImageActor GetMapImage()
 								{
-												string filePath = @"C:\Users\Utilizador\Desktop\map.jpg";
+												string filePath = this.folderPath + "\\map.jpg";
 
 												vtkImageData imageData;
-
-
 
 												//Read the image
 												vtkJPEGReader jpegReader = new vtkJPEGReader();

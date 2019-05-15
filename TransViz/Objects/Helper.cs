@@ -23,45 +23,60 @@ namespace TransViz.Objects
 								public readonly static Color GRAY = new Color(0.2f, 0.2f, 0.2f);
 								public readonly static Color YELLOW = new Color(1f, 1f, 0.2f);
 
-								public static Color[] colorPalette = {
-												new Color(1, 0.843137f, 0),
-												new Color(1, 0.694117f, 0.305882f),
-												new Color(0.980392f, 0.529411f, 0.458823f),
-												new Color(0.917647f, 0.372549f, 0.580392f),
-												new Color(0.803921f, 0.203921f, 0.709803f),
+								public static Color[] colorPalette;
+
+								public static Color[] blue_yellow = {
+												new Color(0, 0, 1),
 												new Color(0.615686f, 0.007843f, 0.843137f),
-												new Color(0, 0, 1)
+												new Color(0.803921f, 0.203921f, 0.709803f),
+												new Color(0.917647f, 0.372549f, 0.580392f),
+												new Color(0.980392f, 0.529411f, 0.458823f),
+											 new Color(1, 0.694117f, 0.305882f),
+											 new Color(1, 0.843137f, 0)
 								};
 
-								/*
-								 [  "rgb(255,215,0)",
-												"rgb(255,177,78)",
-												"rgb(250,135,117)",
-												"rgb(234,95,148)",
-												"rgb(205,52,181)",
-												"rgb(157,2,215)",
-												"rgb(0,0,255)"]
-								*/
+
+								public static Color[] lightyellow_darkred =
+								{
+												new Color(1, 1, 0.878431f),
+												new Color(1, 0.835294f, 0.607843f),
+												new Color(1, 0.643137f, 0.454901f),
+												new Color(0.956862f, 0.454901f, 0.380392f),
+												new Color(0.858823f, 0.270588f, 0.317647f),
+												new Color(0.721568f, 0.105882f, 0.203921f),
+												new Color(0.545098f, 0, 0)
+								};
+
+								public static Color[] monoBlues =
+								{
+												new Color(0.215686f, 0.686274f, 0.976470f),
+												new Color(0.207843f, 0.490196f, 0.827450f),
+												new Color(0.192156f, 0.643137f, 0.678431f),
+												new Color(0.172549f, 0.392156f, 0.541176f),
+												new Color(0.105882f, 0.305882f, 0.403921f),
+												new Color(0.117647f, 0.215686f, 0.278431f),
+												new Color(0.082352f, 0.137254f, 0.160784f)
+								};
 
 
 								public static Color GetColorFromPalette(float value, float min, float max)
 								{
 
 												float step = (max - min) / 7;
-												int index = colorPalette.Length - 1;
+												int index = 0;
 
 												if (value > min)
 												{
 																float cur = min;
 
-																while (index > 0)
+																while (index < colorPalette.Length - 1)
 																{
 																				float next = cur + step;
 
 																				if (value >= cur && value < next)
 																								break;
 
-																				--index;
+																				++index;
 																				cur = next;
 																}
 												}
@@ -71,7 +86,8 @@ namespace TransViz.Objects
 
 								public static Color GetColorFromPalette(int step, int totalStep)
 								{
-												int index = totalStep / step - 1;
+
+												int index = (colorPalette.Length - 1) / (totalStep - 1) * (step - 1);
 
 												return colorPalette[index];
 								}

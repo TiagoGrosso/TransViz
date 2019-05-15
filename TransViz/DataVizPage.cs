@@ -45,10 +45,11 @@ namespace TransViz
 								{
 												this.InitializeComponent();
 
+												Color.colorPalette = Color.lightyellow_darkred;
+
 												this.barChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0} %";
 												this.barChart.ChartAreas.FirstOrDefault().AxisX.Interval = 1;
 												//InitializeMap();
-
 
 												this.MonthCalendar.SelectionStart = new DateTime(2019, 1, 9);
 												this.startDate = this.MonthCalendar.SelectionStart;
@@ -462,9 +463,29 @@ namespace TransViz
 												DataPoint point = new DataPoint();
 												point.SetValueXY(barName, (double)onTimeArrivals / totalArrivals * 100);
 
+
+												SetBarColors();
+
 												this.barChart.Series["On Time"].Points.Add(point);
 												this.barChart.Series["Late"].Points.AddXY(barName, (double)lateArrivals / totalArrivals * 100);
 												this.barChart.Series["Early"].Points.AddXY(barName, (double)earlyArrivals / totalArrivals * 100);
+								}
+
+								private void SetBarColors()
+								{
+												Color onTime = Color.GetColorFromPalette(1, 3);
+												Color late = Color.GetColorFromPalette(2, 3);
+												Color early = Color.GetColorFromPalette(3, 3);
+
+												System.Drawing.Color onTimeColor = System.Drawing.Color.FromArgb(255, (int)(onTime.r * 255), (int)(onTime.g * 255), (int)(onTime.b * 255));
+												System.Drawing.Color lateColor = System.Drawing.Color.FromArgb(255, (int)(late.r * 255), (int)(late.g * 255), (int)(late.b * 255));
+												System.Drawing.Color earlyColor = System.Drawing.Color.FromArgb(255, (int)(early.r * 255), (int)(early.g * 255), (int)(early.b * 255));
+
+												this.barChart.Series["On Time"].Color = onTimeColor;
+												this.barChart.Series["Late"].Color = lateColor;
+												this.barChart.Series["Early"].Color = earlyColor;
+
+
 								}
 
 								private void BarChartThresholdsChanged(object sender, EventArgs e)
@@ -608,8 +629,7 @@ namespace TransViz
 												{
 																DateTime nextSector = startDate.AddMinutes(minutesInterval);
 
-																float r, g, b;
-																r = b = g = 0.2f;
+																Color color = Color.GRAY;
 
 																SortedSet<Arrival> arrivalsSubset = arrivals.GetViewBetween(new Arrival(startDate, startDate), new Arrival(nextSector, nextSector));
 																if (arrivalsSubset.Count != 0)
@@ -620,13 +640,13 @@ namespace TransViz
 																								sectorValue += Math.Abs(arrival.OnTime((int)this.EarlinessThresholdCircularChart.Value, (int)this.LatenessThresholdCircularChart.Value));
 
 																				if (sectorValue == 0)
-																								g = 1;
+																								color = Color.GetColorFromPalette(1, 2);
 																				else
-																								r = 1;
+																								color = Color.GetColorFromPalette(2, 2);
 
 																}
 
-																actors.Add(this.CreateDiskSector(Constants.FIRST_INNER_RADIUS + (day * (Constants.DISK_RADIUS + Constants.DISK_SEPARATOR_RADIUS)), Constants.DISK_RADIUS, 270 + sectorAngle * i, sectorAngle, r, g, 0.2f));
+																actors.Add(this.CreateDiskSector(Constants.FIRST_INNER_RADIUS + (day * (Constants.DISK_RADIUS + Constants.DISK_SEPARATOR_RADIUS)), Constants.DISK_RADIUS, 270 + sectorAngle * i, sectorAngle, color));
 
 																startDate = nextSector;
 												}
@@ -634,7 +654,7 @@ namespace TransViz
 												return actors;
 								}
 
-								private vtkActor CreateDiskSector(double innerRadius, double radius, double startAngle, double arcAngle, float r, float g, float b)
+								private vtkActor CreateDiskSector(double innerRadius, double radius, double startAngle, double arcAngle, Color color)
 								{
 												startAngle = 360 - startAngle;
 												arcAngle = 360 - arcAngle;
@@ -648,14 +668,14 @@ namespace TransViz
 												double clip2X = Math.Cos(Math.PI / 2 + finalAngle);
 												double clip2Y = Math.Sin(Math.PI / 2 + finalAngle);
 
-												return this.DiskSector(innerRadius, radius, clip1X, clip1Y, clip2X, clip2Y, r, g, b);
+												return this.DiskSector(innerRadius, radius, clip1X, clip1Y, clip2X, clip2Y, color);
 								}
 
-								private vtkActor DiskSector(double innerRadius, double radius, double clip1X, double clip1Y, double clip2X, double clip2Y, float r, float g, float b)
+								private vtkActor DiskSector(double innerRadius, double radius, double clip1X, double clip1Y, double clip2X, double clip2Y, Color color)
 								{
 
 												vtkProperty arcColor = vtkProperty.New();
-												arcColor.SetColor(r, g, b);
+												arcColor.SetColor(color.r, color.g, color.b);
 
 												vtkDiskSource outerDisk = vtkDiskSource.New();
 												outerDisk.SetCircumferentialResolution(50);

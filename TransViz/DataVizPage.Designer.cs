@@ -26,11 +26,11 @@
 								private void InitializeComponent()
 								{
 												this.components = new System.ComponentModel.Container();
-												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-												System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-												System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-												System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+												System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+												System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+												System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
 												this.barChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
 												this.PageTableLayout = new System.Windows.Forms.TableLayoutPanel();
 												this.LeftFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
@@ -69,12 +69,12 @@
 												this.StepLabel = new System.Windows.Forms.Label();
 												this.IntervalSlider = new System.Windows.Forms.TrackBar();
 												this.RenderWindowGPS = new Kitware.VTK.RenderWindowControl();
+												this.MapPage = new System.Windows.Forms.TabPage();
+												this.MapRenderWindow = new Kitware.VTK.RenderWindowControl();
 												this.FilesFolder = new System.Windows.Forms.FolderBrowserDialog();
 												this.FrameTimer = new System.Windows.Forms.Timer(this.components);
 												this.ChartToolTip = new System.Windows.Forms.ToolTip(this.components);
 												this.entityCommand1 = new System.Data.Entity.Core.EntityClient.EntityCommand();
-												this.MapPage = new System.Windows.Forms.TabPage();
-												this.MapRenderWindow = new Kitware.VTK.RenderWindowControl();
 												((System.ComponentModel.ISupportInitialize)(this.barChart)).BeginInit();
 												this.PageTableLayout.SuspendLayout();
 												this.LeftFlowLayout.SuspendLayout();
@@ -101,36 +101,36 @@
 												// 
 												// barChart
 												// 
-												chartArea1.Name = "ChartArea1";
-												this.barChart.ChartAreas.Add(chartArea1);
+												chartArea4.Name = "ChartArea1";
+												this.barChart.ChartAreas.Add(chartArea4);
 												this.barChart.Dock = System.Windows.Forms.DockStyle.Fill;
-												legend1.Name = "Legend1";
-												this.barChart.Legends.Add(legend1);
+												legend4.Name = "Legend1";
+												this.barChart.Legends.Add(legend4);
 												this.barChart.Location = new System.Drawing.Point(3, 3);
 												this.barChart.Name = "barChart";
-												series1.ChartArea = "ChartArea1";
-												series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series1.Color = System.Drawing.Color.Blue;
-												series1.IsXValueIndexed = true;
-												series1.Legend = "Legend1";
-												series1.Name = "On Time";
-												series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												series2.ChartArea = "ChartArea1";
-												series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-												series2.Legend = "Legend1";
-												series2.Name = "Late";
-												series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												series3.ChartArea = "ChartArea1";
-												series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-												series3.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-												series3.Legend = "Legend1";
-												series3.Name = "Early";
-												series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-												this.barChart.Series.Add(series1);
-												this.barChart.Series.Add(series2);
-												this.barChart.Series.Add(series3);
-												this.barChart.Size = new System.Drawing.Size(756, 393);
+												series10.ChartArea = "ChartArea1";
+												series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series10.Color = System.Drawing.Color.Blue;
+												series10.IsXValueIndexed = true;
+												series10.Legend = "Legend1";
+												series10.Name = "On Time";
+												series10.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series11.ChartArea = "ChartArea1";
+												series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series11.Color = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+												series11.Legend = "Legend1";
+												series11.Name = "Late";
+												series11.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												series12.ChartArea = "ChartArea1";
+												series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+												series12.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+												series12.Legend = "Legend1";
+												series12.Name = "Early";
+												series12.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+												this.barChart.Series.Add(series10);
+												this.barChart.Series.Add(series11);
+												this.barChart.Series.Add(series12);
+												this.barChart.Size = new System.Drawing.Size(829, 458);
 												this.barChart.TabIndex = 0;
 												this.barChart.Text = "Schedule Adherence";
 												this.barChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BarChart_MouseMove);
@@ -147,7 +147,7 @@
 												this.PageTableLayout.Name = "PageTableLayout";
 												this.PageTableLayout.RowCount = 1;
 												this.PageTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-												this.PageTableLayout.Size = new System.Drawing.Size(1050, 543);
+												this.PageTableLayout.Size = new System.Drawing.Size(1148, 624);
 												this.PageTableLayout.TabIndex = 4;
 												// 
 												// LeftFlowLayout
@@ -158,9 +158,9 @@
 												this.LeftFlowLayout.Controls.Add(this.StartTime);
 												this.LeftFlowLayout.Controls.Add(this.NumDaysSelector);
 												this.LeftFlowLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-												this.LeftFlowLayout.Location = new System.Drawing.Point(3, 3);
+												this.LeftFlowLayout.Location = new System.Drawing.Point(15, 3);
 												this.LeftFlowLayout.Name = "LeftFlowLayout";
-												this.LeftFlowLayout.Size = new System.Drawing.Size(256, 536);
+												this.LeftFlowLayout.Size = new System.Drawing.Size(256, 611);
 												this.LeftFlowLayout.TabIndex = 3;
 												// 
 												// ChooseFolder
@@ -222,12 +222,12 @@
 												this.RightTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 												this.RightTableLayout.Controls.Add(this.TabControl, 0, 0);
 												this.RightTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-												this.RightTableLayout.Location = new System.Drawing.Point(265, 3);
+												this.RightTableLayout.Location = new System.Drawing.Point(290, 3);
 												this.RightTableLayout.Name = "RightTableLayout";
 												this.RightTableLayout.RowCount = 2;
 												this.RightTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
 												this.RightTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 64F));
-												this.RightTableLayout.Size = new System.Drawing.Size(782, 537);
+												this.RightTableLayout.Size = new System.Drawing.Size(855, 618);
 												this.RightTableLayout.TabIndex = 2;
 												// 
 												// TabControl
@@ -241,7 +241,7 @@
 												this.TabControl.Name = "TabControl";
 												this.RightTableLayout.SetRowSpan(this.TabControl, 2);
 												this.TabControl.SelectedIndex = 0;
-												this.TabControl.Size = new System.Drawing.Size(776, 531);
+												this.TabControl.Size = new System.Drawing.Size(849, 612);
 												this.TabControl.TabIndex = 5;
 												this.TabControl.SelectedIndexChanged += new System.EventHandler(this.TabControl_SelectedIndexChanged);
 												// 
@@ -250,8 +250,8 @@
 												this.BarChartTab.Controls.Add(this.BarChartTableLayout);
 												this.BarChartTab.Location = new System.Drawing.Point(4, 22);
 												this.BarChartTab.Name = "BarChartTab";
-												this.BarChartTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-												this.BarChartTab.Size = new System.Drawing.Size(768, 505);
+												this.BarChartTab.Padding = new System.Windows.Forms.Padding(3);
+												this.BarChartTab.Size = new System.Drawing.Size(841, 586);
 												this.BarChartTab.TabIndex = 0;
 												this.BarChartTab.Text = "Bar Chart (SA)";
 												this.BarChartTab.UseVisualStyleBackColor = true;
@@ -270,7 +270,7 @@
 												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
 												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
 												this.BarChartTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-												this.BarChartTableLayout.Size = new System.Drawing.Size(762, 499);
+												this.BarChartTableLayout.Size = new System.Drawing.Size(835, 580);
 												this.BarChartTableLayout.TabIndex = 1;
 												// 
 												// BarChartBottomFlow
@@ -281,7 +281,7 @@
 												this.BarChartBottomFlow.Controls.Add(this.EarlinessThresholdBarChartLabel);
 												this.BarChartBottomFlow.Controls.Add(this.LatenessThresholdBarChart);
 												this.BarChartBottomFlow.Controls.Add(this.LatenessThresholdBarChartLabel);
-												this.BarChartBottomFlow.Location = new System.Drawing.Point(228, 402);
+												this.BarChartBottomFlow.Location = new System.Drawing.Point(265, 467);
 												this.BarChartBottomFlow.Name = "BarChartBottomFlow";
 												this.BarChartBottomFlow.Size = new System.Drawing.Size(305, 26);
 												this.BarChartBottomFlow.TabIndex = 1;
@@ -338,10 +338,10 @@
 												this.BarChartStopList.Anchor = System.Windows.Forms.AnchorStyles.Top;
 												this.BarChartStopList.CheckOnClick = true;
 												this.BarChartStopList.FormattingEnabled = true;
-												this.BarChartStopList.Location = new System.Drawing.Point(136, 451);
+												this.BarChartStopList.Location = new System.Drawing.Point(192, 525);
 												this.BarChartStopList.MultiColumn = true;
 												this.BarChartStopList.Name = "BarChartStopList";
-												this.BarChartStopList.Size = new System.Drawing.Size(490, 19);
+												this.BarChartStopList.Size = new System.Drawing.Size(450, 49);
 												this.BarChartStopList.TabIndex = 0;
 												this.BarChartStopList.ThreeDCheckBoxes = true;
 												this.BarChartStopList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BarChartStopList_ItemCheck);
@@ -351,7 +351,7 @@
 												this.CircularChartTab.Controls.Add(this.CircularChartTableLayout);
 												this.CircularChartTab.Location = new System.Drawing.Point(4, 22);
 												this.CircularChartTab.Name = "CircularChartTab";
-												this.CircularChartTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+												this.CircularChartTab.Padding = new System.Windows.Forms.Padding(3);
 												this.CircularChartTab.Size = new System.Drawing.Size(768, 505);
 												this.CircularChartTab.TabIndex = 1;
 												this.CircularChartTab.Text = "Circular Chart (SA)";
@@ -605,19 +605,6 @@
 												this.RenderWindowGPS.TabIndex = 0;
 												this.RenderWindowGPS.TestText = null;
 												// 
-												// FrameTimer
-												// 
-												this.FrameTimer.Interval = 500;
-												this.FrameTimer.Tick += new System.EventHandler(this.FrameTimer_Tick);
-												// 
-												// entityCommand1
-												// 
-												this.entityCommand1.CommandTimeout = 0;
-												this.entityCommand1.CommandTree = null;
-												this.entityCommand1.Connection = null;
-												this.entityCommand1.EnablePlanCaching = true;
-												this.entityCommand1.Transaction = null;
-												// 
 												// MapPage
 												// 
 												this.MapPage.Controls.Add(this.MapRenderWindow);
@@ -638,12 +625,25 @@
 												this.MapRenderWindow.TabIndex = 0;
 												this.MapRenderWindow.TestText = null;
 												// 
+												// FrameTimer
+												// 
+												this.FrameTimer.Interval = 500;
+												this.FrameTimer.Tick += new System.EventHandler(this.FrameTimer_Tick);
+												// 
+												// entityCommand1
+												// 
+												this.entityCommand1.CommandTimeout = 0;
+												this.entityCommand1.CommandTree = null;
+												this.entityCommand1.Connection = null;
+												this.entityCommand1.EnablePlanCaching = true;
+												this.entityCommand1.Transaction = null;
+												// 
 												// DataVizPage
 												// 
 												this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 												this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 												this.AutoSize = true;
-												this.ClientSize = new System.Drawing.Size(1050, 543);
+												this.ClientSize = new System.Drawing.Size(1148, 624);
 												this.Controls.Add(this.PageTableLayout);
 												this.Name = "DataVizPage";
 												this.Text = "TransViz";

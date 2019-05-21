@@ -12,14 +12,8 @@ namespace TransViz
 				public partial class DataVizPage : Form
 				{
 
-								/// <summary>
-								/// PROBLEMA: ALGUMAS PARAGENS APARECEM NAS ARRIVALS MAS NAO NO FICHEIRO DE PARAGENS DO GTFS
-								/// </summary>
-
 								// TODO
-								// Interatividade na viz do mapa
-								// Corrigir bugs a selecionar paragens
-								// Aplicar palette de cores ao resto do programa
+								// Escala no GPSChart
 								// Acrescentar opçao de escolha de palette
 
 								// Passar para fase de testes
@@ -31,12 +25,12 @@ namespace TransViz
 								private List<string> lineNames = new List<string>()
 								{
 												"Red",
-												"747",
-												"1",
-												"Green-B",
-												"Green-C",
-												"Green-D",
-												"Green-E"
+												//"747",
+												//"1",
+												//"Green-B",
+												//"Green-C",
+												//"Green-D",
+												//"Green-E"
 								};
 								private Dictionary<string, Line> lines = new Dictionary<string, Line>();
 								private Dictionary<string, Stop> stops = new Dictionary<string, Stop>();
@@ -343,7 +337,7 @@ namespace TransViz
 								private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
 								{
 												this.startDate = this.MonthCalendar.SelectionStart;
-
+												this.mapTabLoaded = false;
 												this.DrawTab();
 								}
 
@@ -1143,12 +1137,18 @@ namespace TransViz
 								private bool mapTabLoaded = false;
 								public const float horizontalRes = 1236;
 								public const float verticalRes = 870;
+								DateTime currentHour;
+								bool trackbarUpdating = false;
+
+
 
 								private void DrawMapTab()
 								{
 												if (!this.mapTabLoaded)
 												{
-																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
+																currentHour = this.startDate.AddDays(-(int)this.startDate.DayOfWeek + (int)DayOfWeek.Monday);
+																HoursTrackBar.Value = 0;
+
 																this.mapTabLoaded = true;
 												}
 
@@ -1176,10 +1176,10 @@ namespace TransViz
 												foreach (vtkActor actor in DrawMapBars())
 																renderer.AddActor(actor);
 
-
-
 												this.MapRenderWindow.Invalidate();
 								}
+
+
 
 								private vtkImageActor GetMapImage()
 								{
@@ -1249,7 +1249,10 @@ namespace TransViz
 
 												vtkActor actor = vtkActor.New();
 												actor.GetProperty().SetOpacity(1);
-												actor.GetProperty().SetColor(1, 0, 0);
+
+												Color color = Color.GetColorFromPalette(z, 0, 0.35f);
+
+												actor.GetProperty().SetColor(color.r, color.g, color.b);
 												actor.SetMapper(tubeMapper);
 
 												return actor;
@@ -1261,8 +1264,12 @@ namespace TransViz
 												int onTimeArrivals = 0;
 												int lateArrivals = 0;
 
+												Arrival firstArrival = new Arrival(currentHour, currentHour);
+												Arrival lastArrival = new Arrival(currentHour.AddHours(1), currentHour.AddHours(1));
 
-												foreach (Arrival arrival in arrivals)
+												SortedSet<Arrival> arrivalsSubset = arrivals.GetViewBetween(firstArrival, lastArrival);
+
+												foreach (Arrival arrival in arrivalsSubset)
 												{
 
 																int onTime = arrival.OnTime(3, 5);
@@ -1278,6 +1285,26 @@ namespace TransViz
 												int totalArrivals = earlyArrivals + onTimeArrivals + lateArrivals;
 
 												return Math.Max(((float)earlyArrivals + lateArrivals) / totalArrivals, 0.005f);
+								}
+
+								private void DrawNextMapFrame(int sign)
+								{
+												this.currentHour = this.currentHour.AddHours(sign);
+
+												this.HoursTrackBar.Value = currentHour.Hour;
+												WeekDayTrackBar.Value = (int)this.currentHour.DayOfWeek == 0 ? 7 : (int)this.currentHour.DayOfWeek;
+
+
+												Console.WriteLine(currentHour);
+
+												this.DrawMapTab();
+								}
+
+								private void MapFrameTimer_Tick(object sender, EventArgs e)
+								{
+												trackbarUpdating = true;
+												this.DrawNextMapFrame(1);
+												trackbarUpdating = false;
 								}
 
 								private float[] GetPointOnMap(Coordinate location)
@@ -1297,11 +1324,50 @@ namespace TransViz
 												float distX = (float)Coordinate.CalcDist(botLeft, new Coordinate(botLeft.Latitude, location.Longitude)) * scaleX;
 												float distY = (float)Coordinate.CalcDist(botLeft, new Coordinate(location.Latitude, botLeft.Longitude)) * scaleY;
 
-												Console.WriteLine("Dist: {0} | {1}", distX, distY);
-
 												return new float[] { distX, distY };
 								}
 
+
+
+								bool mapPlaying = false;
+								private void MapPlayButton_Click(object sender, EventArgs e)
+								{
+												mapPlaying = !mapPlaying;
+
+												if (mapPlaying)
+												{
+																this.MapFrameTimer.Start();
+																MapPlayPauseButton.Text = "Pause";
+												}
+												else
+												{
+																this.MapFrameTimer.Stop();
+																trackbarUpdating = false;
+																MapPlayPauseButton.Text = "Play";
+
+												}
+								}
+
+								private void HoursTrackBar_ValueChanged(object sender, EventArgs e)
+								{
+												if (trackbarUpdating)
+																return;
+												this.currentHour = this.currentHour.AddHours(-this.currentHour.Hour + HoursTrackBar.Value);
+
+												this.DrawMapTab();
+
+								}
+								private void WeekDayTrackBar_ValueChanged(object sender, EventArgs e)
+								{
+												if (trackbarUpdating)
+																return;
+												this.currentHour = this.currentHour.AddDays(-(int)this.currentHour.DayOfWeek + WeekDayTrackBar.Value);
+
+
+												this.DrawMapTab();
+								}
+
 								#endregion
+
 				}
 }

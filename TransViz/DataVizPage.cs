@@ -39,12 +39,15 @@ namespace TransViz
 								{
 												this.InitializeComponent();
 
-												Color.colorPalette = Color.lightyellow_darkred;
-
 												this.barChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0} %";
 												this.barChart.ChartAreas.FirstOrDefault().AxisX.Interval = 1;
+
+												System.Drawing.Font titleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15f);
+
+												this.barChart.Titles.Add(new Title("Arrivals", Docking.Top, titleFont, System.Drawing.Color.Black));
 												//InitializeMap();
 
+												this.ColorPaletteBox.SelectedIndex = 0;
 												this.MonthCalendar.SelectionStart = new DateTime(2019, 1, 9);
 												this.startDate = this.MonthCalendar.SelectionStart;
 
@@ -111,6 +114,29 @@ namespace TransViz
 												return false;
 								}
 
+								private void ColorPaletteBox_SelectedIndexChanged(object sender, EventArgs e)
+								{
+												switch (this.ColorPaletteBox.SelectedIndex)
+												{
+																case 0:
+																				Color.colorPalette = Color.monoBlues;
+																				break;
+																case 1:
+																				Color.colorPalette = Color.lightyellow_darkred;
+																				break;
+																case 2:
+																				Color.colorPalette = Color.blue_yellow;
+																				break;
+												}
+
+												gpsChartTabLoaded = false;
+												circularChartLoaded = false;
+												mapTabLoaded = false;
+
+												this.DrawTab();
+
+								}
+
 								//private void InitializeMap()
 								//{
 								//				try
@@ -147,7 +173,7 @@ namespace TransViz
 												this.gpsChartTabLoaded = false;
 
 												this.AddBarChartItemList();
-												this.AddBoldedDates();
+												//this.AddBoldedDates();
 
 								}
 
@@ -352,9 +378,11 @@ namespace TransViz
 
 								private void DrawTab()
 								{
-
-												this.StartTime.Visible = true;
+												this.StartTimeLabel.Visible = false;
+												this.StartTime.Visible = false;
 												this.NumDaysSelector.Visible = false;
+												this.DaysLabel.Visible = false;
+
 
 												switch (this.TabControl.SelectedIndex)
 												{
@@ -427,7 +455,7 @@ namespace TransViz
 												}
 
 												foreach (string stopName in arrivalsByStop.Keys)
-																this.RefreshBar(stopName + " | " + stops[stopName].Name, arrivalsByStop[stopName]);
+																this.RefreshBar(stopName /*+ " | " + stops[stopName].Name */, arrivalsByStop[stopName]);
 
 								}
 
@@ -510,7 +538,9 @@ namespace TransViz
 
 								private void DrawBarChartTab()
 								{
+												this.StartTimeLabel.Visible = false;
 												this.StartTime.Visible = false;
+												this.DaysLabel.Visible = true;
 												this.NumDaysSelector.Visible = true;
 												this.BarChartBottomFlow.Visible = true;
 												this.RefreshChart();
@@ -735,13 +765,17 @@ namespace TransViz
 								{
 												this.CircularChartBottomFlow.Visible = true;
 												this.CircularChartCenterFlow.Visible = true;
-												this.StartTime.Visible = false;
-
+												
 												if (!this.circularChartLoaded)
 												{
 																bool selectedFirst = false;
 																foreach (string lineName in this.lines.Keys)
 																{
+																				foreach(RadioButton previousRadio in this.CircularChartCenterFlow.Controls)
+																				{
+																								this.CircularChartCenterFlow.Controls.Remove(previousRadio);
+																				}
+
 																				RadioButton radioButton = new RadioButton
 																				{
 																								Name = lineName,
@@ -998,6 +1032,10 @@ namespace TransViz
 
 								private void DrawGPSChartTab()
 								{
+												this.StartTimeLabel.Visible = true;
+												this.StartTime.Visible = true;
+
+
 												this.SetFrameTime();
 
 												if (!this.gpsChartTabLoaded)
@@ -1059,7 +1097,6 @@ namespace TransViz
 
 								private void SetFrameTime()
 								{
-												this.DateLabel.Text = this.startDate.ToString("d");
 												this.StartTime.Value = this.startDate;
 												this.MonthCalendar.SetSelectionRange(this.startDate, this.startDate);
 												this.StepLabel.Text = (this.IntervalSlider.Value / 1000f) + " seconds";
@@ -1368,6 +1405,7 @@ namespace TransViz
 								}
 
 								#endregion
+
 
 				}
 }

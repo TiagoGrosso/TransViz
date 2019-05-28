@@ -25,12 +25,12 @@ namespace TransViz
 								private List<string> lineNames = new List<string>()
 								{
 												"Red",
-												//"747",
-												//"1",
-												//"Green-B",
-												//"Green-C",
-												//"Green-D",
-												//"Green-E"
+												"747",
+												"1",
+												"Green-B",
+												"Green-C",
+												"Green-D",
+												"Green-E"
 								};
 								private Dictionary<string, Line> lines = new Dictionary<string, Line>();
 								private Dictionary<string, Stop> stops = new Dictionary<string, Stop>();
@@ -768,13 +768,15 @@ namespace TransViz
 												
 												if (!this.circularChartLoaded)
 												{
+																foreach (RadioButton previousRadio in this.CircularChartCenterFlow.Controls)
+																{
+																				this.CircularChartCenterFlow.Controls.Remove(previousRadio);
+																}
+
+
 																bool selectedFirst = false;
 																foreach (string lineName in this.lines.Keys)
 																{
-																				foreach(RadioButton previousRadio in this.CircularChartCenterFlow.Controls)
-																				{
-																								this.CircularChartCenterFlow.Controls.Remove(previousRadio);
-																				}
 
 																				RadioButton radioButton = new RadioButton
 																				{
@@ -1043,6 +1045,11 @@ namespace TransViz
 
 																vtkInteractorStyleImage interactorStyle = new vtkInteractorStyleImage();
 																this.RenderWindowGPS.RenderWindow.GetInteractor().SetInteractorStyle(interactorStyle);
+
+																foreach (RadioButton previousRadio in this.GPSPageRadioButtonFlow.Controls)
+																{
+																				this.GPSPageRadioButtonFlow.Controls.Remove(previousRadio);
+																}
 
 
 																bool selectedFirst = false;

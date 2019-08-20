@@ -1,7 +1,7 @@
 # TransViz
 A service reliability visualization prototype for public transportation
 
-#IMPORTANT
+# IMPORTANT
 
 Will not work without the data. Download it here:
 
